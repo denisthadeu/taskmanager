@@ -6,12 +6,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
-        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="{{ URL::asset('favicon.ico') }}" type="image/x-icon" />
         <!-- END META SECTION -->
         
-        <!-- CSS INCLUDE -->        
-        <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+        <!-- CSS INCLUDE -->
+        <link rel="stylesheet" type="text/css" id="theme" href="{{ URL::asset('css/theme-default.css') }}"/>
         <!-- EOF CSS INCLUDE -->                                    
     </head>
     <body>
@@ -28,11 +27,11 @@
                     </li>
                     <li class="xn-profile">
                         <a href="#" class="profile-mini">
-                            <img src="assets/images/users/avatar.jpg" alt="John Doe"/>
+                            <img src="{{ URL::asset('assets/images/users/avatar.jpg') }}" alt="John Doe"/>
                         </a>
                         <div class="profile">
                             <div class="profile-image">
-                                <img src="assets/images/users/avatar.jpg" alt="John Doe"/>
+                                <img src="{{ URL::asset('assets/images/users/avatar.jpg') }}" alt="John Doe"/>
                             </div>
                             <div class="profile-data">
                                 <div class="profile-data-name">{{ Auth::user()->nome }}</div>
@@ -45,13 +44,13 @@
                         </div>                                                                        
                     </li>
                     <li class="active">
-                        <a href="index.html"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
+                        <a href="{{ URL::to('/') }}"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
                     </li>                    
                      <li class="xn-openable">
                         <a href="#"><span class="fa fa-github"></span> <span class="xn-text">Clientes</span></a>
                         <ul>
-                            <li><a href="pages-gallery.html"><span class="fa fa-github-square"></span> Visualizar Clientes</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-plus"></span> Novo CLiente</a></li>
+                            <li><a href="{{ URL::to('cliente/list') }}"><span class="fa fa-github-square"></span> Visualizar Clientes</a></li>
+                            <li><a href="{{ URL::to('cliente/create') }}"><span class="fa fa-plus"></span> Novo CLiente</a></li>
                         </ul>
                     </li>
                     <li class="xn-openable">
@@ -86,7 +85,7 @@
                         <a href="#"><span class="fa fa-users"></span> <span class="xn-text">Usuários</span></a>
                         <ul>
                             <li><a href="pages-gallery.html"><span class="fa fa-user"></span> Visualizar usuários</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-plus"></span> Novo usuario</a></li>
+                            <li><a href="{{ URL::to('user/create') }}"><span class="fa fa-plus"></span> Novo usuario</a></li>
                             <li><a href="pages-profile.html"><span class="fa fa-edit"></span> Editar seu perfil</a></li>
                         </ul>
                     </li>
@@ -126,25 +125,25 @@
                             <div class="panel-body list-group list-group-contacts scroll" style="height: 200px;">
                                 <a href="#" class="list-group-item">
                                     <div class="list-group-status status-online"></div>
-                                    <img src="assets/images/users/user2.jpg" class="pull-left" alt="John Doe"/>
+                                    <img src="{{ URL::asset('assets/images/users/user2.jpg') }}" class="pull-left" alt="John Doe"/>
                                     <span class="contacts-title">John Doe</span>
                                     <p>Praesent placerat tellus id augue condimentum</p>
                                 </a>
                                 <a href="#" class="list-group-item">
                                     <div class="list-group-status status-away"></div>
-                                    <img src="assets/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk"/>
+                                    <img src="{{ URL::asset('assets/images/users/user.jpg') }}" class="pull-left" alt="Dmitry Ivaniuk"/>
                                     <span class="contacts-title">Dmitry Ivaniuk</span>
                                     <p>Donec risus sapien, sagittis et magna quis</p>
                                 </a>
                                 <a href="#" class="list-group-item">
                                     <div class="list-group-status status-away"></div>
-                                    <img src="assets/images/users/user3.jpg" class="pull-left" alt="Nadia Ali"/>
+                                    <img src="{{ URL::asset('assets/images/users/user3.jpg') }}" class="pull-left" alt="Nadia Ali"/>
                                     <span class="contacts-title">Nadia Ali</span>
                                     <p>Mauris vel eros ut nunc rhoncus cursus sed</p>
                                 </a>
                                 <a href="#" class="list-group-item">
                                     <div class="list-group-status status-offline"></div>
-                                    <img src="assets/images/users/user6.jpg" class="pull-left" alt="Darth Vader"/>
+                                    <img src="{{ URL::asset('assets/images/users/user6.jpg') }}" class="pull-left" alt="Darth Vader"/>
                                     <span class="contacts-title">Darth Vader</span>
                                     <p>I want my money back!</p>
                                 </a>
@@ -310,39 +309,42 @@
         <!-- END MESSAGE BOX-->
 
         <!-- START PRELOADS -->
-        <audio id="audio-alert" src="audio/alert.mp3" preload="auto"></audio>
-        <audio id="audio-fail" src="audio/fail.mp3" preload="auto"></audio>
+        <audio id="audio-alert" src="{{ URL::asset('audio/alert.mp3') }}" preload="auto"></audio>
+        <audio id="audio-fail" src="{{ URL::asset('audio/fail.mp3') }}" preload="auto"></audio>
         <!-- END PRELOADS -->                  
         
     <!-- START SCRIPTS -->
         <!-- START PLUGINS -->
-        <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>        
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/jquery/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/jquery/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/bootstrap/bootstrap.min.js') }}"></script>        
         <!-- END PLUGINS -->
 
         <!-- START THIS PAGE PLUGINS-->        
-        <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>        
-        <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
-        <script type="text/javascript" src="js/plugins/scrolltotop/scrolltopcontrol.js"></script>
+        <script type='text/javascript' src="{{ URL::asset('js/plugins/icheck/icheck.min.js') }}"></script>        
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/scrolltotop/scrolltopcontrol.js') }}"></script>
         
-        <script type="text/javascript" src="js/plugins/morris/raphael-min.js"></script>
-        <script type="text/javascript" src="js/plugins/morris/morris.min.js"></script>       
-        <script type="text/javascript" src="js/plugins/rickshaw/d3.v3.js"></script>
-        <script type="text/javascript" src="js/plugins/rickshaw/rickshaw.min.js"></script>
-        <script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
-        <script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>                
-        <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>                
-        <script type="text/javascript" src="js/plugins/owl/owl.carousel.min.js"></script>                 
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/morris/raphael-min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/morris/morris.min.js') }}"></script>       
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/rickshaw/d3.v3.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/rickshaw/rickshaw.min.js') }}"></script>
+        <script type='text/javascript' src="{{ URL::asset('js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
+        <script type='text/javascript' src="{{ URL::asset('js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>                
+        <script type='text/javascript' src="{{ URL::asset('js/plugins/bootstrap/bootstrap-datepicker.js') }}"></script>                
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/owl/owl.carousel.min.js') }}"></script>                 
         
-        <script type="text/javascript" src="js/plugins/moment.min.js"></script>
-        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/moment.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/daterangepicker/daterangepicker.js') }}"></script>
         <!-- END THIS PAGE PLUGINS-->        
 
-        <script type="text/javascript" src="js/plugins.js"></script>        
-        <script type="text/javascript" src="js/actions.js"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins.js') }}"></script>        
+        <script type="text/javascript" src="{{ URL::asset('js/actions.js') }}"></script>
+        @section('script')
+
+        @show
+        <script type="text/javascript" src="{{ URL::asset('js/demo_dashboard.js') }}"></script>
         
-        <script type="text/javascript" src="js/demo_dashboard.js"></script>
         <!-- END TEMPLATE -->
     <!-- END SCRIPTS -->         
     </body>

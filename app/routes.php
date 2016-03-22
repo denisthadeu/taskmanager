@@ -24,6 +24,7 @@ Route::get('/', function()
 });
 
 
+Route::controller('cliente', 'ClienteController');
 Route::controller('id', 'IdController');
 Route::controller('home','HomeController');
 Route::controller('password', 'RemindersController');

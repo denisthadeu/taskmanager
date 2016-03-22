@@ -4,11 +4,11 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<h2>Password Reset</h2>
+		<h2>Resetar a senha</h2>
 
 		<div>
-			To reset your password, complete this form: {{ URL::to('password/reset', array($token)) }}.<br/>
-			This link will expire in {{ Config::get('auth.reminder.expire', 60) }} minutes.
+			Para resetar sua senha, complete este formulário: {{ URL::to('password/reset', array($token)) }}.<br/>
+			Este link expira em {{ Config::get('auth.reminder.expire', 60) }} minutos.
 		</div>
 	</body>
 </html>
