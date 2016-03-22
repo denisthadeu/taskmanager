@@ -27,11 +27,11 @@
                     </li>
                     <li class="xn-profile">
                         <a href="#" class="profile-mini">
-                            <img src="{{ URL::asset('assets/images/users/avatar.jpg') }}" alt="John Doe"/>
+                            <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe"/>
                         </a>
                         <div class="profile">
                             <div class="profile-image">
-                                <img src="{{ URL::asset('assets/images/users/avatar.jpg') }}" alt="John Doe"/>
+                                <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe"/>
                             </div>
                             <div class="profile-data">
                                 <div class="profile-data-name">{{ Auth::user()->nome }}</div>
@@ -84,9 +84,9 @@
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-users"></span> <span class="xn-text">Usuários</span></a>
                         <ul>
-                            <li><a href="pages-gallery.html"><span class="fa fa-user"></span> Visualizar usuários</a></li>
+                            <li><a href="{{ URL::to('user/list') }}"><span class="fa fa-user"></span> Visualizar usuários</a></li>
                             <li><a href="{{ URL::to('user/create') }}"><span class="fa fa-plus"></span> Novo usuario</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-edit"></span> Editar seu perfil</a></li>
+                            <li><a href="{{ URL::to('user/edit/'.Auth::id()) }}"><span class="fa fa-edit"></span> Editar seu perfil</a></li>
                         </ul>
                     </li>
                     
@@ -340,6 +340,7 @@
 
         <script type="text/javascript" src="{{ URL::asset('js/plugins.js') }}"></script>        
         <script type="text/javascript" src="{{ URL::asset('js/actions.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/maskedinput.min.js') }}"></script>
         @section('script')
 
         @show

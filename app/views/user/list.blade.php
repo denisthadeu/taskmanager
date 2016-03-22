@@ -26,7 +26,7 @@
                     <tr>
                         <th>id</th>
                         <th>Nome</th>
-                        <th>Equipe</th>
+                        <th>Setor</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -36,7 +36,18 @@
 		                    <tr>
 		                        <td>{{ $user->id }}</td>
 		                        <td>{{ $user->nome }}</td>
-		                        <td>{{ count($user->equipe_user) }}</td>
+		                        <td>
+                                    @if(count($user->equipe_user) > 0)
+                                        @foreach($user->equipe_user as $key => $equipe)
+                                            @if($key > 0)
+                                                , 
+                                            @endif
+                                            {{ $equipe->nome }}
+                                        @endforeach
+                                    @else 
+                                        Nenhum setor ainda
+                                    @endif
+                                </td>
 		                        <td>
 		                        	<a href="{{ URL::to('user/edit') }}/{{$user->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
                                     <a href="{{ URL::to('user/delete') }}/{{$user->id}}" class="remover-user"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>

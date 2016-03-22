@@ -59,7 +59,7 @@ class ClienteController extends BaseController {
 
 	public function getList()
 	{
-		$clientes = Clientes::OrderBy('nome')->get();
+		$clientes = Clientes::OrderBy('nome')->with('clientesprojetos')->get();
 		return View::make('cliente.list',compact('clientes'));
 	}
 }

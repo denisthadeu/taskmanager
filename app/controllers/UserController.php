@@ -9,18 +9,20 @@ class UserController extends BaseController {
 
 	public function getCreate()
 	{
-		return View::make('user.form');
+		$estadocivil = Estadocivil::OrderBy('nome')->get();
+		return View::make('user.form',compact('estadocivil'));
 	}
 
 	public function getEdit($id)
 	{
 		$user = User::find($id);
-		return View::make('user.form',compact('user'));
+		$estadocivil = Estadocivil::OrderBy('nome')->get();
+		return View::make('user.form',compact('user','estadocivil'));
 	}
 
 	public function getList()
 	{
-		$users = User::OrderBy('nome')->get();
+		$users = User::whereNull('deleted_at')->OrderBy('nome')->get();
 		return View::make('user.list',compact('users'));
 	}
 
