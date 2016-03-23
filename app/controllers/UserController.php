@@ -37,14 +37,47 @@ class UserController extends BaseController {
 
 	public function postSave(){
 		extract(Input::all());
-		dd(Input::all());
+		// dd(Input::all());
 		if(empty($id)){
 			$user = new User();
 			$msg = "Usuário Cadastrado";
 		} else {
-			$user = Clientes::find($id);
+			$user = User::find($id);
 			$msg = "Usuário Alterado";
 		}
+		//salva dados do usuario
+		$user->nome = $nome;
+		$user->sobrenome = $sobrenome;
+		$user->email = $email;
+		$user->telefone = $telefone;
+		$user->celular = $celular;
+		$user->cpf = $cpf;
+		$user->sexo = $sexo;
+		$user->data_nascimento = $data_nascimento;
+		$user->estadocivil_id = $estado_civil_;
+		$user->cargo = $cargo;
+		$user->perfil = 2;
+		$user->status = 1;
+		if(isset($senha) && isset($senha_confirma) && !empty($senha_confirma) && !empty($senha) && $senha_confirma == $senha){
+			$user->password = Hash::make($senha);
+		}
+		$user->save();
+
+		// salva a imagem(caso tenha sido feito upload)
+		if(Input::hasFile('foto')){
+			if(!empty($user->foto_caminho_completo)){
+				File::delete($user->foto_caminho_completo);
+			}
+			$img = Input::file('foto');
+			$imginfo = $this->uploadImage($img, 'usuarios/'.$id);
+			if($imginfo){
+		        $user->foto_nome = $imginfo['destinationPath'];
+		        $user->foto_caminho    = $imginfo['filename'];
+		        $user->foto_caminho_completo = $imginfo['destinationPath'].$imginfo['filename'];
+		        $user->save();
+			}
+		}
+
 		return Redirect::to('user/edit/'.$user->id)->with('success',$msg);
 	}
 }

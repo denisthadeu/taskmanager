@@ -27,8 +27,8 @@
                                     <div class="col-md-4">
                                         <div class="profile" style="background-color: #fff">
                                             <div class="profile-image">
-                                                @if(isset($user) && !empty($user->foto))
-                                                    <img src="{{ URL::asset($user->foto) }}" class="image_perfil" alt="John Doe">
+                                                @if(isset($user) && !empty($user->foto_caminho_completo))
+                                                    <img src="{{ URL::asset($user->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
                                                 @else    
                                                     <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe">
                                                 @endif

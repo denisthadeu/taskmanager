@@ -26,6 +26,7 @@ Route::get('/', function()
 
 Route::controller('cliente', 'ClienteController');
 Route::controller('id', 'IdController');
+Route::controller('equipe', 'EquipeController');
 Route::controller('home','HomeController');
 Route::controller('password', 'RemindersController');
 Route::controller('user', 'UserController');

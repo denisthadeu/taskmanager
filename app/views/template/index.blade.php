@@ -22,16 +22,24 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.html">ATLANT</a>
+                        <a href="index.html">Bluefoot</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
                     <li class="xn-profile">
                         <a href="#" class="profile-mini">
-                            <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe"/>
+                            @if(!empty(Auth::user()->foto_caminho_completo))
+                                <img src="{{ URL::asset(Auth::user()->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
+                            @else    
+                                <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe">
+                            @endif
                         </a>
                         <div class="profile">
                             <div class="profile-image">
-                                <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe"/>
+                                @if(!empty(Auth::user()->foto_caminho_completo))
+                                    <img src="{{ URL::asset(Auth::user()->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
+                                @else    
+                                    <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe">
+                                @endif
                             </div>
                             <div class="profile-data">
                                 <div class="profile-data-name">{{ Auth::user()->nome }}</div>

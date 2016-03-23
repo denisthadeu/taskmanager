@@ -26,6 +26,7 @@
                     <tr>
                         <th>id</th>
                         <th>Nome</th>
+                        <th>Perfil</th>
                         <th>Setor</th>
                         <th>Ações</th>
                     </tr>
@@ -35,7 +36,14 @@
                 		@foreach($users as $user)
 		                    <tr>
 		                        <td>{{ $user->id }}</td>
-		                        <td>{{ $user->nome }}</td>
+		                        <td>{{ $user->nome }} {{ $user->sobrenome }}</td>
+                                <td>
+                                    @if($user->perfil == 1)
+                                        Admin
+                                    @else
+                                        Funcionário
+                                    @endif
+                                </td>
 		                        <td>
                                     @if(count($user->equipe_user) > 0)
                                         @foreach($user->equipe_user as $key => $equipe)
