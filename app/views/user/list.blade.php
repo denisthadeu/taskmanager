@@ -15,7 +15,7 @@
     		&nbsp;
     	</div>
     	<div class="col-md-1">
-    		<a href="{{ URL::to('cliente/create') }}"><button type="button" class="btn btn-primary">Novo Cliente</button></a>
+    		<a href="{{ URL::to('user/create') }}"><button type="button" class="btn btn-primary">Novo Usuário</button></a>
     	</div>
     </div>
     <div class="row">

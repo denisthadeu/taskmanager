@@ -16,7 +16,7 @@
         <li class="active">@if(!isset($equipe)) Nova Equipe @else Editar Equipe {{ $equipe->nome }} @endif</li>
     </ul>
 <div class="page-title">                    
-    <h2><span class="glyphicon glyphicon-user"></span>@if(!isset($equipe)) Nova Equipe @else Editar Equipe {{ $equipe->nome }} @endif</h2>
+    <h2><span class="fa fa-puzzle-piece"></span>@if(!isset($equipe)) Nova Equipe @else Editar Equipe {{ $equipe->nome }} @endif</h2>
 </div>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->

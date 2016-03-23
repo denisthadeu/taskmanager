@@ -25,8 +25,12 @@ Route::get('/', function()
 
 
 Route::controller('cliente', 'ClienteController');
-Route::controller('id', 'IdController');
+Route::controller('cronograma', 'CronogramaController');
 Route::controller('equipe', 'EquipeController');
 Route::controller('home','HomeController');
+Route::controller('id', 'IdController');
+Route::controller('mensagem', 'MensagemController');
 Route::controller('password', 'RemindersController');
+Route::controller('tarefa', 'TarefaController');
+Route::controller('tarefatipo', 'TarefatipoController');
 Route::controller('user', 'UserController');

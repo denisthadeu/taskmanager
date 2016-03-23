@@ -137,8 +137,12 @@
 
 	  public static function dataAtualDB()
 	  {
-	    
 	    return date('Y-m-d H:i:s');
+	  }
+
+	  public static function leadingZero($int)
+	  {
+	    return str_pad($int, 2, '0', STR_PAD_LEFT);;
 	  }
 
 

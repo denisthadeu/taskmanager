@@ -80,6 +80,14 @@
                         </ul>
                     </li>
                     <li class="xn-openable">
+                        <a href="#"><span class="fa fa-envelope"></span> <span class="xn-text">Mensagens</span></a>
+                        <ul>
+                            <li><a href="{{ URL::to('mensagem/in') }}"><span class="glyphicon glyphicon-check"></span> Caixa de entrada</a></li>
+                            <li><a href="{{ URL::to('mensagem/out') }}"><span class="fa fa-external-link"></span> Caixa de saída</a></li>
+                            <li><a href="{{ URL::to('mensagem/create') }}"><span class="fa fa-envelope-o"></span> Nova Mensagem</a></li>
+                        </ul>
+                    </li>
+                    <li class="xn-openable">
                         <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Relatórios</span></a>
                         <ul>
                             <li><a href="pages-gallery.html"><span class="fa fa-align-justify"></span> Relatório 1</a></li>
@@ -94,10 +102,10 @@
                         <ul>
                             <li><a href="pages-gallery.html"><span class="fa fa-list"></span> Visualizar Tarefas</a></li>
                             <li><a href="pages-profile.html"><span class="fa fa-plus"></span> Nova Tarefa</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa fa-sitemap"></span> Visualizar Cronograma</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-plus"></span> Novo Cronograma</a></li>
-                            <li><a href="pages-gallery.html"><span class="fa fa-th-large"></span> Visualizar Tipos de Tarefas</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-plus"></span> Novo Tipo de Tarefa</a></li>
+                            <li><a href="{{ URL::to('cronograma/list') }}"><span class="fa fa fa-sitemap"></span> Visualizar Cronograma</a></li>
+                            <li><a href="{{ URL::to('cronograma/create') }}"><span class="fa fa-plus"></span> Novo Cronograma</a></li>
+                            <li><a href="{{ URL::to('tarefatipo/list') }}"><span class="fa fa-th-large"></span> Visualizar Tipos Tarefas</a></li>
+                            <li><a href="{{ URL::to('tarefatipo/create') }}"><span class="fa fa-plus"></span> Novo Tipo de Tarefa</a></li>
                         </ul>
                     </li>
                     <li class="xn-openable">
