@@ -23,7 +23,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-	public function equipe_user()
+	public function equipeUser()
 	{
 		return $this->hasMany('Equipeuser');
 	}
@@ -31,5 +31,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function estadocivil()
 	{
 		return $this->belongsTo('Estadocivil');
+	}
+
+	public function equipeUserResponsavel()
+	{
+		return $this->hasMany('Equipe');
 	}
 }

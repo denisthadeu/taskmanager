@@ -43,10 +43,21 @@
                             </div>
                             <div class="profile-data">
                                 <div class="profile-data-name">{{ Auth::user()->nome }}</div>
-                                <div class="profile-data-title">Web Developer/Designer</div>
+                                <div class="profile-data-title">
+                                    @if(Auth::user()->equipeUser->count())
+                                        @foreach(Auth::user()->equipeUser AS $key => $equipeuserPerfil)
+                                            @if($key > 0)
+                                                /
+                                            @endif
+                                            {{ $equipeuserPerfil->equipe->nome }}
+                                        @endforeach
+                                    @else
+                                        Nenhum setor
+                                    @endif
+                                </div>
                             </div>
                             <div class="profile-controls">
-                                <a href="pages-profile.html" class="profile-control-left"><span class="fa fa-info"></span></a>
+                                <a href="{{ URL::to('user/edit/'.Auth::id()) }}" class="profile-control-left"><span class="fa fa-info"></span></a>
                                 <a href="pages-messages.html" class="profile-control-right"><span class="fa fa-envelope"></span></a>
                             </div>
                         </div>                                                                        
@@ -64,8 +75,8 @@
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-puzzle-piece"></span> <span class="xn-text">Equipes</span></a>
                         <ul>
-                            <li><a href="pages-gallery.html"><span class="fa fa-users"></span> Visualizar Equipes</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-plus"></span> Nova Equipe</a></li>
+                            <li><a href="{{ URL::to('equipe/list') }}"><span class="fa fa-users"></span> Visualizar Equipes</a></li>
+                            <li><a href="{{ URL::to('equipe/create') }}"><span class="fa fa-plus"></span> Nova Equipe</a></li>
                         </ul>
                     </li>
                     <li class="xn-openable">

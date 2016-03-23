@@ -69,7 +69,7 @@ class UserController extends BaseController {
 				File::delete($user->foto_caminho_completo);
 			}
 			$img = Input::file('foto');
-			$imginfo = $this->uploadImage($img, 'usuarios/'.$id);
+			$imginfo = $this->uploadImage($img, 'usuarios/'.$user->id);
 			if($imginfo){
 		        $user->foto_nome = $imginfo['destinationPath'];
 		        $user->foto_caminho    = $imginfo['filename'];

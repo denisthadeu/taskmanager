@@ -5,7 +5,7 @@
 <!-- START BREADCRUMB -->
 <ul class="breadcrumb">
     <li><a href="{{ URL::to('/') }}">Home</a></li>
-    <li class="active">Visualizar Usuários</li>
+    <li class="active">Visualizar Equipes</li>
 </ul>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
@@ -15,7 +15,7 @@
     		&nbsp;
     	</div>
     	<div class="col-md-1">
-    		<a href="{{ URL::to('cliente/create') }}"><button type="button" class="btn btn-primary">Novo Cliente</button></a>
+    		<a href="{{ URL::to('equipe/create') }}"><button type="button" class="btn btn-primary">Nova Equipe</button></a>
     	</div>
     </div>
     <div class="row">
@@ -26,39 +26,32 @@
                     <tr>
                         <th>id</th>
                         <th>Nome</th>
-                        <th>Perfil</th>
-                        <th>Setor</th>
+                        <th>Membros</th>
+                        <th>Responsável</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                	@if(isset($users) && !$users->isEmpty())
-                		@foreach($users as $user)
+                	@if(isset($equipes) && !$equipes->isEmpty())
+                		@foreach($equipes as $equipe)
 		                    <tr>
-		                        <td>{{ $user->id }}</td>
-		                        <td>{{ $user->nome }} {{ $user->sobrenome }}</td>
-                                <td>
-                                    @if($user->perfil == 1)
-                                        Admin
-                                    @else
-                                        Funcionário
-                                    @endif
-                                </td>
-		                        <td>
-                                    @if(count($user->equipe_user) > 0)
-                                        @foreach($user->equipe_user as $key => $equipe)
+		                        <td>{{ $equipe->id }}</td>
+		                        <td>{{ $equipe->nome }}</td>
+		                        <td data-toggle="tooltip" data-placement="bottom" title="
+                                    @if($equipe->equipeUser->count())
+                                        @foreach($equipe->equipeUser as $key => $equipeUser)
                                             @if($key > 0)
                                                 , 
                                             @endif
-                                            {{ $equipe->equipe->nome }}
+                                            {{ $equipeUser->user->nome }}
                                         @endforeach
-                                    @else 
-                                        Nenhum setor ainda
                                     @endif
+                                ">{{ $equipe->equipeUser->count()}}
                                 </td>
+                                <td>{{ $equipe->responsavel->nome }}</td>
 		                        <td>
-		                        	<a href="{{ URL::to('user/edit') }}/{{$user->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                    <a href="{{ URL::to('user/delete') }}/{{$user->id}}" class="remover-user"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+		                        	<a href="{{ URL::to('equipe/edit') }}/{{$equipe->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
+                                    <a href="{{ URL::to('equipe/delete') }}/{{$equipe->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
 		                        </td>
 		                    </tr>
 		                @endforeach
@@ -78,8 +71,8 @@
 @section('script')
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.remover-user').click(function(){
-            var r = confirm("Deseja deletar este usuário?");
+        $('.remover-equipe').click(function(){
+            var r = confirm("Deseja deletar esta equipe?");
             if (r == true) {
                 return true;
             } else {
