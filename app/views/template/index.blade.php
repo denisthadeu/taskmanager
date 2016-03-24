@@ -58,7 +58,7 @@
                             </div>
                             <div class="profile-controls">
                                 <a href="{{ URL::to('user/edit/'.Auth::id()) }}" class="profile-control-left"><span class="fa fa-info"></span></a>
-                                <a href="pages-messages.html" class="profile-control-right"><span class="fa fa-envelope"></span></a>
+                                <a href="{{ URL::to('mensagem/in') }}" class="profile-control-right"><span class="fa fa-envelope"></span></a>
                             </div>
                         </div>                                                                        
                     </li>
