@@ -100,8 +100,8 @@
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-tasks"></span> <span class="xn-text">Tarefas</span></a>
                         <ul>
-                            <li><a href="pages-gallery.html"><span class="fa fa-list"></span> Visualizar Tarefas</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-plus"></span> Nova Tarefa</a></li>
+                            <li><a href="{{ URL::to('tarefa/list') }}"><span class="fa fa-list"></span> Visualizar Tarefas</a></li>
+                            <li><a href="{{ URL::to('tarefa/create') }}"><span class="fa fa-plus"></span> Nova Tarefa</a></li>
                             <li><a href="{{ URL::to('cronograma/list') }}"><span class="fa fa fa-sitemap"></span> Visualizar Cronograma</a></li>
                             <li><a href="{{ URL::to('cronograma/create') }}"><span class="fa fa-plus"></span> Novo Cronograma</a></li>
                             <li><a href="{{ URL::to('tarefatipo/list') }}"><span class="fa fa-th-large"></span> Visualizar Tipos Tarefas</a></li>

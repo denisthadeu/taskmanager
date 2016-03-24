@@ -7,4 +7,9 @@ class Clientesprojetos extends Eloquent {
 	{
 		return $this->belongsTo('Clientes');
 	}
+
+	public function tarefas()
+	{
+		return $this->hasMany('Tarefa','clientes_projetos_id');
+	}
 }

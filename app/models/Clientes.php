@@ -8,4 +8,9 @@ class Clientes extends Eloquent {
 	{
 		return $this->hasMany('Clientesprojetos');
 	}
+
+	public function tarefas()
+	{
+		return $this->hasMany('Tarefa','clientes_id');
+	}
 }
