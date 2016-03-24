@@ -31,7 +31,7 @@
                                         <select class="form-control" name="user">
                                             @if(isset($users) && !$users->isEmpty())
                                                 @foreach($users as $user)
-                                                    <option value="{{ $user->id }}" @if(isset($mensagem) && $mensagem->destinatario_id == $user->id) SELECTED @endif>{{ $user->nome }}</option>
+                                                    <option value="{{ $user->id }}" @if(isset($mensagem) && $mensagem->remetente_id == $user->id) SELECTED @endif>{{ $user->nome }}</option>
                                                 @endforeach
                                             @endif
                                         </select>

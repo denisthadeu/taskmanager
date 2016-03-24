@@ -44,14 +44,14 @@ class MensagemController extends BaseController {
 
 	public function getResponder($id)
 	{
-		$mensagem = Mensagem::where('id','=',$id)->get();
-		$users = User::OrderBy('nome')->get();
+		$mensagem = Mensagem::where('id','=',$id)->first();
+		$users = User::OrderBy('nome')->whereNotIn('id',array(Auth::id()))->get();
 		return View::make('mensagem.form',compact('mensagem','users'));
 	}
 
 	public function getCreate()
 	{
-		$users = User::OrderBy('nome')->get();
+		$users = User::OrderBy('nome')->whereNotIn('id',array(Auth::id()))->get();
 		return View::make('mensagem.form',compact('users'));
 	}
 

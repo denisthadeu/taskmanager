@@ -15,6 +15,14 @@
 <!-- END PAGE TITLE -->
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap">
+    <div class="row" style="padding-bottom: 7px;">
+        <div class="col-md-10">
+            &nbsp;
+        </div>
+        <div class="col-md-1">
+            <a href="{{ URL::to('mensagem/responder/'.$mensagem->id) }}"><button type="button" class="btn btn-primary">Responder Mensagem</button></a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
