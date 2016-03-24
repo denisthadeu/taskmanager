@@ -58,6 +58,18 @@
                                     </div>
                                 </div>
                             </p>
+                            @if(isset($mensagem))
+                                <p style="padding-top: 7px;">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <b>Mensagem do {{ $mensagem->remetente->nome }}</b>
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{ $mensagem->mensagem }}
+                                        </div>
+                                    </div>
+                                </p>
+                            @endif
                         </div> 
                     </div>
                 </div>

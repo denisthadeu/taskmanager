@@ -372,6 +372,7 @@
 
         @show
         <script type="text/javascript">
+            $('<audio id="chatAudio"><source src="{{ URL::asset("\/audio\/alert.mp3") }}" type="audio/ogg"></audio>').appendTo('body');
             function get_mensagem(){
                 var feedback = $.ajax({
                     type: "POST",
@@ -389,10 +390,14 @@
                 jQuery.each( obj.resultados, function( i, val ) {
                     $( ".div-group-mensagens").append('<a href="'+val.url+'" class="list-group-item"><div class="list-group-status status-online"></div><img src="{{ URL::asset("'+val.userfoto+'") }}" class="pull-left" alt="John Doe"/><span class="contacts-title">'+val.usernome+'</span><p>'+val.mensagemassunto+'</p></a>' );
                 });
+                // if(obj.total > 0){
+                    // $('#chatAudio')[0].play();
+                // }
             }
             $(document).ready(function() {
                 get_mensagem();
             });
+
         </script>
         <script type="text/javascript" src="{{ URL::asset('js/demo_dashboard.js') }}"></script>
         
