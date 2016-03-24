@@ -66,7 +66,7 @@ class TarefaController extends BaseController {
 		$users = User::OrderBy('nome')->get();
 		$tarefaTipos = Tarefatipo::OrderBy('nome')->get();
 		$clientes = Clientes::with('clientesprojetos')->OrderBy('nome')->get();
-		return View::make('tarefa.form',compact('user','tarefaTipos','clientes'));
+		return View::make('tarefa.form',compact('users','tarefaTipos','clientes'));
 	}
 
 	public function getEdit($id)
@@ -75,13 +75,45 @@ class TarefaController extends BaseController {
 		$users = User::OrderBy('nome')->get();
 		$tarefaTipos = Tarefatipo::OrderBy('nome')->get();
 		$clientes = Clientes::with('clientesprojetos')->OrderBy('nome')->get();
-		return View::make('tarefa.form',compact('tarefa','user','tarefaTipos','clientes'));
+		return View::make('tarefa.form',compact('tarefa','users','tarefaTipos','clientes'));
 	}
 
 	public function getDelete($id)
 	{
 		$tarefa = Tarefa::where('id','=',$id)->delete();
 		return Redirect::to('tarefa/list');
+	}
+
+	public function postSavetarefa()
+	{
+		extract(Input::all());
+		dd('precisa terminar os campos salvos');
+		if(!empty($id)){
+			$tarefa = Tarefa::find($id);
+		} else {
+			$tarefa = new Tarefa();
+		}
+		$cliente_id = 0;
+		if(!empty($projeto)){
+			$projetoObj = Clientesprojetos::find($projeto);
+			$cliente_id = $projetoObj->clientes_id;
+		}
+		$tarefa->nome 					= $nome;
+		$tarefa->descricao 				= $descricao;
+		$tarefa->user_id 				= $responsavel;
+		$tarefa->clientes_id 			= $cliente_id;
+		$tarefa->clientes_projetos_id 	= $projeto;
+		$tarefa->minuto_esforco 		= 
+		$tarefa->hora_esforco 			= 
+		$tarefa->minutos 				= 
+		$tarefa->tarefa_status_id 		= 1;
+		$tarefa->tarefa_tipo_id 		= $tipo;
+		$tarefa->criado_por 			= Auth::id();
+		$tarefa->status 				= 0;
+		$tarefa->data_ini 				= 
+		$tarefa->data_fim 				= 
+		$tarefa->save();
+		return Redirect::to('tarefa/edit/'.$tarefa->id);
 	}
 
 }

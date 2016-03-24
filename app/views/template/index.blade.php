@@ -139,17 +139,17 @@
                     </li> 
                     <!-- END SIGN OUT -->
                     <!-- MESSAGES -->
-                    <li class="xn-icon-button pull-right">
+                    <li class="xn-icon-button pull-right alerta-li-mensagem">
                         <a href="#"><span class="fa fa-comments"></span></a>
-                        <div class="informer informer-danger">4</div>
+                        <div class="informer informer-danger count-mensagens">4</div>
                         <div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><span class="fa fa-comments"></span> Messages</h3>                                
+                                <h3 class="panel-title"><span class="fa fa-comments"></span> Mensagens</h3>                                
                                 <div class="pull-right">
-                                    <span class="label label-danger">4 new</span>
+                                    <span class="label label-danger count-mensagens">4 new</span>
                                 </div>
                             </div>
-                            <div class="panel-body list-group list-group-contacts scroll" style="height: 200px;">
+                            <div class="panel-body list-group list-group-contacts scroll div-group-mensagens" style="height: 200px;">
                                 <a href="#" class="list-group-item">
                                     <div class="list-group-status status-online"></div>
                                     <img src="{{ URL::asset('assets/images/users/user2.jpg') }}" class="pull-left" alt="John Doe"/>
@@ -176,7 +176,7 @@
                                 </a>
                             </div>     
                             <div class="panel-footer text-center">
-                                <a href="pages-messages.html">Show all messages</a>
+                                <a href="{{ URL::to('mensagem/in') }}">Todas as mensagems</a>
                             </div>                            
                         </div>                        
                     </li>
@@ -223,7 +223,7 @@
                                 </a>                                
                             </div>     
                             <div class="panel-footer text-center">
-                                <a href="pages-tasks.html">Show all tasks</a>
+                                <a href="{{ URL::to('tarefa/list') }}">Exibir todas as Tarefas</a>
                             </div>                            
                         </div>                        
                     </li>
@@ -371,6 +371,29 @@
         @section('script')
 
         @show
+        <script type="text/javascript">
+            function get_mensagem(){
+                var feedback = $.ajax({
+                    type: "POST",
+                    url: "{{ URL::to('mensagem/ajaxmensagem') }}",
+                    async: false
+                }).complete(function(){
+                    setTimeout(function(){get_mensagem();}, 10000);
+                }).responseText;
+
+                // $('div.feedback-box').html(feedback);
+                obj = jQuery.parseJSON(feedback);
+                $('.count-mensagens').html(obj.total);
+                $('.div-group-mensagens').html('');
+
+                jQuery.each( obj.resultados, function( i, val ) {
+                    $( ".div-group-mensagens").append('<a href="'+val.url+'" class="list-group-item"><div class="list-group-status status-online"></div><img src="{{ URL::asset("'+val.userfoto+'") }}" class="pull-left" alt="John Doe"/><span class="contacts-title">'+val.usernome+'</span><p>'+val.mensagemassunto+'</p></a>' );
+                });
+            }
+            $(document).ready(function() {
+                get_mensagem();
+            });
+        </script>
         <script type="text/javascript" src="{{ URL::asset('js/demo_dashboard.js') }}"></script>
         
         <!-- END TEMPLATE -->

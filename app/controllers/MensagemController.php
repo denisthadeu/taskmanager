@@ -74,6 +74,21 @@ class MensagemController extends BaseController {
 	{
 		$Mensagem = Mensagem::where('id','=',$id)->delete();
 		return Redirect::to('mensagem/in');
-	}	
+	}
+
+	public function postAjaxmensagem()
+	{
+		$mensagens = Mensagem::where('destinatario_id','=',Auth::id())->whereNotIn('status',array(0))->with('remetente')->OrderBy('created_at','DESC')->get();
+		$response = array();
+		$response["total"] = $mensagens->count();
+		$response["resultados"] = ''; 
+		foreach ($mensagens as $key => $mensagem) {
+			$response["resultados"][$key]["usernome"] = $mensagem->remetente->nome;
+			$response["resultados"][$key]["mensagemassunto"] = $mensagem->assunto;
+			$response["resultados"][$key]["url"] = URL::to('mensagem/mensagem/'.$mensagem->id);
+			$response["resultados"][$key]["userfoto"] = $mensagem->remetente->foto_caminho_completo;
+		}
+		echo json_encode($response);
+	}
 
 }
