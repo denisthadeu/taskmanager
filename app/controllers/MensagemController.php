@@ -37,8 +37,10 @@ class MensagemController extends BaseController {
 	{
 		$mensagem = Mensagem::where('id','=',$id)->with('destinatario')->with('remetente')->first();
 		$mensagemAtualiza = Mensagem::find($id);
-		$mensagemAtualiza->status = 0;
-		$mensagemAtualiza->save();
+		if($mensagemAtualiza->destinatario_id == Auth::id()){
+			$mensagemAtualiza->status = 0;
+			$mensagemAtualiza->save();
+		}
 		return View::make('mensagem.mensagem',compact('mensagem'));
 	}
 
@@ -81,12 +83,18 @@ class MensagemController extends BaseController {
 		$mensagens = Mensagem::where('destinatario_id','=',Auth::id())->whereNotIn('status',array(0))->with('remetente')->OrderBy('created_at','DESC')->get();
 		$response = array();
 		$response["total"] = $mensagens->count();
-		$response["resultados"] = ''; 
+		$response["resultados"] = '';
+		$response["alerta"] = false;
 		foreach ($mensagens as $key => $mensagem) {
 			$response["resultados"][$key]["usernome"] = $mensagem->remetente->nome;
 			$response["resultados"][$key]["mensagemassunto"] = $mensagem->assunto;
 			$response["resultados"][$key]["url"] = URL::to('mensagem/mensagem/'.$mensagem->id);
 			$response["resultados"][$key]["userfoto"] = $mensagem->remetente->foto_caminho_completo;
+			if($mensagem->status == 2){
+				$mensagem->status = 1;
+				$mensagem->save();
+				$response["alerta"] = true;
+			}
 		}
 		echo json_encode($response);
 	}

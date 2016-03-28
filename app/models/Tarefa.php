@@ -18,7 +18,7 @@ class Tarefa extends Eloquent {
 		return $this->belongsTo('Clientes','clientes_id');
 	}
 
-	public function status()
+	public function statustarefa()
 	{
 		return $this->belongsTo('Tarefastatus','tarefa_status_id');
 	}

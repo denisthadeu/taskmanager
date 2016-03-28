@@ -140,6 +140,24 @@
 	    return date('Y-m-d H:i:s');
 	  }
 
+	  public static function dataAtualDBPlusMinutes($minutes)
+	  {
+	  	$hora = date("H", strtotime("+".$minutes." minutes"));
+		if($hora >= 18){
+			$minutes = $minutes + (60 * 15);
+		} 
+		return date("Y-m-d H:i:s", strtotime("+".$minutes." minutes"));
+	  }
+
+	  public static function dataAtualDBPlusHours($hours)
+	  {
+	  	$hora = date("H", strtotime("+".$hours." hours"));
+		if($hora >= 18){
+			$hours = $hours + (60 * 15);
+		} 
+		return date("Y-m-d H:i:s", strtotime("+".$hours." hours"));
+	  }
+
 	  public static function leadingZero($int)
 	  {
 	    return str_pad($int, 2, '0', STR_PAD_LEFT);;

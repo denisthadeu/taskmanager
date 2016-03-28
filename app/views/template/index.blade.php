@@ -141,15 +141,15 @@
                     <!-- MESSAGES -->
                     <li class="xn-icon-button pull-right alerta-li-mensagem">
                         <a href="#"><span class="fa fa-comments"></span></a>
-                        <div class="informer informer-danger count-mensagens">4</div>
+                        <div class="informer informer-danger count-mensagens">0</div>
                         <div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><span class="fa fa-comments"></span> Mensagens</h3>                                
                                 <div class="pull-right">
-                                    <span class="label label-danger count-mensagens">4 new</span>
+                                    <span class="label label-danger count-mensagens">0 new</span>
                                 </div>
                             </div>
-                            <div class="panel-body list-group list-group-contacts scroll div-group-mensagens" style="height: 200px;">
+                            <div class="panel-body list-group list-group-contacts scroll div-group-mensagens">
                                 <a href="#" class="list-group-item">
                                     <div class="list-group-status status-online"></div>
                                     <img src="{{ URL::asset('assets/images/users/user2.jpg') }}" class="pull-left" alt="John Doe"/>
@@ -390,9 +390,9 @@
                 jQuery.each( obj.resultados, function( i, val ) {
                     $( ".div-group-mensagens").append('<a href="'+val.url+'" class="list-group-item"><div class="list-group-status status-online"></div><img src="{{ URL::asset("'+val.userfoto+'") }}" class="pull-left" alt="John Doe"/><span class="contacts-title">'+val.usernome+'</span><p>'+val.mensagemassunto+'</p></a>' );
                 });
-                // if(obj.total > 0){
-                    // $('#chatAudio')[0].play();
-                // }
+                if(obj.alerta){
+                    $('#chatAudio')[0].play();
+                }
             }
             $(document).ready(function() {
                 get_mensagem();

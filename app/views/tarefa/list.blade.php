@@ -57,19 +57,21 @@
                             <tbody>
                                 @if(isset($minhasTarefas) && !$minhasTarefas->isEmpty())
                                     @foreach($minhasTarefas as $minhaTarefa)
-                                        <tr>
-                                            <td>{{ $minhaTarefa->id }}</td>
-                                            <td>{{ $minhaTarefa->nome }}</td>
-                                            <td>{{ $minhaTarefa->cliente->nome }} / {{ $minhaTarefa->projeto->nome }}</td>
-                                            <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
-                                            <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
-                                            <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
-                                            <td>{{ $minhaTarefa->status->nome }}</td>
-                                            <td>
-                                                <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                                <a href="{{ URL::to('tarefa /delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
-                                            </td>
-                                        </tr>
+                                        @if($minhaTarefa->tarefa_status_id != 6)
+                                            <tr>
+                                                <td>{{ $minhaTarefa->id }}</td>
+                                                <td>{{ $minhaTarefa->nome }}</td>
+                                                <td>{{ $minhaTarefa->cliente->nome }} / {{ $minhaTarefa->projeto->nome }}</td>
+                                                <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
+                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
+                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
+                                                <td>{{ $minhaTarefa->statustarefa->nome }}</td>
+                                                <td>
+                                                    <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa /delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 @endif
                             </tbody>
@@ -93,20 +95,22 @@
                             <tbody>
                                 @if(isset($tarefasCriadas) && !$tarefasCriadas->isEmpty())
                                     @foreach($tarefasCriadas as $tarefaCriada)
-                                        <tr>
-                                            <td>{{ $tarefaCriada->id }}</td>
-                                            <td>{{ $tarefaCriada->nome }}</td>
-                                            <td>{{ $tarefaCriada->cliente->nome }} / {{ $tarefaCriada->projeto->nome }}</td>
-                                            <td>{{ $tarefaCriada->responsavel->nome }}</td>
-                                            <td>{{ Formatter::leadingZero($tarefaCriada->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriada->minuto_esforco) }}</td>
-                                            <td>{{ Formatter::dateDbToString($tarefaCriada->data_ini) }}</td>
-                                            <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
-                                            <td>{{ $tarefaCriada->status->nome }}</td>
-                                            <td>
-                                                <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                                <a href="{{ URL::to('tarefa /delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
-                                            </td>
-                                        </tr>
+                                        @if($tarefaCriada->tarefa_status_id != 6)
+                                            <tr>
+                                                <td>{{ $tarefaCriada->id }}</td>
+                                                <td>{{ $tarefaCriada->nome }}</td>
+                                                <td>{{ $tarefaCriada->cliente->nome }} / {{ $tarefaCriada->projeto->nome }}</td>
+                                                <td>{{ $tarefaCriada->responsavel->nome }}</td>
+                                                <td>{{ Formatter::leadingZero($tarefaCriada->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriada->minuto_esforco) }}</td>
+                                                <td>{{ Formatter::dateDbToString($tarefaCriada->data_ini) }}</td>
+                                                <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
+                                                <td>{{ $tarefaCriada->statustarefa->nome }}</td>
+                                                <td>
+                                                    <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa /delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 @endif
                             </tbody>
@@ -127,21 +131,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(isset($minhasTarefasEntregues) && !$minhasTarefasEntregues->isEmpty())
-                                    @foreach($minhasTarefasEntregues as $minhaTarefaEntregue)
-                                        <tr>
-                                            <td>{{ $minhaTarefaEntregue->id }}</td>
-                                            <td>{{ $minhaTarefaEntregue->nome }}</td>
-                                            <td>{{ $minhaTarefaEntregue->cliente->nome }} / {{ $minhaTarefaEntregue->projeto->nome }}</td>
-                                            <td>{{ Formatter::leadingZero($minhaTarefaEntregue->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefaEntregue->minuto_esforco) }}</td>
-                                            <td>{{ Formatter::dateDbToString($minhaTarefaEntregue->data_ini) }}</td>
-                                            <td>{{ Formatter::dateDbToString($minhaTarefaEntregue->data_fim) }}</td>
-                                            <td>{{ $minhaTarefaEntregue->status->nome }}</td>
-                                            <td>
-                                                <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefaEntregue->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                                <a href="{{ URL::to('tarefa /delete') }}/{{$minhaTarefaEntregue->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
-                                            </td>
-                                        </tr>
+                                @if(isset($minhasTarefas) && !$minhasTarefas->isEmpty())
+                                    @foreach($minhasTarefas as $minhaTarefa)
+                                        @if($minhaTarefa->tarefa_status_id == 6)
+                                            <tr>
+                                                <td>{{ $minhaTarefa->id }}</td>
+                                                <td>{{ $minhaTarefa->nome }}</td>
+                                                <td>{{ $minhaTarefa->cliente->nome }} / {{ $minhaTarefa->projeto->nome }}</td>
+                                                <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
+                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
+                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
+                                                <td>{{ $minhaTarefa->statustarefa->nome }}</td>
+                                                <td>
+                                                    <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa /delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 @endif
                             </tbody>
@@ -163,22 +169,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(isset($tarefasCriadasEntregues) && !$tarefasCriadasEntregues->isEmpty())
-                                    @foreach($tarefasCriadasEntregues as $tarefaCriadaEntregue)
-                                        <tr>
-                                            <td>{{ $tarefaCriadaEntregue->id }}</td>
-                                            <td>{{ $tarefaCriadaEntregue->nome }}</td>
-                                            <td>{{ $tarefaCriadaEntregue->cliente->nome }} / {{ $tarefaCriadaEntregue->projeto->nome }}</td>
-                                            <td>{{ $tarefaCriadaEntregue->responsavel->nome }}</td>
-                                            <td>{{ Formatter::leadingZero($tarefaCriadaEntregue->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriadaEntregue->minuto_esforco) }}</td>
-                                            <td>{{ Formatter::dateDbToString($tarefaCriadaEntregue->data_ini) }}</td>
-                                            <td>{{ Formatter::dateDbToString($tarefaCriadaEntregue->data_fim) }}</td>
-                                            <td>{{ $tarefaCriadaEntregue->status->nome }}</td>
-                                            <td>
-                                                <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriadaEntregue->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                                <a href="{{ URL::to('tarefa /delete') }}/{{$tarefaCriadaEntregue->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
-                                            </td>
-                                        </tr>
+                                @if(isset($tarefasCriadas) && !$tarefasCriadas->isEmpty())
+                                    @foreach($tarefasCriadas as $tarefaCriada)
+                                        @if($tarefaCriada->tarefa_status_id == 6)
+                                            <tr>
+                                                <td>{{ $tarefaCriada->id }}</td>
+                                                <td>{{ $tarefaCriada->nome }}</td>
+                                                <td>{{ $tarefaCriada->cliente->nome }} / {{ $tarefaCriada->projeto->nome }}</td>
+                                                <td>{{ $tarefaCriada->responsavel->nome }}</td>
+                                                <td>{{ Formatter::leadingZero($tarefaCriada->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriada->minuto_esforco) }}</td>
+                                                <td>{{ Formatter::dateDbToString($tarefaCriada->data_ini) }}</td>
+                                                <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
+                                                <td>{{ $tarefaCriada->statustarefa->nome }}</td>
+                                                <td>
+                                                    <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa /delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 @endif
                             </tbody>
