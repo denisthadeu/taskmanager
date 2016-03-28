@@ -129,11 +129,15 @@
                                     </div>
                                 </div>
                             </p>
+                            <p id="p-upload-files"></p>
                             <p>
                                 <div class="row">
-                                	<div class="col-md-10">
+                                	<div class="col-md-8">
                                 		&nbsp;
                                 	</div>
+                                    <div class="col-md-2">
+                                        <input type="button" id="upload-button" class="btn btn-info btn-lg active" value="Adicionar upload" />
+                                    </div>
                                     <div class="col-md-1">
                                     	<input type="Submit" id="create-category" class="btn btn-primary btn-lg active" value="@if(isset($tarefa)) Atualizar @else Cadastrar @endif" />
                                     </div>
@@ -185,6 +189,12 @@
             var cronograma = $(this).val();
             $(".cronograma-descricao-"+cronograma).show();
             $(".field-select-user-"+cronograma).prop('required',true);
+        });
+
+        $("#upload-button").click(function(){
+            // var html = $("#p-upload-files").html();
+            html = '<p><input type="file" name="files[]" class="form-control" /></p>';
+            $("#p-upload-files").append(html);
         });
     });
 </script>

@@ -107,9 +107,27 @@ class TarefaController extends BaseController {
 			$tarefa->nome = "#".$tarefa->id." - ".$tarefa->nome;
 			$tarefa->save();
 			$idTarefa = $tarefa->id;
+
+			if(Input::hasFile('files')){
+				foreach (Input::file('files') as $key => $img) {
+					if(!empty($img)){
+						$imginfo = $this->uploadImage($img, 'tarefa/'.$tarefa->id);
+						if($imginfo){
+							$tarefaanexo = new Tarefaanexo();
+							$tarefaanexo->tarefa_id = $tarefa->id;
+					        $tarefaanexo->caminho = $imginfo['destinationPath'];
+					        $tarefaanexo->nome    = $imginfo['filename'];
+					        $tarefaanexo->caminho_completo = $imginfo['destinationPath'].$imginfo['filename'];
+					        $tarefaanexo->save();
+						}
+					}
+				}
+			}
 		} elseif($opcao == "cronograma"){
 			$cronogramaObj = Cronograma::find($cronograma);
 			$acumuladorMinutos = 0;
+			$fezUpload = false;
+			$filesArr = array();
 			if($cronogramaObj->descricao->count() > 0){
 				foreach ($cronogramaObj->descricao as $key => $descricaoCronograma) {
 
@@ -150,6 +168,35 @@ class TarefaController extends BaseController {
 					$tarefaAnterior = $tarefa->id;
 					if(empty($idTarefa)){
 						$idTarefa = $tarefa->id;
+					}
+
+					if(!$fezUpload && Input::hasFile('files')){
+						$fezUpload = true;
+						foreach (Input::file('files') as $key => $img) {
+							if(!empty($img)){
+								$imginfo = $this->uploadImage($img, 'tarefa/'.$tarefa->id);
+								if($imginfo){
+									$filesArr[$key]["caminho"] = $imginfo['destinationPath'];
+									$filesArr[$key]["nome"] = $imginfo['filename'];
+									$filesArr[$key]["caminho_completo"] = $imginfo['destinationPath'].$imginfo['filename'];
+									$tarefaanexo = new Tarefaanexo();
+									$tarefaanexo->tarefa_id = $tarefa->id;
+							        $tarefaanexo->caminho = $imginfo['destinationPath'];
+							        $tarefaanexo->nome    = $imginfo['filename'];
+							        $tarefaanexo->caminho_completo = $imginfo['destinationPath'].$imginfo['filename'];
+							        $tarefaanexo->save();
+								}
+							}
+						}
+					} elseif (!empty($filesArr)) {
+						foreach ($filesArr as $key => $imginfo) {
+							$tarefaanexo = new Tarefaanexo();
+							$tarefaanexo->tarefa_id = $tarefa->id;
+					        $tarefaanexo->caminho = $imginfo['caminho'];
+					        $tarefaanexo->nome    = $imginfo['nome'];
+					        $tarefaanexo->caminho_completo = $imginfo['caminho_completo'];
+					        $tarefaanexo->save();
+						}
 					}
 
 				}

@@ -33,5 +33,10 @@ class Tarefa extends Eloquent {
 		return $this->belongsTo('User','criado_por');
 	}
 
+	public function anexos()
+	{
+		return $this->hasMany('Tarefaanexo','tarefa_id');
+	}
+
 
 }
