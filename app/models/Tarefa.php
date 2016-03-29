@@ -43,5 +43,10 @@ class Tarefa extends Eloquent {
 		return $this->hasMany('Tarefacomentario','tarefa_id');
 	}
 
+	public function usertempo()
+	{
+		return $this->hasMany('Tarefausertempo','tarefa_id');
+	}
+
 
 }

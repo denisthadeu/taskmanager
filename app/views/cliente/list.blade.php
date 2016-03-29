@@ -36,7 +36,16 @@
 		                    <tr>
 		                        <td>{{ $cliente->id }}</td>
 		                        <td>{{ $cliente->nome }}</td>
-		                        <td>{{ count($cliente->clientesprojetos) }}</td>
+		                        <td data-toggle="tooltip" data-placement="bottom" title="
+                                    @if($cliente->clientesprojetos->count())
+                                        @foreach($cliente->clientesprojetos as $key => $projetos)
+                                            @if($key > 0)
+                                                , 
+                                            @endif
+                                            {{ $projetos->nome }}
+                                        @endforeach
+                                    @endif
+                                ">{{ $cliente->clientesprojetos->count() }}</td>
 		                        <td>
 		                        	<a href="{{ URL::to('cliente/edit') }}/{{$cliente->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
                                     <a href="{{ URL::to('cliente/delete') }}/{{$cliente->id}}" class="remover-cliente"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>

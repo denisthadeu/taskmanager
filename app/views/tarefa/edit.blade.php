@@ -24,18 +24,9 @@
                             <p>
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <input name="nome" placeholder="Título da Tarefa" class="form-control" value="{{ $tarefa->nome or '' }}" />
-                                    </div>
-                                    <div class="col-md-4">
-                                    	@if(isset($tarefa))
-                                        	fazer as opções do tempo
-                                        @endif
-                                    </div>
-                                </div>
-                            </p>
-                            <p>
-                                <div class="row">
-                                    <div class="col-md-8">
+                                        <p>
+                                            <input name="nome" placeholder="Título da Tarefa" class="form-control" value="{{ $tarefa->nome or '' }}" />
+                                        </p>
                                         <p>
                                         	<select class="form-control" required name="responsavel" id="responsavel">
                                         		<option value="">Responsável</option>
@@ -74,9 +65,59 @@
                                         </p>
                                     </div>
                                     <div class="col-md-4">
-                                        @if(isset($tarefa))
-                                        	mais dados da tarefa
-                                        @endif
+                                        <div class="panel-heading ui-draggable-handle">
+                                            <p>
+                                                <div class="input-group">
+                                                    @if(empty($tarefausertempo->data_fim) && !empty($tarefausertempo))
+                                                        <span class="input-group-addon play" data-tipo="pause" style="cursor:pointer;"><span class="fa fa-play" style="display:none;"></span><span class="fa fa-pause"></span></span>
+                                                    @else
+                                                        <span class="input-group-addon play" data-tipo="play" style="cursor:pointer;"><span class="fa fa-play"></span><span class="fa fa-pause" style="display:none;"></span></span>
+                                                    @endif
+                                                    <select class="form-control">
+                                                        @foreach($tarefaStatus AS $status)
+                                                            <option value="{{ $status->id }}" @if($status->id == $tarefa->tarefa_status_id) SELECTED @endif>{{ $status->nome }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </p>
+                                            <p>
+                                                Esforço: 
+                                                <span id="esforco-field">
+                                                    <span>{{ Formatter::leadingZero($tarefa->hora_esforco) }}:{{ Formatter::leadingZero($tarefa->minuto_esforco) }}</span>
+                                                    <span style="display:none;">
+                                                        <select name="hora">
+                                                            @for ($i = 0; $i <= 120; $i++)
+                                                                <option value="{{ Formatter::leadingZero($i) }}" @if(isset($tarefa) && $tarefa->hora_esforco == $i) SELECTED @endif >{{ Formatter::leadingZero($i) }}</option>
+                                                            @endfor
+                                                        </select>
+                                                        <select name="minuto">
+                                                            @for ($i = 0; $i <= 4; $i++)
+                                                                {{--*/ $count = Formatter::leadingZero(($i * 15)) /*--}} 
+                                                                <option value="{{ $count }}" @if(isset($tarefa) && $tarefa->minuto_esforco == ($i * 15)) SELECTED @endif >{{ $count }}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </span>
+                                                </span>
+                                            </p>
+                                            <p>
+                                                Data Início: 
+                                                <span id="dt-ini-field">
+                                                    <span>{{ $tarefa->data_ini }}</span>
+                                                    <span style="display:none;">
+                                                        <input name="dt_ini" />
+                                                    </span>
+                                                </span>
+                                            </p>
+                                            <p>
+                                                Data Entrega: 
+                                                <span id="dt-fim-field">
+                                                    <span>{{ $tarefa->data_fim }}</span>
+                                                    <span style="display:none;">
+                                                        <input name="dt_fim" />
+                                                    </span>
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </p>
@@ -186,7 +227,7 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" style="display:none;" name="id" value="{{ $tarefa->id or '0' }}" />
+        <input type="hidden" style="display:none;" name="id" id="id" value="{{ $tarefa->id or '0' }}" />
     </div>
 </form>
 @stop
@@ -201,6 +242,29 @@
         $("#upload-button-comentario").click(function(){
             html = '<p><input type="file" name="files[]" class="form-control" /></p>';
             $("#p-upload-files-comentario").append(html);
+        });
+
+        $('.play').click(function(){
+            $(this).children().toggle();
+            var tipoVar = $(this).data( "tipo" );
+            var idVar = $("#id").val();
+            if(tipoVar == "play"){
+                $(this).data( "tipo" ,"pause");
+                var feedback = $.ajax({
+                    type: "POST",
+                    url: "{{ URL::to('tarefa/play') }}",
+                    async: false,
+                    data: { tipo: tipoVar, id: idVar }
+                }).responseText;
+            } else {
+                $(this).data( "tipo" ,"play");
+                var feedback = $.ajax({
+                    type: "POST",
+                    url: "{{ URL::to('tarefa/pause') }}",
+                    async: false,
+                    data: { tipo: tipoVar, id: idVar }
+                }).responseText;
+            }
         });
     });
 </script>

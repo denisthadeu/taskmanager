@@ -163,6 +163,16 @@
 	    return str_pad($int, 2, '0', STR_PAD_LEFT);;
 	  }
 
+	  public static function minutesBetweenDates($dt_ini,$dt_fim)
+	  {
+	  	// $dt_ini = date('Y-m-d H:i:s');
+	 //    $to_time = strtotime($dt_ini);
+		// $from_time = strtotime($dt_fim);
+		return  round(abs(strtotime($dt_ini) - strtotime($dt_fim)) / 60,2);
+	  }
+
+	  
+
 
 	}
 
