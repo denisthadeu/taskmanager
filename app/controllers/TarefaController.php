@@ -57,7 +57,11 @@ class TarefaController extends BaseController {
 
 	public function getEdit($id)
 	{
-		$tarefa = Tarefa::find($id);
+		$tarefa = Tarefa::where('id','=',$id)->with('anexos')->with(['comentarios' => function($query)
+			{
+			    $query->orderBy('id', 'desc')->with('anexos')->with('user');
+			}])
+			->first();
 		$users = User::OrderBy('nome')->get();
 		$tarefaTipos = Tarefatipo::OrderBy('nome')->get();
 		$clientes = Clientes::with('clientesprojetos')->OrderBy('nome')->get();
@@ -210,4 +214,66 @@ class TarefaController extends BaseController {
 		return Redirect::to('tarefa/edit/'.$idTarefa);
 	}
 
+	public function postEdittarefa()
+	{
+		extract(Input::all());
+		// dd(Input::all());
+
+		$tarefa = Tarefa::find($id);
+		$cliente_id = 0;
+		if(!empty($projeto)){
+			$projetoObj = Clientesprojetos::find($projeto);
+			$cliente_id = $projetoObj->clientes_id;
+		}
+		$tarefa->nome 					= $nome;
+		$tarefa->descricao 				= $descricao;
+		$tarefa->user_id 				= $responsavel;
+		$tarefa->clientes_id 			= $cliente_id;
+		$tarefa->clientes_projetos_id 	= $projeto;
+		$tarefa->tarefa_tipo_id 		= $tipo;
+		$tarefa->save();
+
+		if(Input::hasFile('files')){
+			foreach (Input::file('files') as $key => $img) {
+				if(!empty($img)){
+					$imginfo = $this->uploadImage($img, 'tarefa/'.$tarefa->id);
+					if($imginfo){
+						$tarefaanexo = new Tarefaanexo();
+						$tarefaanexo->tarefa_id = $tarefa->id;
+				        $tarefaanexo->caminho = $imginfo['destinationPath'];
+				        $tarefaanexo->nome    = $imginfo['filename'];
+				        $tarefaanexo->caminho_completo = $imginfo['destinationPath'].$imginfo['filename'];
+				        $tarefaanexo->save();
+					}
+				}
+			}
+		}
+		return Redirect::to('tarefa/edit/'.$tarefa->id);
+	}
+
+	public function postCreatemensagem()
+	{
+		extract(Input::all());
+		$comentario = new Tarefacomentario();
+		$comentario->tarefa_id = $id;
+		$comentario->user_id = Auth::id();
+		$comentario->descricao = $descricao;
+		$comentario->save();
+		if(Input::hasFile('files')){
+			foreach (Input::file('files') as $key => $img) {
+				if(!empty($img)){
+					$imginfo = $this->uploadImage($img, 'tarefa/'.$id.'/comentario');
+					if($imginfo){
+						$tarefaanexo = new Tarefacomentarioanexo();
+						$tarefaanexo->tarefa_comentario_id = $comentario->id;
+				        $tarefaanexo->caminho = $imginfo['destinationPath'];
+				        $tarefaanexo->nome    = $imginfo['filename'];
+				        $tarefaanexo->caminho_completo = $imginfo['destinationPath'].$imginfo['filename'];
+				        $tarefaanexo->save();
+					}
+				}
+			}
+		}
+		return Redirect::to('tarefa/edit/'.$id);
+	}
 }

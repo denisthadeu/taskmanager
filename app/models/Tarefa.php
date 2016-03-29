@@ -38,5 +38,10 @@ class Tarefa extends Eloquent {
 		return $this->hasMany('Tarefaanexo','tarefa_id');
 	}
 
+	public function comentarios()
+	{
+		return $this->hasMany('Tarefacomentario','tarefa_id');
+	}
+
 
 }
