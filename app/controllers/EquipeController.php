@@ -19,7 +19,10 @@ class EquipeController extends BaseController {
 
 	public function getEdit($id)
 	{
-		$equipe = Equipe::find($id);//->with('equipesprojetos');
+		$equipe = Equipe::where('id','=',$id)->with(['equipeUser' => function($query)
+			{
+			    $query->with('user');
+			}])->first();//->with('equipesprojetos');
 		$users = User::OrderBy('nome')->get();
 		return View::make('equipe.form',compact('equipe','users'));
 	}	
@@ -66,7 +69,10 @@ class EquipeController extends BaseController {
 
 	public function getList()
 	{
-		$equipes = Equipe::OrderBy('nome')->with('Equipeuser')->with('responsavel')->get();
+		$equipes = Equipe::OrderBy('nome')->with(['equipeUser' => function($query)
+			{
+			    $query->with('user');
+			}])->with('responsavel')->get();
 		return View::make('equipe.list',compact('equipes'));
 	}
 }

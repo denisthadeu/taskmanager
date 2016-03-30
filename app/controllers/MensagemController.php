@@ -27,20 +27,20 @@ class MensagemController extends BaseController {
 	public function getIn()
 	{
 		$titulo = "Caixa de Entrada";
-		$mensagens = Mensagem::where('destinatario_id','=',Auth::id())->OrderBy('created_at','DESC')->get();
+		$mensagens = Mensagem::where('destinatario_id','=',Auth::id())->with('remetente')->OrderBy('created_at','DESC')->get();
 		return View::make('mensagem.list',compact('mensagens','titulo'));
 	}
 
 	public function getOut()
 	{
 		$titulo = "Caixa de Saída";
-		$mensagens = Mensagem::where('remetente_id','=',Auth::id())->OrderBy('created_at','DESC')->get();
+		$mensagens = Mensagem::where('remetente_id','=',Auth::id())->with('destinatario')->OrderBy('created_at','DESC')->get();
 		return View::make('mensagem.list',compact('mensagens','titulo'));
 	}
 
 	public function getMensagem($id)
 	{
-		$mensagem = Mensagem::where('id','=',$id)->with('destinatario')->with('remetente')->first();
+		$mensagem = Mensagem::where('id','=',$id)->with('destinatario')->first();
 		$mensagemAtualiza = Mensagem::find($id);
 		if($mensagemAtualiza->destinatario_id == Auth::id()){
 			$mensagemAtualiza->status = 0;

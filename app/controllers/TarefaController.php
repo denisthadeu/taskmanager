@@ -63,17 +63,24 @@ class TarefaController extends BaseController {
 	public function getCreate()
 	{
 		$users = User::OrderBy('nome')->get();
+		$optionUsers = null;
+		foreach($users AS $user){
+			$optionUsers = '<option value="'.$user["id"].'">'.$user["nome"].'</option>';
+		}
 		$tarefaTipos = Tarefatipo::OrderBy('nome')->get();
 		$clientes = Clientes::with('clientesprojetos')->OrderBy('nome')->get();
 		$cronogramas = Cronograma::with('descricao')->OrderBy('nome')->get();
-		return View::make('tarefa.form',compact('users','tarefaTipos','clientes','cronogramas'));
+		return View::make('tarefa.form',compact('users','tarefaTipos','clientes','cronogramas','optionUsers'));
 	}
 
 	public function getEdit($id)
 	{
-		$tarefa = Tarefa::where('id','=',$id)->with('anexos')->with('usertempo')->with(['comentarios' => function($query)
+		$tarefa = Tarefa::where('id','=',$id)->with('anexos')->with(['comentarios' => function($query)
 			{
 			    $query->orderBy('id', 'desc')->with('anexos')->with('user');
+			}])->with(['usertempo' => function($query)
+			{
+			    $query->with('user');
 			}])
 			->first();
 		$users = User::OrderBy('nome')->get();

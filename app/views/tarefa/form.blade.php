@@ -39,11 +39,7 @@
                                         <p id="p-responsavel">
                                         	<select class="form-control" required name="responsavel" id="responsavel">
                                         		<option value="">Responsável</option>
-                                        		@if(isset($users) && !$users->isEmpty())
-                                        			@foreach($users AS $user)
-                                        				<option value="{{ $user->id }}" @if(isset($tarefa) && $tarefa->user_id == $user->id) SELECTED @endif >{{ $user->nome }}</option>
-                                        			@endforeach
-                                        		@endif
+                                        		{{ $optionUsers }}
                                         	</select>
                                         </p>
                                         <p>
@@ -104,11 +100,7 @@
                                                                         <td>
                                                                             <select class="form-control field-select-user-{{$cronograma->id}} all-field-select-user" name="responsavelCronograma[{{$cronograma->id}}][{{$descricao->id}}]" >
                                                                                 <option value="">Responsável</option>
-                                                                                @if(isset($users) && !$users->isEmpty())
-                                                                                    @foreach($users AS $user)
-                                                                                        <option value="{{ $user->id }}" @if(isset($tarefa) && $tarefa->user_id == $user->id) SELECTED @endif >{{ $user->nome }}</option>
-                                                                                    @endforeach
-                                                                                @endif
+                                                                                {{ $optionUsers }}
                                                                             </select>
                                                                         </td>
                                                                     </tr>
