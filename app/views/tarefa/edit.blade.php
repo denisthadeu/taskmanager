@@ -169,73 +169,135 @@
     <input type="hidden" style="display:none;" name="id" value="{{ $tarefa->id or '0' }}" />
 </form>
 
-<form action="{{URL::to("tarefa/createmensagem")}}" method="post" enctype="multipart/form-data">
-    <div class="page-content-wrap">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="tocify-content">
-                            <p>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h3><span class="fa fa-comments"></span> Comentários ({{$tarefa->comentarios->count()}})</h3>
-                                    </div>
-                                </div>
-                            </p>
-                            <p>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <textarea name="descricao" placeholder="Seu Comentário" class="form-control" rows="7"></textarea>
-                                    </div>
-                                </div>
-                                <p id="p-upload-files-comentario" style="padding-top: 7px;"></p>
-                                <div class="row" style="padding-top: 7px;">
-                                    <div class="col-md-8">
-                                        &nbsp;
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="button" id="upload-button-comentario" class="btn btn-info btn-lg active" value="Adicionar upload" />
-                                    </div>
-                                    <div class="col-md-1">
-                                        <input type="Submit" id="create-category" class="btn btn-primary btn-lg active" value="Novo Comentário" />
-                                    </div>
-                                </div>
-                            </p>
-                            @if($tarefa->comentarios->count() > 0)
-                                <div class="messages messages-img" style="padding-top: 15px;">
-                                    @foreach($tarefa->comentarios AS $key => $comentario)
-                                        <p>
-                                            <div class="item item-visible @if( $key % 2 ) in @endif">
-                                                <div class="image">
-                                                    <img src="{{ URL::asset($comentario->user->foto_caminho_completo) }}" alt="Dmitry Ivaniuk">
-                                                </div>
-                                                <div class="text">
-                                                    <div class="heading">
-                                                        <b>{{ $comentario->user->nome }}</b>
-                                                        <span class="date">{{ Formatter::getDataHoraFormatada($comentario->created_at) }}</span>
+<div class="col-md-12">
+    <div class="panel panel-default tabs">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a href="#tab8" data-toggle="tab" aria-expanded="true"><span class="fa fa-comments"></span> Comentários</a></li>
+            <li class=""><a href="#tab9" data-toggle="tab" aria-expanded="false"><span class="glyphicon glyphicon-time"></span> Histórico de tempo</a></li>
+        </ul>
+        <div class="panel-body tab-content">
+            <div class="tab-pane active" id="tab8">
+                <form action="{{URL::to("tarefa/createmensagem")}}" method="post" enctype="multipart/form-data">
+                    <div class="page-content-wrap">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="tocify-content">
+                                            <p>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3><span class="fa fa-comments"></span> Comentários ({{$tarefa->comentarios->count()}})</h3>
                                                     </div>
-                                                    {{ $comentario->descricao }}
-                                                    @if($comentario->anexos->count() > 0)
-                                                        <hr>
-                                                        @foreach($comentario->anexos AS $comentarioAnexo)
-                                                            <p><a href="{{ URL::asset($comentarioAnexo->caminho_completo) }}" target="_blank">{{ $comentarioAnexo->nome }}</a></p>
-                                                        @endforeach
-                                                    @endif
+                                                </div>
+                                            </p>
+                                            <p>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <textarea name="descricao" placeholder="Seu Comentário" class="form-control" rows="7"></textarea>
+                                                    </div>
+                                                </div>
+                                                <p id="p-upload-files-comentario" style="padding-top: 7px;"></p>
+                                                <div class="row" style="padding-top: 7px;">
+                                                    <div class="col-md-8">
+                                                        &nbsp;
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="button" id="upload-button-comentario" class="btn btn-info btn-lg active" value="Adicionar upload" />
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <input type="Submit" id="create-category" class="btn btn-primary btn-lg active" value="Novo Comentário" />
+                                                    </div>
+                                                </div>
+                                            </p>
+                                            @if($tarefa->comentarios->count() > 0)
+                                                <div class="messages messages-img" style="padding-top: 15px;">
+                                                    @foreach($tarefa->comentarios AS $key => $comentario)
+                                                        <p>
+                                                            <div class="item item-visible @if( $key % 2 ) in @endif">
+                                                                <div class="image">
+                                                                    <img src="{{ URL::asset($comentario->user->foto_caminho_completo) }}" alt="Dmitry Ivaniuk">
+                                                                </div>
+                                                                <div class="text">
+                                                                    <div class="heading">
+                                                                        <b>{{ $comentario->user->nome }}</b>
+                                                                        <span class="date">{{ Formatter::getDataHoraFormatada($comentario->created_at) }}</span>
+                                                                    </div>
+                                                                    {{ $comentario->descricao }}
+                                                                    @if($comentario->anexos->count() > 0)
+                                                                        <hr>
+                                                                        @foreach($comentario->anexos AS $comentarioAnexo)
+                                                                            <p><a href="{{ URL::asset($comentarioAnexo->caminho_completo) }}" target="_blank">{{ $comentarioAnexo->nome }}</a></p>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </p>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" style="display:none;" name="id" id="id" value="{{ $tarefa->id or '0' }}" />
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" id="tab9">
+                <div class="page-content-wrap">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="tocify-content">
+                                        <p>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h3><span class="glyphicon glyphicon-time"></span> Histórico de tempo</h3>
                                                 </div>
                                             </div>
                                         </p>
-                                    @endforeach
+                                        <p>
+                                            <table class="table table-bordered  table-hover" style="background-color: #fff">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Usuário</th>
+                                                        <th>Data Início</th>
+                                                        <th>Data Fim</th>
+                                                        <th>Tempo Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if($tarefa->usertempo->count() > 0)
+                                                        @foreach($tarefa->usertempo AS $tempo)
+                                                            <tr>
+                                                                <td>{{ $tempo->user->nome }}</td>
+                                                                <td>{{ Formatter::getDataHoraFormatada($tempo->data_ini) }}</td>
+                                                                <td>{{ Formatter::getDataHoraFormatada($tempo->data_fim) }}</td>
+                                                                <td style="text-align: center;">{{ Formatter::convertToHoursMins(Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim)) }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                    <tr>
+                                                        <th colspan="3">Total</th>
+                                                        <th class="tempo-duracao" style="text-align: center;"></th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </p>
+                                    </div>
                                 </div>
-                            @endif
-                        </div> 
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <input type="hidden" style="display:none;" name="id" id="id" value="{{ $tarefa->id or '0' }}" />
     </div>
-</form>
+</div>
+
 @stop
 
 @section('script')

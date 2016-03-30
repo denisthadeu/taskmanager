@@ -20,7 +20,10 @@
 	  }
 	
 	  public static function getDataHoraFormatada($dataHora) 
-	  {
+	  {	
+	  	if(empty($dataHora)){
+	  		return null;
+	  	}
 	    return date('d/m/Y H:i:s',strtotime($dataHora));
 	  }
 	
@@ -123,6 +126,7 @@
 		    $data = $data[2]."/".$data[1]."/".$data[0];
 		    return $data;
 	  	}
+	  	return null;
 	  }
 
 	  public static function dateStringToTimeStampDB($data) 
@@ -135,6 +139,8 @@
 			    $data = explode('/', $data);
 			    $data = $data[2]."-".$data[1]."-".$data[0]." ".$hora;
 			    return $data;
+		  	} else {
+		  		return null;
 		  	}
 		} catch (Exception $e) {
 		    return null;
@@ -182,15 +188,9 @@
 
 	  public static function minutesBetweenDates($dt_ini,$dt_fim)
 	  {
-	  	// $dt_ini = date('Y-m-d H:i:s');
-	 //    $to_time = strtotime($dt_ini);
-		// $from_time = strtotime($dt_fim);
+	  	if(empty($dt_fim)){
+	  		$dt_fim = Formatter::dataAtualDB();
+	  	}
 		return  round(abs(strtotime($dt_ini) - strtotime($dt_fim)) / 60,2);
 	  }
-
-	  
-
-
 	}
-
-	
