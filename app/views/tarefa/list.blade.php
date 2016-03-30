@@ -16,7 +16,7 @@
         		&nbsp;
         	</div>
             <div class="col-md-4">
-                <input name="search" placeholder="Pesquisa" class="form-control" required value="{{ $search }}" />
+                <input name="search" placeholder="Pesquisa" class="form-control" value="{{ $search }}" />
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">Pesquisar</button>

@@ -14,6 +14,10 @@ class HomeController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+	public function __construct() {
+	    $this->beforeFilter('auth');
+  	}
+  	
 
 	public function showWelcome()
 	{

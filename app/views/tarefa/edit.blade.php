@@ -73,7 +73,7 @@
                                                     @else
                                                         <span class="input-group-addon play" data-tipo="play" style="cursor:pointer;"><span class="fa fa-play"></span><span class="fa fa-pause" style="display:none;"></span></span>
                                                     @endif
-                                                    <select class="form-control">
+                                                    <select class="form-control" name="tarefa_status_id">
                                                         @foreach($tarefaStatus AS $status)
                                                             <option value="{{ $status->id }}" @if($status->id == $tarefa->tarefa_status_id) SELECTED @endif>{{ $status->nome }}</option>
                                                         @endforeach
@@ -83,14 +83,15 @@
                                             <p>
                                                 Esforço: 
                                                 <span id="esforco-field">
+                                                    <span class="fa fa-pencil edit-extra-info" style="cursor: pointer;"></span>
                                                     <span>{{ Formatter::leadingZero($tarefa->hora_esforco) }}:{{ Formatter::leadingZero($tarefa->minuto_esforco) }}</span>
                                                     <span style="display:none;">
-                                                        <select name="hora">
+                                                        <select name="hora" required>
                                                             @for ($i = 0; $i <= 120; $i++)
                                                                 <option value="{{ Formatter::leadingZero($i) }}" @if(isset($tarefa) && $tarefa->hora_esforco == $i) SELECTED @endif >{{ Formatter::leadingZero($i) }}</option>
                                                             @endfor
                                                         </select>
-                                                        <select name="minuto">
+                                                        <select name="minuto" required>
                                                             @for ($i = 0; $i <= 4; $i++)
                                                                 {{--*/ $count = Formatter::leadingZero(($i * 15)) /*--}} 
                                                                 <option value="{{ $count }}" @if(isset($tarefa) && $tarefa->minuto_esforco == ($i * 15)) SELECTED @endif >{{ $count }}</option>
@@ -100,20 +101,25 @@
                                                 </span>
                                             </p>
                                             <p>
+                                                Tempo: <span class="tempo-duracao"></span>
+                                            </p>
+                                            <p>
                                                 Data Início: 
                                                 <span id="dt-ini-field">
-                                                    <span>{{ $tarefa->data_ini }}</span>
+                                                    <span class="fa fa-pencil edit-extra-info" style="cursor: pointer;"></span>
+                                                    <span>{{ Formatter::getDataHoraFormatada($tarefa->data_ini) }}</span>
                                                     <span style="display:none;">
-                                                        <input name="dt_ini" />
+                                                        <input name="dt_ini" required value="{{ Formatter::getDataHoraFormatada($tarefa->data_ini) }}" />
                                                     </span>
                                                 </span>
                                             </p>
                                             <p>
                                                 Data Entrega: 
                                                 <span id="dt-fim-field">
-                                                    <span>{{ $tarefa->data_fim }}</span>
+                                                    <span class="fa fa-pencil edit-extra-info" style="cursor: pointer;"></span>
+                                                    <span>{{ Formatter::getDataHoraFormatada($tarefa->data_fim) }}</span>
                                                     <span style="display:none;">
-                                                        <input name="dt_fim" />
+                                                        <input name="dt_fim" required value="{{ Formatter::getDataHoraFormatada($tarefa->data_fim) }}" />
                                                     </span>
                                                 </span>
                                             </p>
@@ -234,6 +240,23 @@
 
 @section('script')
 <script type="text/javascript">
+    function get_tempo(){
+        var id_tarefa = $("#id").val();
+        var feedback = $.ajax({
+            type: "POST",
+            url: "{{ URL::to('tarefa/tempoduracao') }}",
+            async: false,
+            data:{id:id_tarefa}
+        }).complete(function(){
+            setTimeout(function(){get_tempo();}, 60000);
+        }).responseText;
+
+        // $('div.feedback-box').html(feedback);
+        obj = jQuery.parseJSON(feedback);
+        $('.tempo-duracao').html(obj.totalformatado);
+
+    }
+
     $(document).ready(function() {
         $("#upload-button").click(function(){
             html = '<p><input type="file" name="files[]" class="form-control" /></p>';
@@ -266,6 +289,13 @@
                 }).responseText;
             }
         });
+
+        $('.edit-extra-info').click(function(){
+            $(this).siblings().toggle();
+            $(this).toggle();
+        });
+
+        get_tempo();
     });
 </script>
 @stop

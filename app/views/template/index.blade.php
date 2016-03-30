@@ -182,7 +182,7 @@
                     </li>
                     <!-- END MESSAGES -->
                     <!-- TASKS -->
-                    <li class="xn-icon-button pull-right">
+                    <!-- <li class="xn-icon-button pull-right">
                         <a href="#"><span class="fa fa-tasks"></span></a>
                         <div class="informer informer-warning">3</div>
                         <div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
@@ -226,7 +226,7 @@
                                 <a href="{{ URL::to('tarefa/list') }}">Exibir todas as Tarefas</a>
                             </div>                            
                         </div>                        
-                    </li>
+                    </li> -->
                     <!-- END TASKS -->
                 </ul>
                 <!-- END X-NAVIGATION VERTICAL -->                     

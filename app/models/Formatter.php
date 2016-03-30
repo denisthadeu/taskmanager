@@ -125,6 +125,23 @@
 	  	}
 	  }
 
+	  public static function dateStringToTimeStampDB($data) 
+	  {
+	  	try {
+		    if(!empty($data)){
+		  		$data = explode(' ', $data);
+		  		$hora = $data[1];
+			    $data = $data[0];
+			    $data = explode('/', $data);
+			    $data = $data[2]."-".$data[1]."-".$data[0]." ".$hora;
+			    return $data;
+		  	}
+		} catch (Exception $e) {
+		    return null;
+		}
+	  	
+	  }
+
 	  public static function convertToHoursMins($time, $format = '%02d:%02d')
 	  {
 	    if ($time < 1) {

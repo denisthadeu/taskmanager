@@ -14,6 +14,10 @@ class TarefaController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+	public function __construct() {
+	    $this->beforeFilter('auth');
+  	}
+  	
 
 	public function showWelcome()
 	{
@@ -27,22 +31,32 @@ class TarefaController extends BaseController {
 
 	public function getList()
 	{
+		$minhasTarefas = Tarefa::with('cliente')
+								->with('projeto')
+								->with('statustarefa');
+		$tarefasCriadas = Tarefa::with('cliente')
+								->with('projeto')
+								->with('statustarefa')
+								->with('responsavel');
+
 		if(Input::has('search')){
 			$search = Input::get('search');
+			$minhasTarefas = $minhasTarefas->where('user_id','=',Auth::id())
+							->where('id','=',$search)
+							->orWhere('user_id','=',Auth::id())
+							->where('nome','like','%'.$search.'%');
+			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',Auth::id())
+							->where('id','=',$search)
+							->orWhere('criado_por','=',Auth::id())
+							->where('nome','like','%'.$search.'%');
 		} else {
 			$search = null;
+			$minhasTarefas = $minhasTarefas->where('user_id','=',Auth::id());
+			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',Auth::id());
 		}
-		$minhasTarefas = Tarefa::where('user_id','=',Auth::id())
-								->with('cliente')
-								->with('projeto')
-								->with('statustarefa')
-								->get();
-		$tarefasCriadas = Tarefa::where('criado_por','=',Auth::id())
-								->with('cliente')
-								->with('projeto')
-								->with('statustarefa')
-								->with('responsavel')
-								->get();
+
+		$minhasTarefas = $minhasTarefas->get();
+		$tarefasCriadas = $tarefasCriadas->get();
 		return View::make('tarefa.list',compact('minhasTarefas','tarefasCriadas','search'));
 	}
 
@@ -57,7 +71,7 @@ class TarefaController extends BaseController {
 
 	public function getEdit($id)
 	{
-		$tarefa = Tarefa::where('id','=',$id)->with('anexos')->with(['comentarios' => function($query)
+		$tarefa = Tarefa::where('id','=',$id)->with('anexos')->with('usertempo')->with(['comentarios' => function($query)
 			{
 			    $query->orderBy('id', 'desc')->with('anexos')->with('user');
 			}])
@@ -79,7 +93,6 @@ class TarefaController extends BaseController {
 	public function postSavetarefa()
 	{
 		extract(Input::all());
-		// dd(Input::all());
 		$idTarefa = 0;
 		$tarefaProximo = 0;
 		$tarefaAnterior = 0;
@@ -219,7 +232,6 @@ class TarefaController extends BaseController {
 	public function postEdittarefa()
 	{
 		extract(Input::all());
-		// dd(Input::all());
 
 		$tarefa = Tarefa::find($id);
 		$cliente_id = 0;
@@ -233,6 +245,12 @@ class TarefaController extends BaseController {
 		$tarefa->clientes_id 			= $cliente_id;
 		$tarefa->clientes_projetos_id 	= $projeto;
 		$tarefa->tarefa_tipo_id 		= $tipo;
+		$tarefa->tarefa_status_id		= $tarefa_status_id;
+		$tarefa->minuto_esforco 		= $minuto;
+		$tarefa->hora_esforco 			= $hora;
+		$tarefa->minutos 				= (($hora * 60) + $minuto);
+		$tarefa->data_ini 				= Formatter::dateStringToTimeStampDB($dt_ini);
+		$tarefa->data_fim 				= Formatter::dateStringToTimeStampDB($dt_fim);
 		$tarefa->save();
 
 		if(Input::hasFile('files')){
@@ -336,6 +354,31 @@ class TarefaController extends BaseController {
 		$comentario->descricao = "Aviso do sistema: ".Auth::user()->nome." pausou esta tarefa";
 		$comentario->save();
 
+		echo json_encode($response);
+	}
+
+	public function postTempoduracao()
+	{
+		extract(Input::all());
+		$response = array();
+		$response["id_tarefa"] = $id;
+		$response["id_user"] = Auth::id();
+		$response["total"] = 0;
+
+		$tarefausertempo = Tarefausertempo::where('tarefa_id','=',$id)->get();
+		if(!empty($tarefausertempo)){
+			foreach($tarefausertempo AS $tempo){
+				if(!empty($tempo->minutos)){
+					$response["total"] += $tempo->minutos;
+				} else {
+					if(empty($tempo->data_fim)){
+						$tempo->data_fim = Formatter::dataAtualDB();
+					}
+					$response["total"] += Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+				}
+			}
+		}
+		$response["totalformatado"] = Formatter::convertToHoursMins($response["total"]);
 		echo json_encode($response);
 	}
 }
