@@ -64,7 +64,8 @@ App::error(function(Exception $exception, $code)
 
 App::down(function()
 {
-	return Response::make("Be right back!", 503);
+	// return View::make('id.index');
+	return Response::make("Nós voltaremos!<br/>Estamos ocupados atualizando o sistema para você e estaremos de volta em breve!", 503);
 });
 
 /*

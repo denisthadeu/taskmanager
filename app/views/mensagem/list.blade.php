@@ -33,12 +33,15 @@
                 <tbody>
                 	@if(isset($mensagens) && !$mensagens->isEmpty())
                 		@foreach($mensagens as $mensagem)
-		                    <tr @if($mensagem->status != 1) style="background-color: #ccc; @endif">
+		                    <tr @if($mensagem->status == 0) style="background-color: #ccc; @endif">
 		                        <td>{{ $mensagem->id }}</td>
 		                        <td>@if($titulo == "Caixa de Entrada") {{ $mensagem->remetente->nome}} @else {{$mensagem->destinatario->nome}} @endif</td>
 		                        <td>{{ $mensagem->assunto }}</td>
 		                        <td>
 		                        	<a href="{{ URL::to('mensagem/mensagem') }}/{{$mensagem->id}}"><button type="button" class="btn btn-info"><span class="fa fa-eye">Ver</span></button></a>
+                                    @if($titulo != "Caixa de Entrada")
+                                        <a href="{{ URL::to('mensagem/mandaralerta') }}/{{$mensagem->id}}"><button type="button" class="btn btn-warning"><span class="fa fa-exclamation-circle">Mandar Alerta</span></button></a>
+                                    @endif
                                     <!-- <a href="{{ URL::to('mensagem/delete') }}/{{$mensagem->id}}" class="remover-cliente"><button type="button" class="btn btn-danger"><span class="fa fa-remove">Deletar</span></button></a> -->
 		                        </td>
 		                    </tr>

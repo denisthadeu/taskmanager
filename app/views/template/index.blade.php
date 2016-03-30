@@ -22,8 +22,8 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.html">Bluefoot</a>
-                        <a href="#" class="x-navigation-control"></a>
+                        <a href="{{ URL::to('/') }}">Bluefoot</a>
+                        <a href="{{ URL::to('/') }}" class="x-navigation-control"></a>
                     </li>
                     <li class="xn-profile">
                         <a href="#" class="profile-mini">
@@ -405,9 +405,3 @@
     <!-- END SCRIPTS -->         
     </body>
 </html>
-
-
-
-
-
-

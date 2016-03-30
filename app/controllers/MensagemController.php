@@ -71,7 +71,7 @@ class MensagemController extends BaseController {
 		$mensagemObj->remetente_id = Auth::id();
 		$mensagemObj->assunto = $assunto;
 		$mensagemObj->mensagem = $mensagem;
-		$mensagemObj->status = 1;
+		$mensagemObj->status = 2;
 		$mensagemObj->save();
 
 		return Redirect::to('mensagem/in');
@@ -102,6 +102,14 @@ class MensagemController extends BaseController {
 			}
 		}
 		echo json_encode($response);
+	}
+
+	public function getMandaralerta($id)
+	{
+		$Mensagem = Mensagem::where('id','=',$id)->first();
+		$Mensagem->status = 2;
+		$Mensagem->save();
+		return Redirect::to('mensagem/out');
 	}
 
 }

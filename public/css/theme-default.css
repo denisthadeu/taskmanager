@@ -903,14 +903,14 @@ body.page-container-boxed .page-container {
 .x-navigation > li.xn-logo > a:first-child {
   font-size: 0px;
   text-indent: -9999px;
-  background: url("../img/logo.png") top center no-repeat #e34724;
+  background: url("../img/logo.png") top center no-repeat #1a9fdd;
   padding: 0px;
   border-bottom: 0px;
   color: #FFF;
   height: 50px;
 }
 .x-navigation > li.xn-logo > a:first-child:hover {
-  background-color: #e0401d;
+  background-color: #1a9fdd;
 }
 .x-navigation > li.xn-profile {
   padding: 0px;

@@ -25,8 +25,16 @@ class HomeController extends BaseController {
 	}
 
 	public function getIndex()
-	{
-		return View::make('id.index');//->with('menu', $menu);
+	{		
+		$minhasTarefas = Tarefa::with('cliente')
+						->with('projeto')
+						->with('statustarefa')
+						->where('user_id','=',Auth::id())
+						->whereNotIn('tarefa_status_id',array(6))
+						->get();
+		$minhasEquipes = Equipe::where('user_id','=',Auth::id())
+						->get();
+		return View::make('id.index',compact('minhasTarefas','minhasEquipes'));
 	}
 
 }
