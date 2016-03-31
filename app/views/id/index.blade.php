@@ -112,12 +112,12 @@
 										                                        <div class="profile-data-name">{{ $user->nome }}</div>
 										                                    </div>
 										                                </div>                                
-										                                <table class="panel-body table table-bordered  table-hover" style="background-color: #fff">
-									                                    	<tbody>
+										                                <table class="panel-body table table-bordered table-hover" style="background-color: #fff">
+									                                    	<tbody class=" connectedSortable sortable droptrue table-task-user-{{$user->id}}" data-user="{{$user->id}}">
 									                                    		{{-- */$minutos = 0;/* --}}
 									                                    		@if($user->minhastarefashoje->count())
 									                                    			@foreach($user->minhastarefashoje AS $tarefa)
-											                                    		<tr>
+											                                    		<tr class="ui-state-default" data-tarefa="{{$tarefa->id}}">
 											                                    			<td><a href="{{ URL::to('tarefa/edit') }}/{{$tarefa->id}}">{{ $tarefa->nome }}</a></td>
 											                                    			<td>{{ Formatter::convertToHoursMins($tarefa->minutos) }}</td>
 											                                    			{{-- */$minutos += $tarefa->minutos ;/* --}}
@@ -126,7 +126,7 @@
 									                                    		@endif
 									                                    		<tr>
 									                                    			<td>Total</td>
-									                                    			<td>{{ Formatter::convertToHoursMins($minutos) }}</td>
+									                                    			<td class="hora-user-{{$user->id}}">{{ Formatter::convertToHoursMins($minutos) }}</td>
 									                                    		</tr>
 									                                    	</tbody>
 									                                    </table>                                
@@ -160,8 +160,41 @@
 
 @section('script')
 <script type="text/javascript">
+	function pad (str, max) {
+	  str = str.toString();
+	  return str.length < max ? pad("0" + str, max) : str;
+	}
     $(document).ready(function() {
-        
+        $( ".sortable" ).sortable({
+	      	connectWith: ".connectedSortable",
+	      	update: function( ) {
+	      		var userID = $(this).data( "user" );
+	      		var order = 0;
+	      		var tarefaId = 0;
+	      		var totMin = 0;
+	      		var hora = 0;
+	      		var realMin = 0;
+           		$.each( $(this).children(".ui-state-default"), function( key, value ) {
+           			tarefaId = $(this).data("tarefa");
+           			order = key;
+				  	// alert("usuario: "+userID+" | ordem:"+ key + " | tarefa:" + tarefaId );
+				  	var feedback = $.ajax({
+			           type: "POST",
+			           url: "{{ URL::to('tarefa/atualizarresponsavel') }}",
+			           async: false,
+			           data:{user_id:userID,tarefa_id:tarefaId,ordem:key}
+			        }).responseText;
+			    	obj = jQuery.parseJSON(feedback);
+			    	totMin = totMin + obj.total;
+				});
+				if(totMin > 0) {
+					realMin = totMin % 60;
+					hora = Math.floor(totMin / 60);
+					$('.hora-user-'+userID).html(pad(hora,2)+":"+pad(realMin,2));
+				}
+       			$('.table-task-user-'+userID).html($(this).html());
+        	}
+	    }).disableSelection();
     });
 </script>
 @stop

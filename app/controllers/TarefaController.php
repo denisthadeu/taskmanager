@@ -44,11 +44,13 @@ class TarefaController extends BaseController {
 			$minhasTarefas = $minhasTarefas->where('user_id','=',Auth::id())
 							->where('id','=',$search)
 							->orWhere('user_id','=',Auth::id())
-							->where('nome','like','%'.$search.'%');
+							->where('nome','like','%'.$search.'%')
+							->OrderBy('order');
 			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',Auth::id())
 							->where('id','=',$search)
 							->orWhere('criado_por','=',Auth::id())
-							->where('nome','like','%'.$search.'%');
+							->where('nome','like','%'.$search.'%')
+							->OrderBy('order');
 		} else {
 			$search = null;
 			$minhasTarefas = $minhasTarefas->where('user_id','=',Auth::id());
@@ -253,6 +255,9 @@ class TarefaController extends BaseController {
 		$tarefa->clientes_projetos_id 	= $projeto;
 		$tarefa->tarefa_tipo_id 		= $tipo;
 		$tarefa->tarefa_status_id		= $tarefa_status_id;
+		if($tarefa_status_id == 6){
+			$tarefa->order = 999999999;
+		}
 		$tarefa->minuto_esforco 		= $minuto;
 		$tarefa->hora_esforco 			= $hora;
 		$tarefa->minutos 				= (($hora * 60) + $minuto);
@@ -386,6 +391,25 @@ class TarefaController extends BaseController {
 			}
 		}
 		$response["totalformatado"] = Formatter::convertToHoursMins($response["total"]);
+		echo json_encode($response);
+	}
+
+	public function postAtualizarresponsavel()
+	{
+		extract(Input::all());
+		$response = array();
+		$response["id_tarefa"] = $tarefa_id;
+		$response["id_user"] = $user_id;
+		$response["ordem"] = $ordem;
+		$response["total"] = 0;
+
+		$tarefa = Tarefa::find($tarefa_id);
+		$tarefa->user_id = $user_id;
+		$tarefa->order = $ordem;
+		$response["total"] = $tarefa->minutos;
+		$tarefa->save();
+
+		// $response["totalformatado"] = Formatter::convertToHoursMins($response["total"]);
 		echo json_encode($response);
 	}
 }

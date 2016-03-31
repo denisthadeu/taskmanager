@@ -61,7 +61,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function minhastarefashoje()
 	{
 		$dataFinalDia = Formatter::dataAtualDB2();
-		return $this->hasMany('Tarefa','user_id')->whereNotIn('tarefa_status_id',array(6))->where('data_ini','<=',$dataFinalDia);
+		return $this->hasMany('Tarefa','user_id')->whereNotIn('tarefa_status_id',array(6))->where('data_ini','<=',$dataFinalDia)->OrderBy('order');
 	}
 
 }
