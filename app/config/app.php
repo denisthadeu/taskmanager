@@ -127,6 +127,7 @@ return array(
         'Way\Generators\GeneratorsServiceProvider',
 		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
 		'Orangehill\Iseed\IseedServiceProvider',
+		'Schickling\Backup\BackupServiceProvider',
 
 	),
 
