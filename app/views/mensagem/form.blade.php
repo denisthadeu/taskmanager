@@ -54,7 +54,7 @@
                                         Mensagem
                                     </div>
                                     <div class="col-md-9">
-                                        <textarea class="form-control" name="mensagem" rows="10" maxlength="500"></textarea>
+                                        <textarea class="summernote form-control" name="mensagem"></textarea>
                                     </div>
                                 </div>
                             </p>
@@ -93,9 +93,5 @@
 @stop
 
 @section('script')
-<script type="text/javascript">
-    $(document).ready(function() {
-
-    });
-</script>
+<script type="text/javascript" src="{{ URL::asset('js/plugins/summernote/summernote.js') }}"></script>
 @stop

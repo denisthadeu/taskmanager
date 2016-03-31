@@ -117,7 +117,7 @@
                             <p>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <textarea name="descricao" placeholder="Descrição da tarefa" class="form-control"></textarea>
+                                        <textarea name="descricao" placeholder="Descrição da tarefa" class="form-control summernote"></textarea>
                                     </div>
                                 </div>
                             </p>
@@ -149,6 +149,7 @@
 @stop
 
 @section('script')
+<script type="text/javascript" src="{{ URL::asset('js/plugins/summernote/summernote.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("input[name = 'opcao']").click(function(){

@@ -130,7 +130,7 @@
                             <p>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <textarea name="descricao" placeholder="Descrição da tarefa" class="form-control">{{ $tarefa->descricao }}</textarea>
+                                        <textarea name="descricao" placeholder="Descrição da tarefa" class="form-control summernote">{{ $tarefa->descricao }}</textarea>
                                     </div>
                                 </div>
                             </p>
@@ -301,6 +301,7 @@
 @stop
 
 @section('script')
+<script type="text/javascript" src="{{ URL::asset('js/plugins/summernote/summernote.js') }}"></script>
 <script type="text/javascript">
     function get_tempo(){
         var id_tarefa = $("#id").val();
