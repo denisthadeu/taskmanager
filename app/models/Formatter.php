@@ -162,6 +162,10 @@
 	  {
 	    return date('Y-m-d H:i:s');
 	  }
+	  public static function dataAtualDB2()
+	  {
+	    return date('Y-m-d 23:59:59');
+	  }
 
 	  public static function dataAtualDBPlusMinutes($minutes)
 	  {

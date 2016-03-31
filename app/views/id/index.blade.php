@@ -22,7 +22,7 @@
                         <p>
                             <div class="row">
                                 <div class="col-md-12">
-                                	<h3>Minhas tarefas</h3>
+                                	<h3>Minhas tarefas de hoje</h3>
                                 	<table class="table table-bordered  table-hover" style="background-color: #fff">
                                         <thead>
                                             <tr>
@@ -90,68 +90,57 @@
 		                                            </div>
 		                                        </p>
 		                                        <p>
-		                                        	{{-- */$count=0;/* --}}
-			                                        @for ($i = 1; $i <= 10; $i++)
-			                                        	{{-- */$count++;/* --}}
-			                                        	@if($count == 1)
-			                                            	<div class="row">
-			                                            @endif
-			                                                <div class="col-md-2">
-				                                                <div class="panel panel-default">
-									                                <div class="panel-body profile">
-									                                    <div class="profile-image">
-									                                        <img src="{{ URL::asset(Auth::user()->foto_caminho_completo) }}" alt="Nadia Ali">
-									                                    </div>
-									                                    <div class="profile-data">
-									                                        <div class="profile-data-name">Nadia Ali</div>
-									                                    </div>
-									                                </div>                                
-									                                <table class="panel-body table table-bordered  table-hover" style="background-color: #fff">
-								                                    	<tbody>
-								                                    		<tr>
-								                                    			<td>Nome da tarefa</td>
-								                                    			<td>00:30</td>
-								                                    		</tr>
-								                                    		<tr>
-								                                    			<td>Nome da tarefa</td>
-								                                    			<td>00:30</td>
-								                                    		</tr>
-								                                    		<tr>
-								                                    			<td>Nome da tarefa</td>
-								                                    			<td>00:30</td>
-								                                    		</tr>
-								                                    		<tr>
-								                                    			<td>Nome da tarefa</td>
-								                                    			<td>00:30</td>
-								                                    		</tr>
-								                                    		<tr>
-								                                    			<td>Nome da tarefa</td>
-								                                    			<td>00:30</td>
-								                                    		</tr>
-								                                    		<tr>
-								                                    			<td>Nome da tarefa</td>
-								                                    			<td>00:30</td>
-								                                    		</tr>
-								                                    		<tr>
-								                                    			<td>Nome da tarefa</td>
-								                                    			<td>00:30</td>
-								                                    		</tr>
-								                                    		<tr>
-								                                    			<td>Total</td>
-								                                    			<td>03:30</td>
-								                                    		</tr>
-								                                    	</tbody>
-								                                    </table>                                
-									                            </div>
-			                                                </div>
-			                                            @if($count == 6)
+		                                        	@if($equipe->equipeUser->count())
+			                                        	{{-- */$count=0;/* --}}
+				                                        @foreach($equipe->equipeUser AS $equipeUser)
+				                                        	{{-- */$user = $equipeUser->user;/* --}}
+				                                        	{{-- */$count++;/* --}}
+				                                        	@if($count == 1)
+				                                            	<div class="row">
+				                                            @endif
+				                                                <div class="col-md-3">
+					                                                <div class="panel panel-default">
+										                                <div class="panel-body profile">
+										                                    <div class="profile-image">
+										                                    	@if(!empty($user->foto_caminho_completo))
+													                                <img src="{{ URL::asset($user->foto_caminho_completo) }}" class="image_perfil" alt="{{ $user->nome }}">
+													                            @else    
+													                                <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="{{ $user->nome }}">
+													                            @endif
+										                                    </div>
+										                                    <div class="profile-data">
+										                                        <div class="profile-data-name">{{ $user->nome }}</div>
+										                                    </div>
+										                                </div>                                
+										                                <table class="panel-body table table-bordered  table-hover" style="background-color: #fff">
+									                                    	<tbody>
+									                                    		{{-- */$minutos = 0;/* --}}
+									                                    		@if($user->minhastarefashoje->count())
+									                                    			@foreach($user->minhastarefashoje AS $tarefa)
+											                                    		<tr>
+											                                    			<td><a href="{{ URL::to('tarefa/edit') }}/{{$tarefa->id}}">{{ $tarefa->nome }}</a></td>
+											                                    			<td>{{ Formatter::convertToHoursMins($tarefa->minutos) }}</td>
+											                                    			{{-- */$minutos += $tarefa->minutos ;/* --}}
+											                                    		</tr>
+									                                    			@endforeach
+									                                    		@endif
+									                                    		<tr>
+									                                    			<td>Total</td>
+									                                    			<td>{{ Formatter::convertToHoursMins($minutos) }}</td>
+									                                    		</tr>
+									                                    	</tbody>
+									                                    </table>                                
+										                            </div>
+				                                                </div>
+				                                            @if($count == 4)
+			                                                	</div>
+			                                                	{{-- */$count=0;/* --}}
+			                                               	@endif
+			                                            @endforeach
+			                                            @if($count != 0)
 		                                                	</div>
-		                                                	{{-- */$count=0;/* --}}
-		                                               	@endif
-		                                            @endfor
-		                                            @if($count != 0)
-	                                                	</div>
-	                                               	@endif  
+		                                               	@endif 
+		                                            @endif
 		                                        </p>
 		                                    </div> 
 		                                </div>

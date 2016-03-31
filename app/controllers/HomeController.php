@@ -25,14 +25,23 @@ class HomeController extends BaseController {
 	}
 
 	public function getIndex()
-	{		
+	{
+		$dataFinalDia = Formatter::dataAtualDB2();
 		$minhasTarefas = Tarefa::with('cliente')
 						->with('projeto')
 						->with('statustarefa')
 						->where('user_id','=',Auth::id())
 						->whereNotIn('tarefa_status_id',array(6))
+						->where('data_ini','<=',$dataFinalDia)
 						->get();
-		$minhasEquipes = Equipe::where('user_id','=',Auth::id())
+
+		$minhasEquipes = Equipe::where('user_id','=',Auth::id())->with(['equipeUser' => function($query)
+						{
+						    $query->with(['user' => function($query)
+							{
+							    $query->with('minhastarefashoje');
+							}]);
+						}])
 						->get();
 		return View::make('id.index',compact('minhasTarefas','minhasEquipes'));
 	}
