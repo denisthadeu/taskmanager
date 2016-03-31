@@ -126,6 +126,7 @@ return array(
         'Barryvdh\Debugbar\ServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
 		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
+		'Orangehill\Iseed\IseedServiceProvider',
 
 	),
 
