@@ -33,6 +33,7 @@ class HomeController extends BaseController {
 						->where('user_id','=',Auth::id())
 						->whereNotIn('tarefa_status_id',array(6))
 						->where('data_ini','<=',$dataFinalDia)
+						->OrderBy('order')
 						->get();
 
 		$minhasEquipes = Equipe::where('user_id','=',Auth::id())->with(['equipeUser' => function($query)

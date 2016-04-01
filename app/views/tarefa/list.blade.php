@@ -54,11 +54,11 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="connectedSortable sortable droptrue" data-user="{{Auth::id()}}">
                                 @if(isset($minhasTarefas) && !$minhasTarefas->isEmpty())
                                     @foreach($minhasTarefas as $minhaTarefa)
                                         @if($minhaTarefa->tarefa_status_id != 6)
-                                            <tr>
+                                            <tr  class="ui-state-default" data-tarefa="{{$minhaTarefa->id}}">
                                                 <td>{{ $minhaTarefa->id }}</td>
                                                 <td>{{ $minhaTarefa->nome }}</td>
                                                 <td>{{ $minhaTarefa->cliente->nome }} / {{ $minhaTarefa->projeto->nome }}</td>
@@ -216,6 +216,30 @@
                 return false;
             }
         });
+
+        $( ".sortable" ).sortable({
+            connectWith: ".connectedSortable",
+            update: function( ) {
+                var userID = $(this).data( "user" );
+                var order = 0;
+                var tarefaId = 0;
+                var totMin = 0;
+                var hora = 0;
+                var realMin = 0;
+                $.each( $(this).children(".ui-state-default"), function( key, value ) {
+                    tarefaId = $(this).data("tarefa");
+                    order = key;
+                    // alert("usuario: "+userID+" | ordem:"+ key + " | tarefa:" + tarefaId );
+                    var feedback = $.ajax({
+                       type: "POST",
+                       url: "{{ URL::to('tarefa/atualizarresponsavel') }}",
+                       async: false,
+                       data:{user_id:userID,tarefa_id:tarefaId,ordem:key}
+                    }).responseText;
+                    // obj = jQuery.parseJSON(feedback);
+                });
+            }
+        }).disableSelection();
     });
 </script>
 @stop

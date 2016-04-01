@@ -31,35 +31,37 @@ class TarefaController extends BaseController {
 
 	public function getList()
 	{
+		$user = User::find(Auth::id());
+
 		$minhasTarefas = Tarefa::with('cliente')
 								->with('projeto')
-								->with('statustarefa');
+								->with('statustarefa')
+								->OrderBy('order');
 		$tarefasCriadas = Tarefa::with('cliente')
 								->with('projeto')
 								->with('statustarefa')
-								->with('responsavel');
+								->with('responsavel')
+								->OrderBy('order');
 
 		if(Input::has('search')){
 			$search = Input::get('search');
-			$minhasTarefas = $minhasTarefas->where('user_id','=',Auth::id())
+			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id)
 							->where('id','=',$search)
-							->orWhere('user_id','=',Auth::id())
-							->where('nome','like','%'.$search.'%')
-							->OrderBy('order');
-			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',Auth::id())
+							->orWhere('user_id','=',$user->id)
+							->where('nome','like','%'.$search.'%');
+			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',$user->id)
 							->where('id','=',$search)
-							->orWhere('criado_por','=',Auth::id())
-							->where('nome','like','%'.$search.'%')
-							->OrderBy('order');
+							->orWhere('criado_por','=',$user->id)
+							->where('nome','like','%'.$search.'%');
 		} else {
 			$search = null;
-			$minhasTarefas = $minhasTarefas->where('user_id','=',Auth::id());
-			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',Auth::id());
+			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id);
+			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',$user->id);
 		}
-
+		
 		$minhasTarefas = $minhasTarefas->get();
 		$tarefasCriadas = $tarefasCriadas->get();
-		return View::make('tarefa.list',compact('minhasTarefas','tarefasCriadas','search'));
+		return View::make('tarefa.list',compact('minhasTarefas','tarefasCriadas','search','user'));
 	}
 
 	public function getCreate()
