@@ -10,6 +10,7 @@
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap panel-body">
+    <h3><span class="fa fa-tasks"></span> Lista de Tarefas - {{ $user->nome }} {{ $user->sobrenome }}</h3>
     <form method="get" role="form">
         <div class="row" style="padding-bottom: 7px;">
         	<div class="col-md-3">
