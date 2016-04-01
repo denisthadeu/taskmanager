@@ -60,7 +60,12 @@ class UserController extends BaseController {
 		$user->data_nascimento = $data_nascimento;
 		$user->estadocivil_id = $estado_civil_;
 		$user->cargo = $cargo;
-		$user->perfil = 2;
+		if(isset($perfil)){
+			$user->perfil = 1;
+		} elseif(Auth::user()->perfil == 1 || empty($user->perfil)){
+			$user->perfil = 2;
+		}
+		
 		$user->status = 1;
 		if(isset($senha) && isset($senha_confirma) && !empty($senha_confirma) && !empty($senha) && $senha_confirma == $senha){
 			$user->password = Hash::make($senha);

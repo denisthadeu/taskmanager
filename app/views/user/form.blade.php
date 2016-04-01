@@ -113,6 +113,18 @@
                                     </div>
                                 </div>
                             </p>
+                            @if(Auth::user()->perfil == 1)
+                                <p>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            Administrador
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input name="perfil" type="checkbox" placeholder="Perfil" id="perfil" @if(isset($user) && $user->perfil == 1) CHECKED @endif />
+                                        </div>
+                                    </div>
+                                </p>
+                            @endif
                             <p>
                                 <div class="row">
                                     <div class="col-md-3">

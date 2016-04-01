@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{{--*/ $myProfile = Auth::user(); /*--}}
 <html lang="en">
     <head>        
         <!-- META SECTION -->
@@ -27,25 +28,25 @@
                     </li>
                     <li class="xn-profile">
                         <a href="#" class="profile-mini">
-                            @if(!empty(Auth::user()->foto_caminho_completo))
-                                <img src="{{ URL::asset(Auth::user()->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
+                            @if(!empty($myProfile->foto_caminho_completo))
+                                <img src="{{ URL::asset($myProfile->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
                             @else    
                                 <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe">
                             @endif
                         </a>
                         <div class="profile">
                             <div class="profile-image">
-                                @if(!empty(Auth::user()->foto_caminho_completo))
-                                    <img src="{{ URL::asset(Auth::user()->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
+                                @if(!empty($myProfile->foto_caminho_completo))
+                                    <img src="{{ URL::asset($myProfile->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
                                 @else    
                                     <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="John Doe">
                                 @endif
                             </div>
                             <div class="profile-data">
-                                <div class="profile-data-name">{{ Auth::user()->nome }}</div>
+                                <div class="profile-data-name">{{ $myProfile->nome }}</div>
                                 <div class="profile-data-title">
-                                    @if(Auth::user()->equipeUser->count())
-                                        @foreach(Auth::user()->equipeUser AS $key => $equipeuserPerfil)
+                                    @if($myProfile->equipeUser->count())
+                                        @foreach($myProfile->equipeUser AS $key => $equipeuserPerfil)
                                             @if($key > 0)
                                                 /
                                             @endif
@@ -57,28 +58,30 @@
                                 </div>
                             </div>
                             <div class="profile-controls">
-                                <a href="{{ URL::to('user/edit/'.Auth::id()) }}" class="profile-control-left"><span class="fa fa-info"></span></a>
+                                <a href="{{ URL::to('user/edit/'.$myProfile->id) }}" class="profile-control-left"><span class="fa fa-info"></span></a>
                                 <a href="{{ URL::to('mensagem/in') }}" class="profile-control-right"><span class="fa fa-envelope"></span></a>
                             </div>
                         </div>                                                                        
                     </li>
                     <li class="active">
                         <a href="{{ URL::to('/') }}"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
-                    </li>                    
-                     <li class="xn-openable">
-                        <a href="#"><span class="fa fa-github"></span> <span class="xn-text">Clientes</span></a>
-                        <ul>
-                            <li><a href="{{ URL::to('cliente/list') }}"><span class="fa fa-github-square"></span> Visualizar Clientes</a></li>
-                            <li><a href="{{ URL::to('cliente/create') }}"><span class="fa fa-plus"></span> Novo CLiente</a></li>
-                        </ul>
                     </li>
-                    <li class="xn-openable">
-                        <a href="#"><span class="fa fa-puzzle-piece"></span> <span class="xn-text">Equipes</span></a>
-                        <ul>
-                            <li><a href="{{ URL::to('equipe/list') }}"><span class="fa fa-users"></span> Visualizar Equipes</a></li>
-                            <li><a href="{{ URL::to('equipe/create') }}"><span class="fa fa-plus"></span> Nova Equipe</a></li>
-                        </ul>
-                    </li>
+                    @if($myProfile->perfil == 1)    
+                         <li class="xn-openable">
+                            <a href="#"><span class="fa fa-github"></span> <span class="xn-text">Clientes</span></a>
+                            <ul>
+                                <li><a href="{{ URL::to('cliente/list') }}"><span class="fa fa-github-square"></span> Visualizar Clientes</a></li>
+                                <li><a href="{{ URL::to('cliente/create') }}"><span class="fa fa-plus"></span> Novo CLiente</a></li>
+                            </ul>
+                        </li>
+                        <li class="xn-openable">
+                            <a href="#"><span class="fa fa-puzzle-piece"></span> <span class="xn-text">Equipes</span></a>
+                            <ul>
+                                <li><a href="{{ URL::to('equipe/list') }}"><span class="fa fa-users"></span> Visualizar Equipes</a></li>
+                                <li><a href="{{ URL::to('equipe/create') }}"><span class="fa fa-plus"></span> Nova Equipe</a></li>
+                            </ul>
+                        </li>
+                    @endif
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-envelope"></span> <span class="xn-text">Mensagens</span></a>
                         <ul>
@@ -87,33 +90,39 @@
                             <li><a href="{{ URL::to('mensagem/create') }}"><span class="fa fa-envelope-o"></span> Nova Mensagem</a></li>
                         </ul>
                     </li>
-                    <li class="xn-openable">
-                        <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Relatórios</span></a>
-                        <ul>
-                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 1</a></li>
-                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 2</a></li>
-                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 3</a></li>
-                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 4</a></li>
-                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 5</a></li>
-                        </ul>
-                    </li>
+                    @if($myProfile->perfil == 1)
+                        <li class="xn-openable">
+                            <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Relatórios</span></a>
+                            <ul>
+                                <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 1</a></li>
+                                <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 2</a></li>
+                                <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 3</a></li>
+                                <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 4</a></li>
+                                <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 5</a></li>
+                            </ul>
+                        </li>
+                    @endif
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-tasks"></span> <span class="xn-text">Tarefas</span></a>
                         <ul>
                             <li><a href="{{ URL::to('tarefa/list') }}"><span class="fa fa-list"></span> Visualizar Tarefas</a></li>
                             <li><a href="{{ URL::to('tarefa/create') }}"><span class="fa fa-plus"></span> Nova Tarefa</a></li>
-                            <li><a href="{{ URL::to('cronograma/list') }}"><span class="fa fa fa-sitemap"></span> Visualizar Cronograma</a></li>
-                            <li><a href="{{ URL::to('cronograma/create') }}"><span class="fa fa-plus"></span> Novo Cronograma</a></li>
-                            <li><a href="{{ URL::to('tarefatipo/list') }}"><span class="fa fa-th-large"></span> Visualizar Tipos Tarefas</a></li>
-                            <li><a href="{{ URL::to('tarefatipo/create') }}"><span class="fa fa-plus"></span> Novo Tipo de Tarefa</a></li>
+                            @if($myProfile->perfil == 1)
+                                <li><a href="{{ URL::to('cronograma/list') }}"><span class="fa fa fa-sitemap"></span> Visualizar Cronograma</a></li>
+                                <li><a href="{{ URL::to('cronograma/create') }}"><span class="fa fa-plus"></span> Novo Cronograma</a></li>
+                                <li><a href="{{ URL::to('tarefatipo/list') }}"><span class="fa fa-th-large"></span> Visualizar Tipos Tarefas</a></li>
+                                <li><a href="{{ URL::to('tarefatipo/create') }}"><span class="fa fa-plus"></span> Novo Tipo de Tarefa</a></li>
+                            @endif
                         </ul>
                     </li>
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-users"></span> <span class="xn-text">Usuários</span></a>
                         <ul>
-                            <li><a href="{{ URL::to('user/list') }}"><span class="fa fa-user"></span> Visualizar usuários</a></li>
-                            <li><a href="{{ URL::to('user/create') }}"><span class="fa fa-plus"></span> Novo usuario</a></li>
-                            <li><a href="{{ URL::to('user/edit/'.Auth::id()) }}"><span class="fa fa-edit"></span> Editar seu perfil</a></li>
+                            @if($myProfile->perfil == 1)
+                                <li><a href="{{ URL::to('user/list') }}"><span class="fa fa-user"></span> Visualizar usuários</a></li>
+                                <li><a href="{{ URL::to('user/create') }}"><span class="fa fa-plus"></span> Novo usuario</a></li>
+                            @endif
+                            <li><a href="{{ URL::to('user/edit/'.$myProfile->id) }}"><span class="fa fa-edit"></span> Editar seu perfil</a></li>
                         </ul>
                     </li>
                     
