@@ -79,4 +79,9 @@ App::down(function()
 |
 */
 
+App::missing(function($exception)
+{
+    return Response::view('erro.404', array(), 404);
+});
+
 require app_path().'/filters.php';

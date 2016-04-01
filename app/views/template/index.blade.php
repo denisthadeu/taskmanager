@@ -90,11 +90,11 @@
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Relatórios</span></a>
                         <ul>
-                            <li><a href="pages-gallery.html"><span class="fa fa-align-justify"></span> Relatório 1</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-align-justify"></span> Relatório 2</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-align-justify"></span> Relatório 3</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-align-justify"></span> Relatório 4</a></li>
-                            <li><a href="pages-profile.html"><span class="fa fa-align-justify"></span> Relatório 5</a></li>
+                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 1</a></li>
+                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 2</a></li>
+                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 3</a></li>
+                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 4</a></li>
+                            <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 5</a></li>
                         </ul>
                     </li>
                     <li class="xn-openable">

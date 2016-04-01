@@ -31,6 +31,7 @@ Route::controller('home','HomeController');
 Route::controller('id', 'IdController');
 Route::controller('mensagem', 'MensagemController');
 Route::controller('password', 'RemindersController');
+Route::controller('relatorio', 'RelatorioController');
 Route::controller('tarefa', 'TarefaController');
 Route::get('tarefa/list/{id}', 'TarefaController@getList');
 Route::controller('tarefatipo', 'TarefatipoController');
