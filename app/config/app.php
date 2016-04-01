@@ -128,6 +128,7 @@ return array(
 		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
 		'Orangehill\Iseed\IseedServiceProvider',
 		'Schickling\Backup\BackupServiceProvider',
+		'Maatwebsite\Excel\ExcelServiceProvider',
 
 	),
 
@@ -169,6 +170,7 @@ return array(
 		'Crypt'           => 'Illuminate\Support\Facades\Crypt',
 		'DB'              => 'Illuminate\Support\Facades\DB',
 		'Debugbar' 		  => 'Barryvdh\Debugbar\Facade',
+		'Excel' 		  => 'Maatwebsite\Excel\Facades\Excel',
 		'Eloquent'        => 'Illuminate\Database\Eloquent\Model',
 		'Event'           => 'Illuminate\Support\Facades\Event',
 		'File'            => 'Illuminate\Support\Facades\File',
