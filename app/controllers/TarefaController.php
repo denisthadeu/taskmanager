@@ -29,9 +29,14 @@ class TarefaController extends BaseController {
 		return View::make('id.index');
 	}
 
-	public function getList()
-	{
-		$user = User::find(Auth::id());
+	public function getList($id = null)
+	{	
+		if(isset($id) && !empty($id)){
+			$user = User::find($id);
+		} else {
+			$user = User::find(Auth::id());
+		}
+		
 
 		$minhasTarefas = Tarefa::with('cliente')
 								->with('projeto')
@@ -69,7 +74,7 @@ class TarefaController extends BaseController {
 		$users = User::OrderBy('nome')->get();
 		$optionUsers = null;
 		foreach($users AS $user){
-			$optionUsers = '<option value="'.$user["id"].'">'.$user["nome"].'</option>';
+			$optionUsers .= '<option value="'.$user["id"].'">'.$user["nome"].'</option>';
 		}
 		$tarefaTipos = Tarefatipo::OrderBy('nome')->get();
 		$clientes = Clientes::with('clientesprojetos')->OrderBy('nome')->get();

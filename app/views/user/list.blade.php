@@ -57,8 +57,9 @@
                                     @endif
                                 </td>
 		                        <td>
-		                        	<a href="{{ URL::to('user/edit') }}/{{$user->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                    <a href="{{ URL::to('user/delete') }}/{{$user->id}}" class="remover-user"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                    <a href="{{ URL::to('tarefa/list') }}/{{$user->id}}"><button type="button" class="btn btn-warning"><span class="fa fa-tasks"></span> Tarefas</button></a>
+		                        	<a href="{{ URL::to('user/edit') }}/{{$user->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button> </a>
+                                    <a href="{{ URL::to('user/delete') }}/{{$user->id}}" class="remover-user"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span> Deletar</button></a>
 		                        </td>
 		                    </tr>
 		                @endforeach
