@@ -10,6 +10,9 @@
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap panel-body">
+    <div class="page-title">                    
+        <h2><span class="fa fa-th-large"></span> Tipo de Tarefa</h2>
+    </div>
     <div class="row" style="padding-bottom: 7px;">
     	<div class="col-md-10">
     		&nbsp;
