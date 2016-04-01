@@ -169,11 +169,34 @@
 
 	  public static function dataAtualDBPlusMinutes($minutes)
 	  {
-	  	$hora = date("H", strtotime("+".$minutes." minutes"));
+	  	$hora = date('H');
+		$dias = null;
 		if($hora >= 18){
-			$minutes = $minutes + (60 * 15);
-		} 
-		return date("Y-m-d H:i:s", strtotime("+".$minutes." minutes"));
+			$arrHorarios = array('18'=>'15','19'=>'14','20'=>'13','21'=>'12','22'=>'11','23'=>'10');
+			$minutes = $minutes + (60 * $arrHorarios[$hora]);
+		}  elseif($hora < 9){
+			$minutes = $minutes + (60 * (9 - $hora)) ;
+		}
+		$diaSemana = date("l", strtotime("+".$minutes." minutes"));
+		if($diaSemana == "Saturday"){
+			$dias = " + 2 day ";
+		} elseif($diaSemana == "Saturday"){
+			$dias = " + 1 day ";
+		}
+		$hora = date("H", strtotime( $dias." +".$minutes." minutes"));
+		if($hora >= 18){
+			$arrHorarios = array('18'=>'15','19'=>'14','20'=>'13','21'=>'12','22'=>'11','23'=>'10');
+			$minutes = $minutes + (60 * $arrHorarios[$hora]);
+		}  elseif($hora < 9){
+			$minutes = $minutes + (60 * (9 - $hora)) ;
+		}
+		$diaSemana = date("l", strtotime($dias."+".$minutes." minutes"));
+		if($diaSemana == "Saturday"){
+			$dias = " +2 day ";
+		} elseif($diaSemana == "Saturday"){
+			$dias = " +1 day ";
+		}
+		return date("Y-m-d H:i:s", strtotime($dias." +".$minutes." minutes"));
 	  }
 
 	  public static function dataAtualDBPlusHours($hours)
