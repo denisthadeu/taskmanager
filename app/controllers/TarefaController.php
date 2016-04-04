@@ -135,7 +135,7 @@ class TarefaController extends BaseController {
 			$tarefa->tarefa_anterior		= $tarefaAnterior;
 			$tarefa->tarefa_proximo			= $tarefaProximo;
 			$tarefa->status 				= 0;
-			$tarefa->data_ini 				= Formatter::dataAtualDB();
+			$tarefa->data_ini 				= Formatter::dataAtualDBPlusMinutes(0);
 			$tarefa->data_fim 				= Formatter::dataAtualDBPlusMinutes($tarefa->minutos);
 			$tarefa->save();
 
@@ -418,5 +418,9 @@ class TarefaController extends BaseController {
 
 		// $response["totalformatado"] = Formatter::convertToHoursMins($response["total"]);
 		echo json_encode($response);
+	}
+
+	public function getTeste(){
+		die(Formatter::dataAtualDBPlusMinutes(70*60));
 	}
 }
