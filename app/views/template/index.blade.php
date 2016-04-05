@@ -94,7 +94,7 @@
                         <li class="xn-openable">
                             <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Relatórios</span></a>
                             <ul>
-                                <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 1</a></li>
+                                <li><a href="{{ URL::to('relatorio/cronogramademanda') }}"><span class="fa fa-align-justify"></span> Serviço por Cliente</a></li>
                                 <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 2</a></li>
                                 <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 3</a></li>
                                 <li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório 4</a></li>

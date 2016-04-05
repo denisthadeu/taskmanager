@@ -50,6 +50,20 @@
                                         </div>
                                     </div>
                                 </p>
+                                <p>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            Clientes*
+                                        </div>
+                                        <div class="col-md-9">
+                                            <select name="clientes[]" multiple="" class="form-control">
+                                                @foreach($clientes as $cliente)
+                                                    <option value="{{ $cliente->id }}" @if(isset($equipe) && $equipe->equipeClienteId($cliente->id)) SELECTED @endif >{{ $cliente->nome }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </p>
                                 <div class="row" style="padding-top: 7px;">
                                     <div class="col-md-1">
                                         <h3>Membros</h3>

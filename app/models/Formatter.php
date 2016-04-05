@@ -221,4 +221,13 @@
 	  	}
 		return  round(abs(strtotime($dt_ini) - strtotime($dt_fim)) / 60,2);
 	  }
+
+	  public static function daysHoursMinutes($minutes){
+  		$day = floor ($minutes / 1440);
+		$hour = floor (($minutes - $d * 1440) / 60);
+		$min = $minutes - ($d * 1440) - ($h * 60);
+		 
+		return "{$day}Dias {$hour}:{$min}";
+	  }
+	  
 	}

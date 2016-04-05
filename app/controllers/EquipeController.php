@@ -14,7 +14,8 @@ class EquipeController extends BaseController {
 	public function getCreate()
 	{
 		$users = User::OrderBy('nome')->get();
-		return View::make('equipe.form',compact('users'));
+		$clientes = Clientes::with('equipeCliente')->OrderBy('nome')->get();
+		return View::make('equipe.form',compact('users','clientes'));
 	}
 
 	public function getEdit($id)
@@ -24,7 +25,8 @@ class EquipeController extends BaseController {
 			    $query->with('user');
 			}])->first();//->with('equipesprojetos');
 		$users = User::OrderBy('nome')->get();
-		return View::make('equipe.form',compact('equipe','users'));
+		$clientes = Clientes::with('equipeCliente')->OrderBy('nome')->get();
+		return View::make('equipe.form',compact('equipe','users','clientes'));
 	}	
 
 	public function getDelete($id)
@@ -64,6 +66,13 @@ class EquipeController extends BaseController {
 			}
 		}
 		$deletedEquipeUser = Equipeuser::where('equipe_id','=',$equipe->id)->whereNotIn('id', $arrIDSEquipes)->delete();
+		$deletedEquipeClientes = Equipecliente::where('equipe_id','=',$equipe->id)->delete();
+		foreach($clientes AS $cliente){
+			$equipeCliente = new Equipecliente();
+			$equipeCliente->cliente_id = $cliente;
+			$equipeCliente->equipe_id = $equipe->id;
+			$equipeCliente->save();
+		}
 		return Redirect::to('equipe/edit/'.$equipe->id)->with('success',$msg);
 	}
 
