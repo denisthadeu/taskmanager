@@ -33,7 +33,7 @@ segunda linha',
 				'mensagem' => 'Teste de mensagem',
 				'status' => 1,
 				'created_at' => '2016-03-24 12:36:13',
-				'updated_at' => '2016-03-30 19:50:47',
+				'updated_at' => '2016-04-01 14:48:04',
 			),
 			2 => 
 			array (
@@ -66,7 +66,7 @@ segunda linha',
 				'mensagem' => 'badshdasasdhdash',
 				'status' => 1,
 				'created_at' => '2016-03-24 20:11:49',
-				'updated_at' => '2016-03-30 19:50:47',
+				'updated_at' => '2016-04-01 14:48:04',
 			),
 			5 => 
 			array (
@@ -77,7 +77,7 @@ segunda linha',
 				'mensagem' => 'sdfsdfdfsfsd',
 				'status' => 1,
 				'created_at' => '2016-03-24 20:17:05',
-				'updated_at' => '2016-03-30 19:50:47',
+				'updated_at' => '2016-04-01 14:48:04',
 			),
 			6 => 
 			array (
@@ -88,7 +88,7 @@ segunda linha',
 				'mensagem' => 'asdasdasd',
 				'status' => 1,
 				'created_at' => '2016-03-24 20:17:16',
-				'updated_at' => '2016-03-29 19:01:16',
+				'updated_at' => '2016-04-01 14:48:04',
 			),
 			7 => 
 			array (
@@ -152,9 +152,9 @@ segunda linha',
 				'remetente_id' => 10,
 				'assunto' => 'Teste de WYSIWYG',
 			'mensagem' => '<p><span style="font-weight: bold;">Olha </span>a <span style="font-style: italic;">mensagem </span>q estou <span style="text-decoration: underline;">mandando</span> com o</p><p> novo <span style="font-weight: bold;">editor </span>chamado de&nbsp;</p><h2 style="font-family: \'Open Sans\', sans-serif; line-height: 30px; background-color: rgb(245, 245, 245);">WYSIWYG</h2>',
-				'status' => 2,
+				'status' => 1,
 				'created_at' => '2016-03-31 14:29:24',
-				'updated_at' => '2016-03-31 14:29:24',
+				'updated_at' => '2016-04-01 14:48:04',
 			),
 		));
 	}

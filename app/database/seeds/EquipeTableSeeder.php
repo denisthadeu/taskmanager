@@ -18,7 +18,7 @@ class EquipeTableSeeder extends Seeder {
 				'nome' => 'Design',
 				'user_id' => 10,
 				'created_at' => '2016-03-23 14:16:36',
-				'updated_at' => '2016-03-30 19:50:23',
+				'updated_at' => '2016-04-01 16:51:43',
 			),
 			1 => 
 			array (
@@ -35,6 +35,14 @@ class EquipeTableSeeder extends Seeder {
 				'user_id' => 10,
 				'created_at' => '2016-03-23 15:14:59',
 				'updated_at' => '2016-03-23 15:14:59',
+			),
+			3 => 
+			array (
+				'id' => 4,
+				'nome' => 'E-mail marketing',
+				'user_id' => 11,
+				'created_at' => '2016-03-31 20:49:45',
+				'updated_at' => '2016-03-31 20:49:45',
 			),
 		));
 	}

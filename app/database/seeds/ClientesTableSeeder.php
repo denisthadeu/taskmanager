@@ -17,7 +17,7 @@ class ClientesTableSeeder extends Seeder {
 				'id' => 1,
 				'nome' => 'Cliente 1',
 				'created_at' => '2016-03-22 14:04:06',
-				'updated_at' => '2016-03-22 14:04:06',
+				'updated_at' => '2016-04-01 14:20:23',
 			),
 			1 => 
 			array (

@@ -39,6 +39,15 @@ class TarefaTipoTableSeeder extends Seeder {
 				'created_at' => '2016-03-23 18:06:59',
 				'updated_at' => '2016-03-23 18:07:20',
 			),
+			3 => 
+			array (
+				'id' => 4,
+				'nome' => 'Tarefa que dura 12 horas',
+				'hora_esforco' => 12,
+				'minuto_esforco' => 0,
+				'created_at' => '2016-04-01 14:54:29',
+				'updated_at' => '2016-04-01 14:54:29',
+			),
 		));
 	}
 

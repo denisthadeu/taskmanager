@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('TarefaStatusTableSeeder');
 		$this->call('TarefaTipoTableSeeder');
 		$this->call('TarefaUserTempoTableSeeder');
+		$this->call('EquipeClientesTableSeeder');
 	}
 
 }

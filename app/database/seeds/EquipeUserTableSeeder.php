@@ -44,6 +44,22 @@ class EquipeUserTableSeeder extends Seeder {
 				'created_at' => '2016-03-23 15:14:59',
 				'updated_at' => '2016-03-23 15:14:59',
 			),
+			4 => 
+			array (
+				'id' => 7,
+				'user_id' => 10,
+				'equipe_id' => 4,
+				'created_at' => '2016-03-31 20:49:45',
+				'updated_at' => '2016-03-31 20:49:45',
+			),
+			5 => 
+			array (
+				'id' => 8,
+				'user_id' => 11,
+				'equipe_id' => 4,
+				'created_at' => '2016-03-31 20:49:45',
+				'updated_at' => '2016-03-31 20:49:45',
+			),
 		));
 	}
 
