@@ -40,6 +40,8 @@ class RelatorioController extends BaseController {
 			$results[$equipe->id]["id"] = $equipe->id;
 			$results[$equipe->id]["nome"] = $equipe->nome;
 			$results[$equipe->id]["colspan"] = 0;
+			$results[$equipe->id]["horasEstipuladas"] = 0;
+			$results[$equipe->id]["horasFeitas"] = 0;
 			//pega os clientes que a equipe atende
 			foreach($equipe->equipeCliente AS $key => $equipeCliente){
 				$cliente = $equipeCliente->cliente;
@@ -76,6 +78,7 @@ class RelatorioController extends BaseController {
 						}
 
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasEstipuladas"] += $tarefa->minutos;
+						$results[$equipe->id]["horasEstipuladas"] += $tarefa->minutos;
 
 						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"])){
 							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] = 0;
@@ -85,6 +88,7 @@ class RelatorioController extends BaseController {
 							if(!empty($tempo->minutos)){
 								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempo->minutos;
 								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
+								$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
 							} else {
 								if(empty($tempo->data_fim)){
 									$tempo->data_fim = Formatter::dataAtualDB();
@@ -102,6 +106,7 @@ class RelatorioController extends BaseController {
 					$results[$equipe->id]["colspan"] += count($results[$equipe->id]["clientes"][$cliente->id]["tipo"]) + 1;
 				}
 			}
+			$results[$equipe->id]["colspan"]++;
 		}
 
 		if(Input::has('excel')){
@@ -161,10 +166,15 @@ class RelatorioController extends BaseController {
 			                                }
 			                                $html .= '<tr>';
 			                                    $html .= '<td colspan="3">&nbsp;</td>';
-			                                    $html .= '<td style="background-color: #31869B;color: white;">Total: '.Formatter::convertToHoursMins($cliente["horasEstipuladas"]).'</td>';
-			                                    $html .= '<td style="background-color: #31869B;color: white;">Total: '.Formatter::convertToHoursMins($cliente["horasFeitas"]).'</td>';
+			                                    $html .= '<td style="background-color: #31869B;color: white;">'.Formatter::convertToHoursMins($cliente["horasEstipuladas"]).'</td>';
+			                                    $html .= '<td style="background-color: #31869B;color: white;">'.Formatter::convertToHoursMins($cliente["horasFeitas"]).'</td>';
 			                                $html .= '</tr>';
 			                            }
+			                        $html .= '<tr>';
+				                        $html .= '<td colspan="3">&nbsp;</td>';
+				                        $html .= '<td style="background-color: #31869B;color: white;">Total:'.Formatter::convertToHoursMins($result["horasEstipuladas"]).'</td>';
+				                        $html .= '<td style="background-color: #31869B;color: white;">Total:'.Formatter::convertToHoursMins($result["horasFeitas"]).'</td>';
+				                    $html .= '</tr>';
 		                            $html .= '<tr>';
 		                                $html .= '<td colspan="6">&nbsp;</td>';
 		                            $html .= '</tr>';

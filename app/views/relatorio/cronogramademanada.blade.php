@@ -93,10 +93,15 @@
                                 @endif
                                 <tr>
                                     <td colspan="3">&nbsp;</td>
-                                    <td style="background-color: #31869B;color: white;">Total: {{ Formatter::convertToHoursMins($cliente["horasEstipuladas"]) }}</td>
-                                    <td style="background-color: #31869B;color: white;">Total: {{ Formatter::convertToHoursMins($cliente["horasFeitas"]) }}</td>
+                                    <td style="background-color: #31869B;color: white;">{{ Formatter::convertToHoursMins($cliente["horasEstipuladas"]) }}</td>
+                                    <td style="background-color: #31869B;color: white;">{{ Formatter::convertToHoursMins($cliente["horasFeitas"]) }}</td>
                                 </tr>
                             @endforeach
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                                <td style="background-color: #31869B;color: white;">Total: {{ Formatter::convertToHoursMins($result["horasEstipuladas"]) }}</td>
+                                <td style="background-color: #31869B;color: white;">Total: {{ Formatter::convertToHoursMins($result["horasFeitas"]) }}</td>
+                            </tr>
                             <tr>
                                 <td colspan="6">&nbsp;</td>
                             </tr>
