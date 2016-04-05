@@ -92,15 +92,76 @@ class RelatorioController extends BaseController {
 				$results[$equipe->id]["colspan"] += count($results[$equipe->id]["clientes"][$cliente->id]["tipo"]) + 1;
 			}
 		}
-		// echo "<pre>"; print_r($results); die('');
+
 		if(Input::has('excel')){
-			Excel::create('ServicoPorCliente', function($excel) use ($results) {
-			    $excel->sheet('New sheet', function($sheet) use ($results) {
-			        $sheet->loadView('relatorio.cronogramademanadaExcel', array('results' => $results));
-			        $sheet->setOrientation('landscape');
-			    });
-			})->export('xls');
-			// return View::make('erro.embreve');
+			$html = '<html>';
+			    $html .= '<head>';
+			        $html .= '<title></title>';
+			        $html .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+			    $html .= '</head>';
+			    $html .= '<body>';
+			        $html .= '<table style="background-color: #fff">';
+			            $html .= '<thead>';
+
+			                $html .= '<tr>';
+			                    $html .= '<th colspan="6" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE JANEIRO 2016</th>';
+			                $html .= '</tr>';
+			                $html .= '<tr>';
+			                    $html .= '<td colspan="6" style="text-align: center;">&nbsp;</td>';
+			                $html .= '</tr>';
+			                $html .= '<tr>';
+			                    $html .= '<th style="background-color: #31869B;color: white;text-align: center;">SETOR</th>';
+			                    $html .= '<th style="background-color: #31869B;color: white;text-align: center;">CLIENTE</th>';
+			                    $html .= '<th style="background-color: #31869B;color: white;text-align: center;">SERVIÇO</th>';
+			                    $html .= '<th style="background-color: #31869B;color: white;text-align: center;">PRODUÇÃO</th>';
+			                    $html .= '<th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS ESTIPULADAS</th>';
+			                    $html .= '<th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS TRABALHADAS</th>';
+			                $html .= '</tr>';
+			            $html .= '</thead>';
+			            $html .= '<tbody style="text-align: center;">';
+			                if(isset($results) && !empty($results)){
+			                    foreach($results as $keyResult => $result) {
+			                        $html .= '<tr>';
+			                            $html .= '<td colspan="6" style="text-align: center;color:#31869B;"><b>'.$result["nome"].'</b></td>';
+			                        $html .= '</tr>';
+			                        $html .= '<tr>';
+			                            $html .= '<td rowspan="'.$result["colspan"].'" style="background-color: #31869B;color: white;vertical-align: middle;">'.$result["nome"].'</td>';
+			                            foreach($result["clientes"] as $keyCliente => $cliente) {
+			                                $html .= '<td rowspan="'.$cliente["colspan"].'" style="background-color: #8DB4E2;color:white;vertical-align: middle;">'.$cliente["nome"].'</td>';
+			                                $contador = 0;
+			                                foreach($cliente["tipo"] as $keyTipo => $tipo) {
+			                                    if($contador > 0) {
+			                                        $html .= '<tr>';
+			                                    }
+			                                        $html .= '<td style="text-align: left; background-color: #8DB4E2;color: white;">'.$tipo["nome"].'</td>';
+			                                        $html .= '<td style="background-color: #8DB4E2;color: white;">'.$tipo["projetos"].'</td>';
+			                                        $html .= '<td style="background-color: #8DB4E2;color: white;text-align: right;">'.Formatter::convertToHoursMins($tipo["horasEstipuladas"]).'</td>';
+			                                        $html .= '<td style="background-color: #8DB4E2;color: white;text-align: right;">'.Formatter::convertToHoursMins($tipo["horasFeitas"]).'</td>';
+			                                    $html .= '</tr>';
+			                                    $contador++;
+			                                }
+			                                $html .= '<tr>';
+			                                    $html .= '<td colspan="3">&nbsp;</td>';
+			                                    $html .= '<td style="background-color: #31869B;color: white;">Total: '.Formatter::convertToHoursMins($cliente["horasEstipuladas"]).'</td>';
+			                                    $html .= '<td style="background-color: #31869B;color: white;">Total: '.Formatter::convertToHoursMins($cliente["horasFeitas"]).'</td>';
+			                                $html .= '</tr>';
+			                            }
+		                            $html .= '<tr>';
+		                                $html .= '<td colspan="6">&nbsp;</td>';
+		                            $html .= '</tr>';
+			                    }
+			                }
+			            $html .= '</tbody>';
+			        $html .= '</table>';
+			    $html .= '</body>';
+			$html .= '</html>';
+
+			header('Content-Disposition: attachment; filename="ServicoPorCliente.xls"');
+			header("Cache-control: private");
+			header("Content-type: application/force-download");
+			header("Content-transfer-encoding: binary\n");
+			echo $html;			
+			exit;
 		} else {
 			return View::make('relatorio.cronogramademanada',compact('results'));
 		}
