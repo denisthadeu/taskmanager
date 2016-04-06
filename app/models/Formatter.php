@@ -200,37 +200,47 @@
 		return date("Y-m-d H:i:s", strtotime($dias." +".$minutes." minutes"));
 	  }
 
+	  	public static function recursivoHorarioComercial($data)
+		{
+			$hora =  date("H", strtotime($data));
+			if($hora >= 18){
+				$arrHorarios = array('18'=>'15','19'=>'14','20'=>'13','21'=>'12','22'=>'11','23'=>'10','00'=>'9','01'=>'8','02'=>'7',);
+				$minutes = (60 * $arrHorarios[$hora]);
+				$data = date("Y-m-d H:i:s", strtotime("+".$minutes." minutes", strtotime($data)));
+			}
+			$diaSemana = date("l", strtotime($data));
+			if($diaSemana == "Saturday"){
+				$extraMinutes = (2 * 24 * 60);
+				$data = date("Y-m-d H:i:s", strtotime("+".$extraMinutes." minutes", strtotime($data)));
+			} elseif($diaSemana == "Saturday"){
+				$extraMinutes = (1 * 24 * 60);
+				$data = date("Y-m-d H:i:s", strtotime("+".$extraMinutes." minutes", strtotime($data)));
+			}
+			$horaFim = date("H", strtotime($data));
+		    return $data;
+		}
+
 	  public static function setDatalDBPlusMinutes($data,$minutes)
 	  {
-		$dias = null;
-		$extraMinutes = 0;
-		$hora = date('H', strtotime( $dias." +".$minutes." minutes", strtotime($data)));
-	  	$recursive = false;
-		if($hora >= 18){
-			$arrHorarios = array('18'=>'15','19'=>'14','20'=>'13','21'=>'12','22'=>'11','23'=>'10');
-			$minutes = $minutes + (60 * $arrHorarios[$hora]);
-			$extraMinutes = ($hora - 18) * 60;
-			$recursive = true;
-		}  elseif($hora < 9){
-			$minutes = $minutes + (60 * (9 - $hora)) ;
-			$extraMinutes = ($hora + 6) * 60;
-			$recursive = true;
+		$hours = floor($minutes / 60);
+	    $minutes = ($minutes % 60);
+	    $hid = 8;
+	    $days = floor($hours/$hid);
+	    $horaINi =  date("H", strtotime($data));
+	    $hours = $hours - ($days * $hid);
+	    $data = date("Y-m-d H:i:s", strtotime("+".$minutes." minutes", strtotime($data)));
+		$data = Formatter::recursivoHorarioComercial($data);
+		$data = date("Y-m-d H:i:s", strtotime("+".$hours." hours", strtotime($data)));
+		$data = Formatter::recursivoHorarioComercial($data);
+		for ($i = 1; $i <= $days; $i++){
+			$data = date("Y-m-d H:i:s", strtotime("+1 day", strtotime($data)));
+			$data = Formatter::recursivoHorarioComercial($data);
 		}
-		$diaSemana = date("l", strtotime( $dias." +".$minutes." minutes", strtotime($data)));
-		if($diaSemana == "Saturday"){
-			$dias = " + 2 day ";
-			$recursive = true;
-			$extraMinutes = $extraMinutes + (2 * 24 * 60);
-		} elseif($diaSemana == "Saturday"){
-			$dias = " + 1 day ";
-			$recursive = true;
-			$extraMinutes = $extraMinutes + (1 * 24 * 60);
+		$horaFim = date("H", strtotime($data));
+		if($horaINi <= 12 && $horaFim >= 12 ){
+			$data = date("Y-m-d H:i:s", strtotime("+60 minutes", strtotime($data)));
 		}
-		$minutes = $minutes + $extraMinutes;
-		if($recursive){
-			return Formatter::setDatalDBPlusMinutes($data,$minutes);
-		}
-		return date("Y-m-d H:i:s", strtotime( $dias." +".$minutes." minutes", strtotime($data)));
+	    return $data;
 	  }
 
 	  public static function dataAtualDBPlusHours($hours)
