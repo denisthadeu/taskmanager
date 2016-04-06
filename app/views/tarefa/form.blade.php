@@ -25,23 +25,28 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <input name="nome" placeholder="Título da Tarefa" REQUIRED class="form-control" value="{{ $tarefa->nome or '' }}" />
-                                        @if(isset($tarefa))
-                                        	<p>
-                                        		#{{$tarefa->id}} Criado por: {{ $tarefa->criado_por->nome }} em {{ Formatter::getDataHoraFormatada($tarefa->created_at) }}
-                                        	</p>
-                                        @endif
+                                    </div>
+                                </div>
+                            </p>
+                            <p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" name="dt_ini" placeholder="Data de Início da tarefa" class="form-control selector" value="{{ date('d/m/Y') }}" id="dp-4" data-date="{{ date('d/m/Y') }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" REQUIRED />
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group bootstrap-timepicker">
+                                            <input type="text" name="hr_ini" placeholder="Hora de Início da tarefa" class="form-control timepicker24" REQUIRED />
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </p>
                             <p>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p id="p-responsavel">
-                                        	<select class="form-control" required name="responsavel" id="responsavel">
-                                        		<option value="">Responsável</option>
-                                        		{{ $optionUsers }}
-                                        	</select>
-                                        </p>
                                         <p>
                                             <select class="form-control" required name="projeto" id="projeto" >
                                                 <option value="">Projeto</option>
@@ -70,6 +75,12 @@
                                                         <option value="{{ $tarefaTipo->id }}" @if(isset($tarefa) && $tarefa->tarefa_tipo_id == $tarefaTipo->id) SELECTED @endif>{{ $tarefaTipo->nome }}</option>
                                                     @endforeach
                                                 @endif
+                                            </select>
+                                        </p>
+                                        <p id="p-responsavel">
+                                            <select class="form-control" required name="responsavel" id="responsavel">
+                                                <option value="">Responsável</option>
+                                                {{ $optionUsers }}
                                             </select>
                                         </p>
                                         <p id="cronograma-p" style="display: none;">
@@ -188,6 +199,10 @@
             // var html = $("#p-upload-files").html();
             html = '<p><input type="file" name="files[]" class="form-control" /></p>';
             $("#p-upload-files").append(html);
+        });
+
+        $( ".selector" ).datepicker({ 
+            dateFormat: 'dd/mm/yy' 
         });
     });
 </script>

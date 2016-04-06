@@ -109,6 +109,10 @@ class TarefaController extends BaseController {
 	public function postSavetarefa()
 	{
 		extract(Input::all());
+
+		$data = Formatter::stringToDate($dt_ini)." ".$hr_ini;
+		echo "ini: ".$data."<br/>";
+		echo "Fim: ".Formatter::setDatalDBPlusMinutes($data,60 * 2)."<br/>";exit;
 		$idTarefa = 0;
 		$tarefaProximo = 0;
 		$tarefaAnterior = 0;
@@ -135,8 +139,8 @@ class TarefaController extends BaseController {
 			$tarefa->tarefa_anterior		= $tarefaAnterior;
 			$tarefa->tarefa_proximo			= $tarefaProximo;
 			$tarefa->status 				= 0;
-			$tarefa->data_ini 				= Formatter::dataAtualDBPlusMinutes(0);
-			$tarefa->data_fim 				= Formatter::dataAtualDBPlusMinutes($tarefa->minutos);
+			$tarefa->data_ini 				= Formatter::stringToDate($dt_ini)." ".$hr_ini;
+			$tarefa->data_fim 				= Formatter::setDatalDBPlusMinutes($tarefa->data_ini,$tarefa->minutos);
 			$tarefa->save();
 
 			$tarefa->nome = "#".$tarefa->id." - ".$tarefa->nome;
@@ -187,9 +191,9 @@ class TarefaController extends BaseController {
 					$tarefa->status 				= 0;
 					$tarefa->tarefa_anterior		= $tarefaAnterior;
 					$tarefa->tarefa_proximo			= $tarefaProximo;
-					$tarefa->data_ini 				= Formatter::dataAtualDBPlusMinutes($acumuladorMinutos);
+					$tarefa->data_ini 				= Formatter::stringToDate($dt_ini)." ".$hr_ini;
 					$acumuladorMinutos 				= $acumuladorMinutos + $tarefa->minutos;
-					$tarefa->data_fim 				= Formatter::dataAtualDBPlusMinutes($acumuladorMinutos);
+					$tarefa->data_fim 				= Formatter::setDatalDBPlusMinutes($tarefa->data_ini,$acumuladorMinutos);
 					$tarefa->save();
 
 					$tarefa->nome = "#".$tarefa->id." - ".$tarefa->nome." - ".$descricaoCronograma->nome;

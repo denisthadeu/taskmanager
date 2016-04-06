@@ -367,7 +367,8 @@
         <script type="text/javascript" src="{{ URL::asset('js/plugins/rickshaw/rickshaw.min.js') }}"></script>
         <script type='text/javascript' src="{{ URL::asset('js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
         <script type='text/javascript' src="{{ URL::asset('js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>                
-        <script type='text/javascript' src="{{ URL::asset('js/plugins/bootstrap/bootstrap-datepicker.js') }}"></script>                
+        <script type='text/javascript' src="{{ URL::asset('js/plugins/bootstrap/bootstrap-datepicker.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/plugins/bootstrap/bootstrap-timepicker.min.js') }}"></script>          
         <script type="text/javascript" src="{{ URL::asset('js/plugins/owl/owl.carousel.min.js') }}"></script>                 
         
         <script type="text/javascript" src="{{ URL::asset('js/plugins/moment.min.js') }}"></script>
