@@ -22,6 +22,11 @@ class RelatorioController extends BaseController {
 		} else {
 			$dataFiltro = date('Y-m');
 		}
+		if(Input::has('filtro-setor')){
+			$dataSetor = Input::get('filtro-setor');
+		} else {
+			$dataSetor = 0;
+		}
 		$titulo = Formatter::dataExtenso($dataFiltro);
 		$equipes = Equipe::with(['equipeCliente' => function($query) use($dataFiltro)
 			{
@@ -33,7 +38,11 @@ class RelatorioController extends BaseController {
 					}])
 				->OrderBy('nome');
 				}]);
-			}])->OrderBy('nome')->get();
+			}])->OrderBy('nome');
+		if(!empty($dataSetor)){
+			$equipes = $equipes->where('id','=',$dataSetor);
+		}
+		$equipes = $equipes->get();
 		$results = null;
 		//pega as equipes
 		foreach($equipes AS $equipe){
@@ -42,6 +51,7 @@ class RelatorioController extends BaseController {
 			$results[$equipe->id]["colspan"] = 0;
 			$results[$equipe->id]["horasEstipuladas"] = 0;
 			$results[$equipe->id]["horasFeitas"] = 0;
+			$results[$equipe->id]["clientes"] = array();
 			//pega os clientes que a equipe atende
 			foreach($equipe->equipeCliente AS $key => $equipeCliente){
 				$cliente = $equipeCliente->cliente;
@@ -107,6 +117,9 @@ class RelatorioController extends BaseController {
 				}
 			}
 			$results[$equipe->id]["colspan"]++;
+			if($results[$equipe->id]["colspan"] == 1){
+				$results[$equipe->id]["colspan"] = 2;
+			}
 		}
 
 		if(Input::has('excel')){
@@ -192,7 +205,8 @@ class RelatorioController extends BaseController {
 			echo $html;			
 			exit;
 		} else {
-			return View::make('relatorio.cronogramademanada',compact('results','dataFiltro','titulo'));
+			$equipesFiltro = Equipe::OrderBy('nome')->get();
+			return View::make('relatorio.cronogramademanada',compact('results','dataFiltro','titulo','dataSetor','equipesFiltro'));
 		}
 	}
 

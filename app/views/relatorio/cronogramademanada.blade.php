@@ -19,6 +19,16 @@
         </div>
         <form>
             <div class="col-md-2">
+                <select class="form-control" name="filtro-setor">
+                    <option value="0">Todos os Setores</option>
+                        @if(isset($equipesFiltro) && !empty($equipesFiltro))
+                            @foreach($equipesFiltro as $keyResult => $equ)
+                                <option value="{{ $equ->id }}" @if( $dataSetor == $equ->id ) selected="" @endif >{{ $equ->nome }}</option>
+                            @endforeach
+                        @endif
+                </select>
+            </div>
+            <div class="col-md-2">
                 <select class="form-control" name="filtro-data">
                     @for ($i = 2016; $i <= date('Y'); $i++)
                         @for ($j = 1; ($j <= 12 && $i < date('Y')) || ($j <= date('n')); $j++)
@@ -31,13 +41,14 @@
                 <button type="submit" class="btn btn-primary">Filtrar</button>
             </div>
         </form>
-    	<div class="col-md-5">
+    	<div class="col-md-3">
     		&nbsp;
     	</div>
     	<div class="col-md-1">
             <form method="get" action="{{ URL::to('relatorio/cronogramademanda') }}">
                 <input name="excel" value="excel" type="hidden" />
                 <input name="filtro-data" value="{{ $dataFiltro }}" type="hidden" />
+                <input name="filtro-setor" value="{{ $dataSetor }}" type="hidden" />
     		    <button type="submit" class="btn btn-primary">Exportar EXCEL</button>
             </form>
     	</div>
