@@ -425,6 +425,11 @@ class TarefaController extends BaseController {
 	}
 
 	public function getTeste(){
-		die(Formatter::dataAtualDBPlusMinutes(70*60));
+		die(Formatter::dataAtualDBPlusMinutes(-70*60));
+	}
+
+	public function getAngular()
+	{
+		return View::make('id.angular');
 	}
 }

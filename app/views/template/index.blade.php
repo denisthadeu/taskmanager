@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {{--*/ $myProfile = Auth::user(); /*--}}
-<html lang="en">
+<html lang="en" ng-app="taskmanager">
     <head>        
         <!-- META SECTION -->
         <title>Bluefoot</title>            
@@ -375,6 +375,8 @@
         <script type="text/javascript" src="{{ URL::asset('js/plugins.js') }}"></script>        
         <script type="text/javascript" src="{{ URL::asset('js/actions.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/maskedinput.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/angular/angular.min.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('js/angular/app.js') }}"></script>
         @section('script')
 
         @show
