@@ -10,7 +10,16 @@
         <li class="active">@if(isset($user)) {{ $user->nome }} @else Novo Usuário @endif</li>
     </ul>
 <div class="page-title">                    
-    <h2><span class="glyphicon glyphicon-user"></span>@if(isset($user)) {{ $user->nome }} @else Novo Usuário @endif</h2>
+    <div class="row" style="padding-bottom: 7px;">
+        <div class="col-md-9">
+            <h2><span class="glyphicon glyphicon-user"></span>@if(isset($user)) {{ $user->nome }} @else Novo Usuário @endif</h2>
+        </div>
+        @if(isset($user))
+            <div class="col-md-1">
+                <a href="{{ URL::to('user/create') }}"><button type="button" class="btn btn-primary">Novo Usuário</button></a>
+            </div>
+        @endif
+    </div>
 </div>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->

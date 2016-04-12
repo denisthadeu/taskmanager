@@ -10,7 +10,7 @@ class Tarefa extends Eloquent {
 
 	public function projeto()
 	{
-		return $this->belongsTo('ClientesProjetos','clientes_projetos_id');
+		return $this->belongsTo('Clientesprojetos','clientes_projetos_id');
 	}
 
 	public function cliente()
