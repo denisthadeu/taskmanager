@@ -108,10 +108,10 @@
                         Bluefoot
                     </div>
                     <div class="pull-right">
+                        <!-- <a href="#">A Empresa</a> |
+                        <a href="#">Contato</a> | --> 
                         <a href="{{ URL::to('/') }}">Login</a> |
-                        <a href="{{ URL::to('id/sign-up') }}">Cadastre-se</a> |
-                        <a href="#">A Empresa</a> |
-                        <a href="#">Contato</a>
+                        <a href="{{ URL::to('id/forgot') }}">Esqueci a Senha</a>
                     </div>
                 </div>
             </div>

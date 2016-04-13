@@ -111,8 +111,6 @@ class TarefaController extends BaseController {
 		extract(Input::all());
 
 		$data = Formatter::stringToDate($dt_ini)." ".$hr_ini;
-		echo "ini: ".$data."<br/>";
-		echo "Fim: ".Formatter::setDatalDBPlusMinutes($data,60 * 2)."<br/>";exit;
 		$idTarefa = 0;
 		$tarefaProximo = 0;
 		$tarefaAnterior = 0;

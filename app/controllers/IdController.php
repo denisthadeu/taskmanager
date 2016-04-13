@@ -71,8 +71,8 @@ class IdController extends \BaseController
 	}
 	public function postSignIn()
 	{
-		// if (Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password'))))
-		if (Auth::attempt(Input::only('email','password')))
+		if (Auth::attempt(array('email' => Input::get('email'), 'password' => Input::get('password'), 'status' => 1)))
+		// if (Auth::attempt(Input::only('email','password')))
 		{
 			return Redirect::to('/')->with('success', array(1 => 'Você logou no sistema.'));
 		}
@@ -92,5 +92,31 @@ class IdController extends \BaseController
 		$user = User::Where('email', $email)->first();
 		Auth::login($user);
 		return Redirect::to('/')->with('success', array(1 => 'Você logou no sistema.'));
+	}
+
+	public function getForgot()
+	{
+		return View::make('id.forgot');
+	}
+
+	public function postForgot()
+	{
+		extract(Input::all());
+		$user = User::where('email','=',$email)->OrderBy('id','DESC')->first();
+		$senha = Formatter::generateStrongPassword();
+		$user->password = Hash::make($senha);
+		$user->save();
+
+		$arr = array();
+		$arr["nome"] = $user->nome;
+		$arr["senha"] = $senha;
+		$arr["email"] = $user->email;
+
+		Mail::send('emails.forgot', $arr, function($message) use($arr)
+		{
+		    $message->to($arr["email"], $arr["nome"])->subject('Bem-vindo!');
+		});
+
+		return Redirect::to('/')->with('warning', array('warning' => 'Um e-mail foi enviado para você.'));	
 	}
 }

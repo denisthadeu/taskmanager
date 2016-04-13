@@ -144,26 +144,37 @@
                                     </div>
                                 </div>
                             </p>
-                            <p>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Senha
+                            @if(Auth::user()->perfil == 1)
+                                @if(!isset($user))
+                                    <p>
+                                        <div class="row">
+                                            <div class="col-md-12 text-danger" style="font-size: 10px">
+                                                Obs.: Se a senha não for preenchida, então o sistema irá gerar uma senha segura secreta automaticamente para o novo usuário
+                                            </div>
+                                        </div>
+                                    </p>
+                                @endif
+                                <p>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            Senha
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="password" name="senha" placeholder="Senha" class="form-control" />
+                                        </div>
                                     </div>
-                                    <div class="col-md-9">
-                                        <input type="password" name="senha" placeholder="Senha" class="form-control" @if(!isset($user)) REQUIRED @endif />
+                                </p>
+                                <p>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            Confirmação de senha
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="password" name="senha_confirma" placeholder="Confirme senha" class="form-control"/>
+                                        </div>
                                     </div>
-                                </div>
-                            </p>
-                            <p>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        Confirmação de senha
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="password" name="senha_confirma" placeholder="Confirme senha" class="form-control"  @if(!isset($user)) REQUIRED @endif />
-                                    </div>
-                                </div>
-                            </p>
+                                </p>
+                            @endif
                         </div> 
                     </div>
                 </div>

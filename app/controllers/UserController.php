@@ -42,9 +42,11 @@ class UserController extends BaseController {
 	public function postSave(){
 		extract(Input::all());
 		// dd(Input::all());
+		$enviarEmail = false;
 		if(empty($id)){
 			$user = new User();
 			$msg = "Usuário Cadastrado";
+			$enviarEmail = true;
 		} else {
 			$user = User::find($id);
 			$msg = "Usuário Alterado";
@@ -69,6 +71,9 @@ class UserController extends BaseController {
 		$user->status = 1;
 		if(isset($senha) && isset($senha_confirma) && !empty($senha_confirma) && !empty($senha) && $senha_confirma == $senha){
 			$user->password = Hash::make($senha);
+		} elseif($enviarEmail){
+			$senha = Formatter::generateStrongPassword();
+			$user->password = Hash::make($senha);
 		}
 		$user->save();
 
@@ -85,6 +90,17 @@ class UserController extends BaseController {
 		        $user->foto_caminho_completo = $imginfo['destinationPath'].$imginfo['filename'];
 		        $user->save();
 			}
+		}
+
+		if($enviarEmail){
+			$arr = array();
+			$arr["nome"] = $user->nome;
+			$arr["senha"] = $senha;
+			$arr["email"] = $email;
+			Mail::send('emails.welcome', $arr, function($message) use($arr)
+			{
+			    $message->to($arr["email"], $arr["nome"])->subject('Bem-vindo!');
+			});
 		}
 
 		return Redirect::to('user/edit/'.$user->id)->with('success',$msg);

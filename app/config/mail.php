@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	'from' => array('address' => 'back@bluefoot.com.br', 'name' => 'Bluefoot - Sistema de Tarefas'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => null,
+	'username' => 'back@bluefoot.com.br',
 
 	/*
 	|--------------------------------------------------------------------------
