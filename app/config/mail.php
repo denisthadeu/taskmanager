@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	'host' => 'smtp.smtp.org',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'back@bluefoot.com.br', 'name' => 'Bluefoot - Sistema de Tarefas'),
+	'from' => array('address' => 'bluefoot@bluefoot.uni5.net', 'name' => 'Bluefoot - Sistema de Tarefas'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'back@bluefoot.com.br',
+	'username' => 'bluefoot@bluefoot.uni5.net',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password' => null,
+	'password' => 'qazwsx321',
 
 	/*
 	|--------------------------------------------------------------------------
