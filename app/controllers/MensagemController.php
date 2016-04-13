@@ -90,15 +90,17 @@ class MensagemController extends BaseController {
 		$response["total"] = $mensagens->count();
 		$response["resultados"] = '';
 		$response["alerta"] = false;
-		foreach ($mensagens as $key => $mensagem) {
-			$response["resultados"][$key]["usernome"] = $mensagem->remetente->nome;
-			$response["resultados"][$key]["mensagemassunto"] = $mensagem->assunto;
-			$response["resultados"][$key]["url"] = URL::to('mensagem/mensagem/'.$mensagem->id);
-			$response["resultados"][$key]["userfoto"] = $mensagem->remetente->foto_caminho_completo;
-			if($mensagem->status == 2){
-				$mensagem->status = 1;
-				$mensagem->save();
-				$response["alerta"] = true;
+		if($response["total"] > 0){
+			foreach ($mensagens as $key => $mensagem) {
+				$response["resultados"][$key]["usernome"] = $mensagem->remetente->nome;
+				$response["resultados"][$key]["mensagemassunto"] = $mensagem->assunto;
+				$response["resultados"][$key]["url"] = URL::to('mensagem/mensagem/'.$mensagem->id);
+				$response["resultados"][$key]["userfoto"] = $mensagem->remetente->foto_caminho_completo;
+				if($mensagem->status == 2){
+					$mensagem->status = 1;
+					$mensagem->save();
+					$response["alerta"] = true;
+				}
 			}
 		}
 		echo json_encode($response);
