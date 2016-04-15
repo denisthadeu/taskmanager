@@ -28,7 +28,8 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.bluefoot.web2303.uni5.net',
+	//'host' => 'smtp.bluefoot.web2303.uni5.net',
+	'host' => 'smtp.uni5.net',
 
 	/*
 	|--------------------------------------------------------------------------
