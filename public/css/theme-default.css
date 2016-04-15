@@ -1063,17 +1063,16 @@ body.page-container-boxed .page-container {
   background: #2d3945;
 }
 .profile .profile-image {
-  float: left;
-  width: 100%;
-  margin: 0px 0px 10px;
-  text-align: center;
+    margin: 10px auto;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 150px;
 }
 .profile .profile-image img {
-  width: 100px;
-  border: 3px solid #FFF;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+    width: 100%;
+    height: auto;
 }
 .profile .profile-data {
   width: 100%;

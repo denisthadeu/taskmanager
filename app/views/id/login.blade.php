@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-6">
-            <a href="{{URL::to("password/remind")}}" class="btn btn-link btn-block">Esqueceu sua senha?</a><br/>
+            <a href="{{ URL::to('id/forgot') }}" class="btn btn-link btn-block">Esqueceu sua senha?</a><br/>
         </div>
         <div class="col-md-6">
             <button class="btn btn-info btn-block">Log In</button>
