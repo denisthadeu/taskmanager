@@ -15,7 +15,7 @@
             &nbsp;
         </div>
         <div class="col-md-6">
-            <button class="btn btn-info btn-block">Cadastrar</button>
+            <button class="btn btn-info btn-block">Enviar por e-mail</button>
         </div>
     </div>
 </form>
