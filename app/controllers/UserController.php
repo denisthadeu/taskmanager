@@ -89,6 +89,10 @@ class UserController extends BaseController {
 		        $user->foto_caminho    = $imginfo['filename'];
 		        $user->foto_caminho_completo = $imginfo['destinationPath'].$imginfo['filename'];
 		        $user->save();
+
+		        $image = Image::make($user->foto_caminho_completo)->resize(100, 100);
+		        $image->save($user->foto_caminho_completo);
+
 			}
 		}
 

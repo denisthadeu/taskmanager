@@ -129,6 +129,7 @@ return array(
 		'Orangehill\Iseed\IseedServiceProvider',
 		'Schickling\Backup\BackupServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
+		'Intervention\Image\ImageServiceProvider',
 
 	),
 
@@ -178,6 +179,7 @@ return array(
 		'Hash'            => 'Illuminate\Support\Facades\Hash',
 		'HTML'            => 'Illuminate\Support\Facades\HTML',
 		'Input'           => 'Illuminate\Support\Facades\Input',
+		'Image' 		  => 'Intervention\Image\Facades\Image',
 		'Lang'            => 'Illuminate\Support\Facades\Lang',
 		'Log'             => 'Illuminate\Support\Facades\Log',
 		'Mail'            => 'Illuminate\Support\Facades\Mail',

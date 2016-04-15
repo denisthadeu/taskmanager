@@ -34,7 +34,7 @@
                             <p>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="profile" style="background-color: #fff">
+                                        <div class="profile" style="background-color: #fff;">
                                             <div class="profile-image">
                                                 @if(isset($user) && !empty($user->foto_caminho_completo))
                                                     <img src="{{ URL::asset($user->foto_caminho_completo) }}" class="image_perfil" alt="John Doe">
@@ -198,6 +198,7 @@
 @stop
 
 @section('script')
+<script type="text/javascript" src="http://cdn.rawgit.com/tapmodo/Jcrop/master/js/jquery.Jcrop.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $(".date").mask("99/99/9999");
@@ -220,7 +221,15 @@
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
+                    $('.image_perfil').Jcrop({
+                        // onChange:   [ 100, 100, 50, 50 ],
+                        boxWidth: 100,   //Maximum width you want for your bigger images
+                        boxHeight: 100,  //Maximum Height for your bigger images
+                        onSelect: false,
+                        onChange: false,
+                    });
                     $('.image_perfil').attr('src', e.target.result);
+
                 }
                 reader.readAsDataURL(input.files[0]);
             }
