@@ -62,7 +62,7 @@
                                             <tr  class="ui-state-default" data-tarefa="{{$minhaTarefa->id}}">
                                                 <td>{{ $minhaTarefa->id }}</td>
                                                 <td>{{ $minhaTarefa->nome }}</td>
-                                                <td>{{ $minhaTarefa->cliente->nome }} / {{ $minhaTarefa->projeto->nome }}</td>
+                                                <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->projeto->nome or '' }}</td>
                                                 <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>

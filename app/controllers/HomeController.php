@@ -40,7 +40,7 @@ class HomeController extends BaseController {
 						{
 						    $query->with(['user' => function($query)
 							{
-							    $query->with('minhastarefashoje');
+							    $query->with('minhastarefashoje')->OrderBy('nome');
 							}]);
 						}])
 						->get();
