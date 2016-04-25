@@ -168,6 +168,31 @@
 
 @section('script')
 <script type="text/javascript" src="{{ URL::asset('js/plugins/summernote/summernote.js') }}"></script>
+<script src="//cdn.jsdelivr.net/select2/4.0.2/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="//cdn.jsdelivr.net/select2/4.0.2/css/select2.min.css" />
+<style>
+.select2-container--default .select2-selection--single {
+    background-color: #fafafa;
+    border: 2px solid #e4e4e4;
+    border-radius: 4px;
+    height: 35px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+.select2-dropdown {
+    background-color: #fafafa;
+    border: 2px solid #e4e4e4;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    left: -100000px;
+    width: 100%;
+    z-index: 1051;
+    top: -10px;
+}
+
+</style>
 <script type="text/javascript">
     $(document).ready(function() {
         $("input[name = 'opcao']").click(function(){
@@ -211,6 +236,8 @@
         $( ".selector" ).datepicker({ 
             dateFormat: 'dd/mm/yy' 
         });
+
+        jQuery('select').select2();
     });
 </script>
 @stop

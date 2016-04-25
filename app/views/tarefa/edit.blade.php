@@ -38,7 +38,7 @@
                                             <input name="nome" placeholder="Título da Tarefa" class="form-control" value="{{ $tarefa->nome or '' }}" />
                                         </p>
                                         <p>
-                                        	<select class="form-control" required name="responsavel" id="responsavel">
+                                        	<select class="form-control select2" required name="responsavel" id="responsavel">
                                         		<option value="">Responsável</option>
                                         		@if(isset($users) && !$users->isEmpty())
                                         			@foreach($users AS $user)
@@ -48,7 +48,7 @@
                                         	</select>
                                         </p>
                                         <p>
-                                        	<select class="form-control" name="tipo" id="tipo">
+                                        	<select class="form-control select2" name="tipo" id="tipo">
                                         		<option value="">Tipo</option>
                                         		@if(isset($tarefaTipos) && !$tarefaTipos->isEmpty())
                                         			@foreach($tarefaTipos AS $tarefaTipo)
@@ -58,7 +58,7 @@
                                         	</select>
                                         </p>
                                         <p>
-                                        	<select class="form-control" required name="projeto" id="projeto" >
+                                        	<select class="form-control select2" required name="projeto" id="projeto" >
                                         		<option value="">Projeto</option>
                                         		@if(isset($clientes) && !$clientes->isEmpty())
                                         			@foreach($clientes AS $cliente)
@@ -311,6 +311,8 @@
 @stop
 
 @section('script')
+<script src="//cdn.jsdelivr.net/select2/4.0.2/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="//cdn.jsdelivr.net/select2/4.0.2/css/select2.min.css" />
 <script type="text/javascript" src="{{ URL::asset('js/plugins/summernote/summernote.js') }}"></script>
 <script type="text/javascript">
     function get_tempo(){
@@ -375,7 +377,7 @@
                 return false;
             }
         });
-
+        jQuery('.select2').select2();
         get_tempo();
     });
 </script>
