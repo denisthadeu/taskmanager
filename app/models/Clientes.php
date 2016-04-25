@@ -18,4 +18,14 @@ class Clientes extends Eloquent {
 	{
 		return $this->hasMany('Equipecliente','cliente_id');
 	}
+
+	public function equipeclienteId($equipe_id)
+	{
+		$a = $this->hasMany('Equipecliente','cliente_id')->where('equipe_id','=',$equipe_id)->first();
+		if(!empty($a)){
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

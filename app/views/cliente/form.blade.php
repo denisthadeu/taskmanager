@@ -35,12 +35,24 @@
                     <div class="panel-body">                            
                         <div class="tocify-content">
                             <p>
-                                <div class="row">
+                                <div class="row" style="padding-bottom: 2px;">
                                     <div class="col-md-3">
                                         Nome*
                                     </div>
                                     <div class="col-md-9">
                                         <input name="nome" placeholder="Nome" class="form-control" required value="{{ $cliente->nome or '' }}" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        Equipes*
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select name="equipes[]" multiple=""  class="form-control">
+                                            @foreach($equipes as $equipe)
+                                                <option value="{{ $equipe->id }}" @if(isset($cliente) && $cliente->equipeclienteId($equipe->id)) SELECTED @endif>{{ $equipe->nome }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row" style="padding-top: 7px;">

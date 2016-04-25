@@ -14,13 +14,15 @@ class ClienteController extends BaseController {
 
 	public function getCreate()
 	{
-		return View::make('cliente.form');
+		$equipes = Equipe::OrderBy('nome')->get();
+		return View::make('cliente.form',compact('equipes'));
 	}
 
 	public function getEdit($id)
 	{
 		$cliente = Clientes::find($id);
-		return View::make('cliente.form',compact('cliente'));
+		$equipes = Equipe::OrderBy('nome')->get();
+		return View::make('cliente.form',compact('cliente','equipes'));
 	}	
 
 	public function getDelete($id)
@@ -59,6 +61,15 @@ class ClienteController extends BaseController {
 			}
 		}
 		$deletedProjetos = Clientesprojetos::where('clientes_id','=',$cliente->id)->whereNotIn('id', $arrIDSProjetos)->delete();
+
+		$deletedEquipeClientes = Equipecliente::where('cliente_id','=',$cliente->id)->delete();
+		foreach($equipes AS $equipe){
+			$equipeCliente = new Equipecliente();
+			$equipeCliente->cliente_id = $cliente->id;
+			$equipeCliente->equipe_id = $equipe;
+			$equipeCliente->save();
+		}
+
 		return Redirect::to('cliente/edit/'.$cliente->id)->with('success',$msg);
 	}
 
