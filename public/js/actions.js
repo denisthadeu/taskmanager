@@ -282,7 +282,7 @@ function page_content_onresize(){
     var sidebar = $(".page-sidebar");
     
     if(content.height() < $(document).height() - content_minus){        
-        content.height($(document).height() - content_minus);
+        // content.height($(document).height() - content_minus);
     }        
     
     if(sidebar.height() > content.height()){        
