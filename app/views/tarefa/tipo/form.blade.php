@@ -15,8 +15,15 @@
         <li><a href="{{ URL::to('tarefatipo/list') }}">Visualizar Tipo de tarefas</a></li>
         <li class="active">@if(!isset($tarefatipo)) Novo Tipo de Tarefa @else Editar Tipo de tarefa {{ $tarefatipo->nome }} @endif</li>
     </ul>
-<div class="page-title">                    
-    <h2><span class="fa fa-th-large"></span>@if(!isset($tarefatipo)) Novo Tipo de Tarefa @else Editar Tipo de Tarefa {{ $tarefatipo->nome }} @endif</h2>
+<div class="page-title">
+    <div class="col-md-10">             
+        <h2><span class="fa fa-th-large"></span>@if(!isset($tarefatipo)) Novo Tipo de Tarefa @else Editar Tipo de Tarefa {{ $tarefatipo->nome }} @endif</h2>
+    </div>
+    @if(isset($tarefatipo))
+        <div class="col-md-2">
+            <a href="{{ URL::to('tarefatipo/create') }}"><button type="button" class="btn btn-primary">Novo Tipo de Tarefa</button></a>
+        </div>
+    @endif
 </div>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->

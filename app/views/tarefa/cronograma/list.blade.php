@@ -10,16 +10,13 @@
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap panel-body">
-    <div class="page-title">                    
-        <h2><span class="fa fa-sitemap"></span> Cronograma</h2>
-    </div>
-    <div class="row" style="padding-bottom: 7px;">
-    	<div class="col-md-10">
-    		&nbsp;
-    	</div>
-    	<div class="col-md-1">
-    		<a href="{{ URL::to('cronograma/create') }}"><button type="button" class="btn btn-primary">Novo Cronograma</button></a>
-    	</div>
+    <div class="page-title">
+        <div class="col-md-10">
+            <h2><span class="fa fa-sitemap"></span> Cronograma</h2>
+        </div>
+        <div class="col-md-1">
+            <a href="{{ URL::to('cronograma/create') }}"><button type="button" class="btn btn-primary">Novo Cronograma</button></a>
+        </div>
     </div>
     <div class="row">
     </div>
@@ -50,8 +47,8 @@
                                     @endif
                                 ">{{ $cronograma->descricao->count() }}</td>
 		                        <td>
-		                        	<a href="{{ URL::to('cronograma/edit') }}/{{$cronograma->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                    <a href="{{ URL::to('cronograma/delete') }}/{{$cronograma->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+		                        	<a href="{{ URL::to('cronograma/edit') }}/{{$cronograma->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
+                                    <a href="{{ URL::to('cronograma/delete') }}/{{$cronograma->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
 		                        </td>
 		                    </tr>
 		                @endforeach

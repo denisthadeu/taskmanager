@@ -11,15 +11,12 @@
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap panel-body">
     <div class="page-title">                    
-        <h2><span class="fa fa-puzzle-piece"></span> Lista de Equipes</h2>
-    </div>
-    <div class="row" style="padding-bottom: 7px;">
-    	<div class="col-md-10">
-    		&nbsp;
-    	</div>
-    	<div class="col-md-1">
-    		<a href="{{ URL::to('equipe/create') }}"><button type="button" class="btn btn-primary">Nova Equipe</button></a>
-    	</div>
+        <div class="col-md-10">
+            <h2><span class="fa fa-puzzle-piece"></span> Lista de Equipes</h2>
+        </div>
+        <div class="col-md-1">
+            <a href="{{ URL::to('equipe/create') }}"><button type="button" class="btn btn-primary">Nova Equipe</button></a>
+        </div>
     </div>
     <div class="row">
     </div>
@@ -53,8 +50,8 @@
                                 </td>
                                 <td>{{ $equipe->responsavel->nome }}</td>
 		                        <td>
-		                        	<a href="{{ URL::to('equipe/edit') }}/{{$equipe->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                    <a href="{{ URL::to('equipe/delete') }}/{{$equipe->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+		                        	<a href="{{ URL::to('equipe/edit') }}/{{$equipe->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
+                                    <a href="{{ URL::to('equipe/delete') }}/{{$equipe->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove">Deletar</span></button></a>
 		                        </td>
 		                    </tr>
 		                @endforeach

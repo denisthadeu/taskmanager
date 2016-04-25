@@ -9,7 +9,7 @@
         <li><a href="{{ URL::to('mensagem/in') }}">Caixa de Entrada</a></li>
         <li class="active">Nova Mensagem</li>
     </ul>
-<div class="page-title">                    
+<div class="page-title">        
     <h2><span class="fa fa-envelope"></span>Nova Mensagem</h2>
 </div>
 <!-- END PAGE TITLE -->                   

@@ -10,16 +10,13 @@
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap panel-body">
-    <div class="page-title">                    
-        <h2><span class="fa fa-envelope"></span> {{ $titulo }}</h2>
-    </div>
-    <div class="row" style="padding-bottom: 7px;">
-    	<div class="col-md-10">
-    		&nbsp;
-    	</div>
-    	<div class="col-md-1">
-    		<a href="{{ URL::to('mensagem/create') }}"><button type="button" class="btn btn-primary">Nova Mensagem</button></a>
-    	</div>
+    <div class="page-title">
+        <div class="col-md-10">
+            <h2><span class="fa fa-envelope"></span> {{ $titulo }}</h2>
+        </div>
+        <div class="col-md-1">
+            <a href="{{ URL::to('mensagem/create') }}"><button type="button" class="btn btn-primary">Nova Mensagem</button></a>
+        </div>
     </div>
     <div class="row">
     </div>
@@ -41,7 +38,7 @@
 		                        <td>@if($titulo == "Caixa de Entrada") {{ $mensagem->remetente->nome}} @else {{$mensagem->destinatario->nome}} @endif</td>
 		                        <td>{{ $mensagem->assunto }}</td>
 		                        <td>
-		                        	<a href="{{ URL::to('mensagem/mensagem') }}/{{$mensagem->id}}"><button type="button" class="btn btn-info"><span class="fa fa-eye">Ver</span></button></a>
+		                        	<a href="{{ URL::to('mensagem/mensagem') }}/{{$mensagem->id}}"><button type="button" class="btn btn-info"><span class="fa fa-eye">Visualizar</span></button></a>
                                     @if($titulo != "Caixa de Entrada")
                                         <a href="{{ URL::to('mensagem/mandaralerta') }}/{{$mensagem->id}}"><button type="button" class="btn btn-warning"><span class="fa fa-exclamation-circle">Mandar Alerta</span></button></a>
                                     @endif

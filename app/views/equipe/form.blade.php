@@ -15,8 +15,15 @@
         <li><a href="{{ URL::to('equipe/list') }}">Visualizar Equipes</a></li>
         <li class="active">@if(!isset($equipe)) Nova Equipe @else Editar Equipe {{ $equipe->nome }} @endif</li>
     </ul>
-<div class="page-title">                    
-    <h2><span class="fa fa-puzzle-piece"></span>@if(!isset($equipe)) Nova Equipe @else Editar Equipe {{ $equipe->nome }} @endif</h2>
+<div class="page-title">
+    <div class="col-md-10">               
+        <h2><span class="fa fa-puzzle-piece"></span>@if(!isset($equipe)) Nova Equipe @else Editar Equipe {{ $equipe->nome }} @endif</h2>
+    </div>
+    @if(isset($equipe))
+        <div class="col-md-1">
+            <a href="{{ URL::to('equipe/create') }}"><button type="button" class="btn btn-primary">Nova Equipe</button></a>
+        </div>
+    @endif
 </div>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->

@@ -71,7 +71,7 @@
                             <a href="#"><span class="fa fa-github"></span> <span class="xn-text">Clientes</span></a>
                             <ul>
                                 <li><a href="{{ URL::to('cliente/list') }}"><span class="fa fa-github-square"></span> Visualizar Clientes</a></li>
-                                <li><a href="{{ URL::to('cliente/create') }}"><span class="fa fa-plus"></span> Novo CLiente</a></li>
+                                <li><a href="{{ URL::to('cliente/create') }}"><span class="fa fa-plus"></span> Novo Cliente</a></li>
                             </ul>
                         </li>
                         <li class="xn-openable">

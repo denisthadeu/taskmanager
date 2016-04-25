@@ -15,8 +15,15 @@
         <li><a href="{{ URL::to('cronograma/list') }}">Visualizar Cronogramas</a></li>
         <li class="active">@if(!isset($cronograma)) Novo Cronograma @else Editar Cronograma {{ $cronograma->nome }} @endif</li>
     </ul>
-<div class="page-title">                    
-    <h2><span class="fa fa-sitemap"></span>@if(!isset($cronograma)) Novo Cronograma @else Editar cronograma {{ $cronograma->nome }} @endif</h2>
+<div class="page-title">
+    <div class="col-md-10">          
+        <h2><span class="fa fa-sitemap"></span>@if(!isset($cronograma)) Novo Cronograma @else Editar cronograma {{ $cronograma->nome }} @endif</h2>
+    </div>
+    @if(isset($cronograma))
+        <div class="col-md-1">
+            <a href="{{ URL::to('cronograma/create') }}"><button type="button" class="btn btn-primary">Novo Cronograma</button></a>
+        </div>
+    @endif
 </div>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->

@@ -16,7 +16,14 @@
         <li class="active">@if(!isset($cliente)) Novo Cliente @else Editar Cliente {{ $cliente->nome }} @endif</li>
     </ul>
 <div class="page-title">                    
-    <h2><span class="fa fa-github-square"></span>@if(!isset($cliente)) Novo Cliente @else Editar Cliente {{ $cliente->nome }} @endif</h2>
+    <div class="col-md-10">
+        <h2><span class="fa fa-github-square"></span>@if(!isset($cliente)) Novo Cliente @else Editar Cliente {{ $cliente->nome }} @endif</h2>
+    </div>
+    @if(isset($cliente))
+        <div class="col-md-1">
+            <a href="{{ URL::to('cliente/create') }}"><button type="button" class="btn btn-primary">Novo Cliente</button></a>
+        </div>
+    @endif
 </div>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
@@ -37,7 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="row" style="padding-top: 7px;">
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         <h3>Projetos</h3>
                                         <div class="row">
                                             <div class="col-md-10">

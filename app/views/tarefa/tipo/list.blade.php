@@ -10,18 +10,13 @@
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
 <div class="page-content-wrap panel-body">
-    <div class="page-title">                    
-        <h2><span class="fa fa-th-large"></span> Tipo de Tarefa</h2>
-    </div>
-    <div class="row" style="padding-bottom: 7px;">
-    	<div class="col-md-10">
-    		&nbsp;
-    	</div>
-    	<div class="col-md-1">
-    		<a href="{{ URL::to('tarefatipo/create') }}"><button type="button" class="btn btn-primary">Novo Tipo de Tarefa</button></a>
-    	</div>
-    </div>
-    <div class="row">
+    <div class="page-title">
+        <div class="col-md-10">
+            <h2><span class="fa fa-th-large"></span> Tipo de Tarefa</h2>
+        </div>
+        <div class="col-md-1">
+            <a href="{{ URL::to('tarefatipo/create') }}"><button type="button" class="btn btn-primary">Novo Tipo de Tarefa</button></a>
+        </div>
     </div>
     <div class="col-md-12">
         <table class="table table-bordered  table-hover" style="background-color: #fff">
@@ -41,8 +36,8 @@
                             <td>{{ $tarefatipo->nome }}</td>
                             <td>{{ Formatter::leadingZero($tarefatipo->hora_esforco) }}:{{ Formatter::leadingZero($tarefatipo->minuto_esforco) }}</td>
                             <td>
-                            	<a href="{{ URL::to('tarefatipo/edit') }}/{{$tarefatipo->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span></button></a>
-                                <a href="{{ URL::to('tarefatipo/delete') }}/{{$tarefatipo->id}}" class="remover-user"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                            	<a href="{{ URL::to('tarefatipo/edit') }}/{{$tarefatipo->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
+                                <a href="{{ URL::to('tarefatipo/delete') }}/{{$tarefatipo->id}}" class="remover-user"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
                             </td>
                         </tr>
                     @endforeach
