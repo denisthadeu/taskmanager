@@ -68,6 +68,7 @@
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
                                                 <td>{{ $minhaTarefa->statustarefa->nome }}</td>
                                                 <td>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
                                                     <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove">Deletar</span></button></a>
                                                 </td>
@@ -107,6 +108,7 @@
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
                                                 <td>{{ $tarefaCriada->statustarefa->nome }}</td>
                                                 <td>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil">Editar</span></button></a>
                                                     <a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove">Deletar</span></button></a>
                                                 </td>
@@ -144,6 +146,7 @@
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
                                                 <td>{{ $minhaTarefa->statustarefa->nome }}</td>
                                                 <td>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
                                                     <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
                                                 </td>
@@ -183,6 +186,7 @@
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
                                                 <td>{{ $tarefaCriada->statustarefa->nome }}</td>
                                                 <td>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
                                                     <a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
                                                 </td>
@@ -211,6 +215,15 @@
     $(document).ready(function() {
         $('.remover-equipe').click(function(){
             var r = confirm("Deseja deletar esta tarefa?");
+            if (r == true) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        $('.duplicar-equipe').click(function(){
+            var r = confirm("Deseja duplicar esta tarefa?");
             if (r == true) {
                 return true;
             } else {

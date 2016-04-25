@@ -10,10 +10,13 @@
         <li class="active">@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</li>
     </ul>
 <div class="page-title">            
-    <div class="col-md-10">     
-        <h2><span class="fa fa-list"></span>@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</h2> <br/> Criado por: {{ $tarefa->criadopor->nome }} em {{ Formatter::getDataHoraFormatada($tarefa->created_at) }}
+    <div class="col-md-8">     
+        <h2><span class="fa fa-list"></span>@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</h2> <br/><br/><br/> Criado por: {{ $tarefa->criadopor->nome }} em {{ Formatter::getDataHoraFormatada($tarefa->created_at) }}
     </div>
     @if(isset($tarefa))
+        <div class="col-md-2">
+            <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning">Duplicar Tarefa</button></a>
+        </div>
         <div class="col-md-1">
             <a href="{{ URL::to('tarefa/create') }}"><button type="button" class="btn btn-primary">Nova Tarefa</button></a>
         </div>
@@ -363,6 +366,14 @@
         $('.edit-extra-info').click(function(){
             $(this).siblings().toggle();
             $(this).toggle();
+        });
+        $('.duplicar-equipe').click(function(){
+            var r = confirm("Deseja duplicar esta tarefa?");
+            if (r == true) {
+                return true;
+            } else {
+                return false;
+            }
         });
 
         get_tempo();

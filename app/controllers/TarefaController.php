@@ -430,4 +430,27 @@ class TarefaController extends BaseController {
 	{
 		return View::make('id.angular');
 	}
+
+	public function getDuplicar($id){
+		$tarefa = Tarefa::find($id);
+		$tarefaDuplicada = $tarefa->replicate();
+		$tarefaDuplicada->tarefa_status_id 	= 1;
+		$tarefaDuplicada->criado_por 		= Auth::id();
+		$tarefaDuplicada->save();
+		$tarefaDuplicada->nome = preg_replace("/\#[0-9]*/", "#".$tarefaDuplicada->id, $tarefaDuplicada->nome);
+		$tarefaDuplicada->save();
+
+		$tarefaanexos = Tarefaanexo::where('tarefa_id','=',$id)->get();
+		if(!$tarefaanexos->isEmpty()){
+			foreach($tarefaanexos as $anexo){
+				$DuplicarAnexo = new Tarefaanexo();
+				$DuplicarAnexo->tarefa_id = $tarefaDuplicada->id;
+		        $DuplicarAnexo->caminho = $anexo->caminho;
+		        $DuplicarAnexo->nome    = $anexo->nome;
+		        $DuplicarAnexo->caminho_completo = $anexo->caminho_completo;
+		        $DuplicarAnexo->save();
+			}
+		}
+		return Redirect::to('tarefa/edit/'.$tarefaDuplicada->id);
+	}
 }
