@@ -5,7 +5,7 @@ class Equipeuser extends Eloquent {
 
 	public function equipe()
 	{
-		return $this->belongsTo('Equipe');
+		return $this->belongsTo('Equipe')->OrderBy('nome');
 	}
 
 	public function user()

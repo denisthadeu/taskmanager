@@ -67,11 +67,13 @@ class EquipeController extends BaseController {
 		}
 		$deletedEquipeUser = Equipeuser::where('equipe_id','=',$equipe->id)->whereNotIn('id', $arrIDSEquipes)->delete();
 		$deletedEquipeClientes = Equipecliente::where('equipe_id','=',$equipe->id)->delete();
-		foreach($clientes AS $cliente){
-			$equipeCliente = new Equipecliente();
-			$equipeCliente->cliente_id = $cliente;
-			$equipeCliente->equipe_id = $equipe->id;
-			$equipeCliente->save();
+		if(!empty($clientes) && is_array($clientes)){
+			foreach($clientes AS $cliente){
+				$equipeCliente = new Equipecliente();
+				$equipeCliente->cliente_id = $cliente;
+				$equipeCliente->equipe_id = $equipe->id;
+				$equipeCliente->save();
+			}
 		}
 		return Redirect::to('equipe/edit/'.$equipe->id)->with('success',$msg);
 	}

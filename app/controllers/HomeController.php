@@ -26,25 +26,52 @@ class HomeController extends BaseController {
 
 	public function getIndex()
 	{
-		$dataFinalDia = Formatter::dataAtualDB2();
+		$dbSearchTaskIni = null;
+		$dbSearchTaskFim = null;
+		if(Input::has('dt_ini') || Input::has('dt_fim')){
+			$dt_ini = (!empty(Input::get('dt_ini'))) ? Input::get('dt_ini') : null;
+			$dt_fim = (!empty(Input::get('dt_fim'))) ? Input::get('dt_fim') : null;
+			if(!empty($dt_ini))
+				$dbSearchTaskIni = Formatter::stringToDate($dt_ini).' 00:00:00';
+			if(!empty($dt_fim))
+				$dbSearchTaskFim = Formatter::stringToDate($dt_fim).' 23:59:59';
+		} else {
+			$dt_ini = null;
+			$dt_fim = date('d/m/Y');
+			$dbSearchTaskIni = null;
+			$dbSearchTaskFim = Formatter::stringToDate($dt_fim).' 23:59:59';
+		}
+		// $dataFinalDia = Formatter::dataAtualDB2();
 		$minhasTarefas = Tarefa::with('cliente')
 						->with('projeto')
 						->with('statustarefa')
 						->where('user_id','=',Auth::id())
 						->whereNotIn('tarefa_status_id',array(6))
-						->where('data_ini','<=',$dataFinalDia)
-						->OrderBy('order')
-						->get();
-
-		$minhasEquipes = Equipe::where('user_id','=',Auth::id())->with(['equipeUser' => function($query)
+						->OrderBy('order');
+		if(!empty($dbSearchTaskIni))
+			$minhasTarefas = $minhasTarefas->where('data_ini','>=',$dbSearchTaskIni);
+		if(!empty($dbSearchTaskFim))
+			$minhasTarefas = $minhasTarefas->where('data_ini','<=',$dbSearchTaskFim);
+		$minhasEquipes = Equipe::where('user_id','=',Auth::id())->with(['equipeUser' => function($query) use ($dbSearchTaskIni,$dbSearchTaskFim)
 						{
-						    $query->with(['user' => function($query)
+						    $query->with(['user' => function($query) use ($dbSearchTaskIni,$dbSearchTaskFim)
 							{
-							    $query->with('minhastarefashoje')->OrderBy('nome');
+							    // $query->with('minhastarefashoje')->OrderBy('nome');
+							    $query->with(['tarefasresponsavel' => function($query) use ($dbSearchTaskIni,$dbSearchTaskFim)
+								{
+								    // $query->with('minhastarefashoje')->OrderBy('nome');
+								    $query->whereNotIn('tarefa_status_id',array(6))->OrderBy('order');
+								    
+								    if(!empty($dbSearchTaskIni))
+										$query = $query->where('data_ini','>=',$dbSearchTaskIni);
+									if(!empty($dbSearchTaskFim))
+										$query = $query->where('data_ini','<=',$dbSearchTaskFim);
+								}])->OrderBy('nome');
 							}]);
-						}])
-						->get();
-		return View::make('id.index',compact('minhasTarefas','minhasEquipes'));
+						}])->OrderBy('nome');
+		$minhasTarefas = $minhasTarefas->get();
+		$minhasEquipes = $minhasEquipes->get();
+		return View::make('id.index',compact('minhasTarefas','minhasEquipes','dt_ini','dt_fim'));
 	}
 
 }

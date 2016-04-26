@@ -63,11 +63,13 @@ class ClienteController extends BaseController {
 		$deletedProjetos = Clientesprojetos::where('clientes_id','=',$cliente->id)->whereNotIn('id', $arrIDSProjetos)->delete();
 
 		$deletedEquipeClientes = Equipecliente::where('cliente_id','=',$cliente->id)->delete();
-		foreach($equipes AS $equipe){
-			$equipeCliente = new Equipecliente();
-			$equipeCliente->cliente_id = $cliente->id;
-			$equipeCliente->equipe_id = $equipe;
-			$equipeCliente->save();
+		if(!empty($equipes) && is_array($equipes)){
+			foreach($equipes AS $equipe){
+				$equipeCliente = new Equipecliente();
+				$equipeCliente->cliente_id = $cliente->id;
+				$equipeCliente->equipe_id = $equipe;
+				$equipeCliente->save();
+			}
 		}
 
 		return Redirect::to('cliente/edit/'.$cliente->id)->with('success',$msg);

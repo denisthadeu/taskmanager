@@ -13,6 +13,50 @@
 </div>
 <!-- END PAGE TITLE -->                   
 <!-- PAGE CONTENT WRAPPER -->
+@if(!$minhasEquipes->isEmpty())
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="tocify-content">
+                        <p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                	<form action="" method="get">
+	                                	<h3>Filtro</h3>
+	                                	<div class="col-md-1">
+	                                		Data Inicial
+	                                	</div>
+	                                	<div class="col-md-2">
+	                                		<div class="input-group bootstrap-timepicker">
+		                                		<input type="text" name="dt_ini" placeholder="Data mínimo de início da tarefa" class="form-control selector" value="{{ $dt_ini }}" id="dp-4" data-date="{{ $dt_ini }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" READONLY />
+		                                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+		                                    </div>
+	                                	</div>
+	                                	<div class="col-md-1">
+	                                		Data Final
+	                                	</div>
+	                                	<div class="col-md-2">
+	                                		<div class="input-group bootstrap-timepicker">
+		                                		<input type="text" name="dt_fim" placeholder="Data máxima de início da tarefa" class="form-control selector" value="{{ $dt_fim }}" id="dp-4" data-date="{{ $dt_fim }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" READONLY />
+		                                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+		                                    </div>
+	                                	</div>
+	                                	<div class="col-md-2">
+	                                		<button type="submit" class="btn btn-primary">Filtrar</button>
+	                                	</div>
+	                                </form>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 <div class="page-content-wrap">
     <div class="row">
         <div class="col-md-12">
@@ -115,8 +159,8 @@
 										                                <table class="panel-body table table-bordered table-hover" style="background-color: #fff">
 									                                    	<tbody class=" connectedSortable sortable droptrue table-task-user-{{$user->id}}" data-user="{{$user->id}}">
 									                                    		{{-- */$minutos = 0;/* --}}
-									                                    		@if($user->minhastarefashoje->count())
-									                                    			@foreach($user->minhastarefashoje AS $tarefa)
+									                                    		@if($user->tarefasresponsavel->count())
+									                                    			@foreach($user->tarefasresponsavel AS $tarefa)
 											                                    		<tr class="ui-state-default" data-tarefa="{{$tarefa->id}}">
 											                                    			<td><a href="{{ URL::to('tarefa/edit') }}/{{$tarefa->id}}">{{ $tarefa->nome }}</a></td>
 											                                    			<td>{{ Formatter::convertToHoursMins($tarefa->minutos) }}</td>
@@ -195,6 +239,9 @@
        			$('.table-task-user-'+userID).html($(this).html());
         	}
 	    }).disableSelection();
+	    $( ".selector" ).datepicker({ 
+            dateFormat: 'dd/mm/yy' 
+        });
     });
 </script>
 @stop

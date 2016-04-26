@@ -6,7 +6,10 @@ class Equipe extends Eloquent {
 
 	public function equipeUser()
 	{
-		return $this->hasMany('Equipeuser');
+		return $this->hasMany('Equipeuser')->with(['user' => function($query)
+					{
+					    $query->sortByDesc('nome');
+					}]);
 	}
 
 	public function equipeCliente()
