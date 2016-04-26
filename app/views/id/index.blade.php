@@ -30,7 +30,7 @@
 	                                	</div>
 	                                	<div class="col-md-2">
 	                                		<div class="input-group bootstrap-timepicker">
-		                                		<input type="text" name="dt_ini" placeholder="Data mínimo de início da tarefa" class="form-control selector" value="{{ $dt_ini }}" id="dp-4" data-date="{{ $dt_ini }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" READONLY />
+		                                		<input type="text" name="dt_ini" placeholder="Data mínimo de início da tarefa" class="form-control selector" value="{{ $dt_ini }}" id="dp-4" data-date="{{ $dt_ini }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" />
 		                                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 		                                    </div>
 	                                	</div>
@@ -39,7 +39,7 @@
 	                                	</div>
 	                                	<div class="col-md-2">
 	                                		<div class="input-group bootstrap-timepicker">
-		                                		<input type="text" name="dt_fim" placeholder="Data máxima de início da tarefa" class="form-control selector" value="{{ $dt_fim }}" id="dp-4" data-date="{{ $dt_fim }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" READONLY />
+		                                		<input type="text" name="dt_fim" placeholder="Data máxima de início da tarefa" class="form-control selector" value="{{ $dt_fim }}" id="dp-4" data-date="{{ $dt_fim }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" />
 		                                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
 		                                    </div>
 	                                	</div>
