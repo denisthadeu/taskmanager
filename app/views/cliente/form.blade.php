@@ -79,23 +79,25 @@
                                         <tbody id="projetos">
                                             @if(isset($cliente) && count($cliente->equipecliente) > 0)
                                                 @foreach($cliente->equipecliente as $equipecliente)
-                                                {{-- */$equipe = $equipecliente->equipe;/* --}}
-                                                <tr id="projeto-{{ $equipecliente->id }}">
-                                                    <td>
-                                                        <a href="#" class="remove-projeto text-danger">
-                                                            <span class="glyphicon glyphicon-remove"></span>
-                                                        </a>
-                                                        <!-- <a href="#" class="editar-projeto text-warning">
-                                                            <span class="glyphicon glyphicon-edit"></span>
-                                                        </a>  -->
-                                                    </td>
-                                                    <td>
-                                                        <input type="hidden" name="projetoID[]" value="{{ $equipecliente->id }}" />
-                                                        <input type="hidden" name="equipeID[]" value="{{ $equipe->id }}" />
-                                                        <input type="text" id="projeto-nome-field-{{ $equipecliente->id }}" name="projetoNome[]" value="{{ $equipe->nome }}" style="display:none;" />
-                                                        <span id="span-projeto-nome-field-{{ $equipecliente->id }}">{{ $equipe->nome }}</span>
-                                                    </td>
-                                                </tr>
+                                                    {{-- */$equipe = $equipecliente->equipe;/* --}}
+                                                    @if(isset($equipe->nome))
+                                                        <tr id="projeto-{{ $equipecliente->id }}">
+                                                            <td>
+                                                                <a href="#" class="remove-projeto text-danger">
+                                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                                </a>
+                                                                <!-- <a href="#" class="editar-projeto text-warning">
+                                                                    <span class="glyphicon glyphicon-edit"></span>
+                                                                </a>  -->
+                                                            </td>
+                                                            <td>
+                                                                <input type="hidden" name="projetoID[]" value="{{ $equipecliente->id }}" />
+                                                                <input type="hidden" name="equipeID[]" value="{{ $equipe->id }}" />
+                                                                <input type="text" id="projeto-nome-field-{{ $equipecliente->id }}" name="projetoNome[]" value="{{ $equipe->nome }}" style="display:none;" />
+                                                                <span id="span-projeto-nome-field-{{ $equipecliente->id }}">{{ $equipe->nome }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </tbody>

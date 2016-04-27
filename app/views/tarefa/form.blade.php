@@ -63,7 +63,9 @@
                                                             @if($cliente->equipecliente->count() > 0)
                                                                 @foreach($cliente->equipecliente as $equipecliente)
                                                                     {{-- */$equipe = $equipecliente->equipe;/* --}}
-                                                                    <option value="{{ $equipecliente->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $equipecliente->id) SELECTED @endif>{{ $equipe->nome }}</option>
+                                                                    @if(isset($equipe->nome))
+                                                                        <option value="{{ $equipecliente->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $equipecliente->id) SELECTED @endif>{{ $equipe->nome }}</option>
+                                                                    @endif
                                                                 @endforeach
                                                             @endif
                                                         </optgroup>
