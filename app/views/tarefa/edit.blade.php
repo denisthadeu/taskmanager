@@ -10,16 +10,21 @@
         <li class="active">@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</li>
     </ul>
 <div class="page-title">            
-    <div class="col-md-8">     
+    <div class="col-md-7">
         <h2><span class="fa fa-list"></span>@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</h2> <br/><br/><br/> Criado por: {{ $tarefa->criadopor->nome }} em {{ Formatter::getDataHoraFormatada($tarefa->created_at) }}
     </div>
     @if(isset($tarefa))
         <div class="col-md-2">
             <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning">Duplicar Tarefa</button></a>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <a href="{{ URL::to('tarefa/create') }}"><button type="button" class="btn btn-primary">Nova Tarefa</button></a>
         </div>
+        @if(isset($tarefa) && $tarefa->tarefa_status_id != 6)
+            <div class="col-md1">
+                <a href="{{ URL::to('tarefa/entregar') }}/{{$tarefa->id}}"><button type="button" class="btn btn-success">Entregar</button></a>
+            </div>
+        @endif
     @endif
 </div>
 <!-- END PAGE TITLE -->                   
@@ -155,12 +160,17 @@
                             <p id="p-upload-files"></p>
                             <p>
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         &nbsp;
                                     </div>
                                     <div class="col-md-2">
                                         <input type="button" id="upload-button" class="btn btn-info btn-lg active" value="Adicionar upload" />
                                     </div>
+                                    @if(isset($tarefa) && $tarefa->tarefa_status_id != 6)
+                                        <div class="col-md-1">
+                                            <a href="{{ URL::to('tarefa/entregar') }}/{{$tarefa->id}}"><button type="button" class="btn btn-success btn-lg">Entregar</button></a>
+                                        </div>
+                                    @endif
                                     <div class="col-md-1">
                                         <input type="Submit" id="create-category" class="btn btn-primary btn-lg active" value="@if(isset($tarefa)) Atualizar @else Cadastrar @endif" />
                                     </div>
