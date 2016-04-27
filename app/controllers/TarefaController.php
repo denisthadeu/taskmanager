@@ -284,6 +284,19 @@ class TarefaController extends BaseController {
 		$tarefa->clientes_projetos_id 	= $projeto;
 		$tarefa->tarefa_tipo_id 		= $tipo;
 		if($tarefa->tarefa_status_id != 6 && $tarefa_status_id == 6){
+			$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->OrderBy('id','DESC')->first();
+			if(!empty($tarefauser)){
+				$tarefauser->data_fim = Formatter::dataAtualDB();
+				$tarefauser->minutos = Formatter::minutesBetweenDates($tarefauser->data_ini,$tarefauser->data_fim);
+				$tarefauser->save();
+
+				$comentario = new Tarefacomentario();
+				$comentario->tarefa_id = $id;
+				$comentario->user_id = Auth::id();
+				$comentario->descricao = "Aviso do sistema: ".Auth::user()->nome." pausou esta tarefa";
+				$comentario->save();
+			}
+			
 			$comentario = new Tarefacomentario();
 			$comentario->tarefa_id = $id;
 			$comentario->user_id = Auth::id();
