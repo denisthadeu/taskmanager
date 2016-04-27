@@ -60,9 +60,10 @@
                                                 @if(isset($clientes) && !$clientes->isEmpty())
                                                     @foreach($clientes AS $cliente)
                                                         <optgroup label="{{ $cliente->nome }}">
-                                                            @if($cliente->clientesprojetos->count() > 0)
-                                                                @foreach($cliente->clientesprojetos as $projeto)
-                                                                    <option value="{{ $projeto->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $projeto->id) SELECTED @endif>{{ $projeto->nome }}</option>
+                                                            @if($cliente->equipecliente->count() > 0)
+                                                                @foreach($cliente->equipecliente as $equipecliente)
+                                                                    {{-- */$equipe = $equipecliente->equipe;/* --}}
+                                                                    <option value="{{ $equipecliente->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $equipecliente->id) SELECTED @endif>{{ $equipe->nome }}</option>
                                                                 @endforeach
                                                             @endif
                                                         </optgroup>
@@ -190,6 +191,13 @@
     width: 100%;
     z-index: 1051;
     top: -10px;
+}
+.select2-container{
+    width: 100% !important;
+}
+.select2-dropdown{
+    width: 90.% !important;
+    position: absolute;
 }
 
 </style>

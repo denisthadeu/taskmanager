@@ -68,9 +68,10 @@
                                         		@if(isset($clientes) && !$clientes->isEmpty())
                                         			@foreach($clientes AS $cliente)
                                         				<optgroup label="{{ $cliente->nome }}">
-	                                        				@if($cliente->clientesprojetos->count() > 0)
-	                                        					@foreach($cliente->clientesprojetos as $projeto)
-	                                        						<option value="{{ $projeto->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $projeto->id) SELECTED @endif>{{ $projeto->nome }}</option>
+	                                        				@if($cliente->equipecliente->count() > 0)
+	                                        					@foreach($cliente->equipecliente as $equipecliente)
+                                                                    {{-- */$equipe = $equipecliente->equipe;/* --}}
+	                                        						<option value="{{ $equipecliente->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $equipecliente->id) SELECTED @endif>{{ $equipe->nome }}</option>
 	                                        					@endforeach
 	                                        				@endif
                                         				</optgroup>
@@ -323,6 +324,15 @@
 @section('script')
 <script src="//cdn.jsdelivr.net/select2/4.0.2/js/select2.min.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="//cdn.jsdelivr.net/select2/4.0.2/css/select2.min.css" />
+<style type="text/css">
+    .select2-container{
+        width: 100% !important;
+    }
+    .select2-dropdown{
+        width: 90.% !important;
+        position: absolute;
+    }
+</style>
 <script type="text/javascript" src="{{ URL::asset('js/plugins/summernote/summernote.js') }}"></script>
 <script type="text/javascript">
     function get_tempo(){

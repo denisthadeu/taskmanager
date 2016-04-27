@@ -62,7 +62,7 @@
                                             <tr  class="ui-state-default" data-tarefa="{{$minhaTarefa->id}}">
                                                 <td>{{ $minhaTarefa->id }}</td>
                                                 <td>{{ $minhaTarefa->nome }}</td>
-                                                <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->projeto->nome or '' }}</td>
+                                                <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->Equipecliente->equipe->nome or '' }}</td>
                                                 <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
@@ -101,7 +101,7 @@
                                             <tr>
                                                 <td>{{ $tarefaCriada->id }}</td>
                                                 <td>{{ $tarefaCriada->nome }}</td>
-                                                <td>{{ $tarefaCriada->cliente->nome or ''  }} / {{ $tarefaCriada->projeto->nome or ''  }}</td>
+                                                <td>{{ $tarefaCriada->cliente->nome or ''  }} / {{ $tarefaCriada->Equipecliente->equipe->nome or ''  }}</td>
                                                 <td>{{ $tarefaCriada->responsavel->nome }}</td>
                                                 <td>{{ Formatter::leadingZero($tarefaCriada->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriada->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_ini) }}</td>
@@ -140,7 +140,7 @@
                                             <tr>
                                                 <td>{{ $minhaTarefa->id }}</td>
                                                 <td>{{ $minhaTarefa->nome }}</td>
-                                                <td>{{ $minhaTarefa->cliente->nome or ''  }} / {{ $minhaTarefa->projeto->nome or ''  }}</td>
+                                                <td>{{ $minhaTarefa->cliente->nome or ''  }} / {{ $minhaTarefa->Equipecliente->equipe->nome or ''  }}</td>
                                                 <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
@@ -179,7 +179,7 @@
                                             <tr>
                                                 <td>{{ $tarefaCriada->id }}</td>
                                                 <td>{{ $tarefaCriada->nome }}</td>
-                                                <td>{{ $tarefaCriada->cliente->nome or ''  }} / {{ $tarefaCriada->projeto->nome or ''  }}</td>
+                                                <td>{{ $tarefaCriada->cliente->nome or ''  }} / {{ $tarefaCriada->Equipecliente->equipe->nome or ''  }}</td>
                                                 <td>{{ $tarefaCriada->responsavel->nome }}</td>
                                                 <td>{{ Formatter::leadingZero($tarefaCriada->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriada->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_ini) }}</td>

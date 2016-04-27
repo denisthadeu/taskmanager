@@ -46,31 +46,21 @@ class ClienteController extends BaseController {
 		$cliente->save();
 		$arrIDSProjetos = array();
 		if(isset($projetoID) && !empty($projetoID)){
-			foreach ($projetoID as $key => $idProjeto) {
-				if(empty($idProjeto)){
-					$projeto = new Clientesprojetos();
+			foreach ($projetoID as $key => $idEquipeCliente) {
+				if(empty($idEquipeCliente)){
+					$equipeCliente = new Equipecliente();
 				} else {
-					$projeto = Clientesprojetos::find($idProjeto);
+					$equipeCliente = Equipecliente::find($idEquipeCliente);
 				}
 
-				$projeto->nome = $projetoNome[$key];
-				$projeto->clientes_id = $cliente->id;
-				$projeto->save();
-				$arrIDSProjetos[] = $projeto->id;
-
-			}
-		}
-		$deletedProjetos = Clientesprojetos::where('clientes_id','=',$cliente->id)->whereNotIn('id', $arrIDSProjetos)->delete();
-
-		$deletedEquipeClientes = Equipecliente::where('cliente_id','=',$cliente->id)->delete();
-		if(!empty($equipes) && is_array($equipes)){
-			foreach($equipes AS $equipe){
-				$equipeCliente = new Equipecliente();
 				$equipeCliente->cliente_id = $cliente->id;
-				$equipeCliente->equipe_id = $equipe;
+				$equipeCliente->equipe_id = $equipeID[$key];
 				$equipeCliente->save();
+				$arrIDSProjetos[] = $equipeCliente->id;
+
 			}
 		}
+		$deletedProjetos = Equipecliente::where('cliente_id','=',$cliente->id)->whereNotIn('id', $arrIDSProjetos)->delete();
 
 		return Redirect::to('cliente/edit/'.$cliente->id)->with('success',$msg);
 	}

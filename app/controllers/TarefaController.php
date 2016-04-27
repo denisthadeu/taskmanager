@@ -41,11 +41,25 @@ class TarefaController extends BaseController {
 		$minhasTarefas = Tarefa::with('cliente')
 								->with('projeto')
 								->with('statustarefa')
+								->with(['Equipecliente' => function($query)
+								{
+								    $query->with(['equipe' => function($query)
+									{
+									    $query->OrderBy('nome');
+									}]);
+								}])
 								->OrderBy('order');
 		$tarefasCriadas = Tarefa::with('cliente')
 								->with('projeto')
 								->with('statustarefa')
 								->with('responsavel')
+								->with(['Equipecliente' => function($query)
+								{
+								    $query->with(['equipe' => function($query)
+									{
+									    $query->OrderBy('nome');
+									}]);
+								}])
 								->OrderBy('order');
 
 		if(Input::has('search')){
@@ -77,7 +91,13 @@ class TarefaController extends BaseController {
 			$optionUsers .= '<option value="'.$user["id"].'">'.$user["nome"].'</option>';
 		}
 		$tarefaTipos = Tarefatipo::OrderBy('nome')->get();
-		$clientes = Clientes::with('clientesprojetos')->OrderBy('nome')->get();
+		$clientes = Clientes::with(['equipecliente' => function($query)
+					{
+					    $query->with(['equipe' => function($query)
+						{
+						    $query->OrderBy('nome');
+						}]);
+					}])->OrderBy('nome')->get();
 		$cronogramas = Cronograma::with('descricao')->OrderBy('nome')->get();
 		return View::make('tarefa.form',compact('users','tarefaTipos','clientes','cronogramas','optionUsers'));
 	}
@@ -118,8 +138,8 @@ class TarefaController extends BaseController {
 			$tarefa = new Tarefa();
 			$cliente_id = 0;
 			if(!empty($projeto)){
-				$projetoObj = Clientesprojetos::find($projeto);
-				$cliente_id = $projetoObj->clientes_id;
+				$projetoObj = Equipecliente::find($projeto);
+				$cliente_id = $projetoObj->cliente_id;
 			}
 			$tipoObj = Tarefatipo::find($tipo);
 
@@ -171,8 +191,8 @@ class TarefaController extends BaseController {
 					$tarefa = new Tarefa();
 					$cliente_id = 0;
 					if(!empty($projeto)){
-						$projetoObj = Clientesprojetos::find($projeto);
-						$cliente_id = $projetoObj->clientes_id;
+						$projetoObj = Equipecliente::find($projeto);
+						$cliente_id = $projetoObj->cliente_id;
 					}
 
 					$tarefa->nome 					= $nome;
@@ -254,8 +274,8 @@ class TarefaController extends BaseController {
 		$tarefa = Tarefa::find($id);
 		$cliente_id = 0;
 		if(!empty($projeto)){
-			$projetoObj = Clientesprojetos::find($projeto);
-			$cliente_id = $projetoObj->clientes_id;
+			$projetoObj = Equipecliente::find($projeto);
+			$cliente_id = $projetoObj->cliente_id;
 		}
 		$tarefa->nome 					= $nome;
 		$tarefa->descricao 				= $descricao;

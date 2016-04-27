@@ -48,5 +48,9 @@ class Tarefa extends Eloquent {
 		return $this->hasMany('Tarefausertempo','tarefa_id');
 	}
 
+	public function Equipecliente()
+	{
+		return $this->belongsTo('Equipecliente','clientes_projetos_id');
+	}
 
 }
