@@ -10,21 +10,18 @@
         <li class="active">@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</li>
     </ul>
 <div class="page-title">            
-    <div class="col-md-7">
+    <div class="col-md-8">
         <h2><span class="fa fa-list"></span>@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</h2> <br/><br/><br/> Criado por: {{ $tarefa->criadopor->nome }} em {{ Formatter::getDataHoraFormatada($tarefa->created_at) }}
     </div>
     @if(isset($tarefa))
-        <div class="col-md-2">
+        <div class="col-md-4">
             <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning">Duplicar Tarefa</button></a>
-        </div>
-        <div class="col-md-2">
+            <a href="{{ URL::to('tarefa/delete') }}/{{$tarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger">Deletar</button></a>
             <a href="{{ URL::to('tarefa/create') }}"><button type="button" class="btn btn-primary">Nova Tarefa</button></a>
-        </div>
-        @if(isset($tarefa) && $tarefa->tarefa_status_id != 6)
-            <div class="col-md1">
+            @if(isset($tarefa) && $tarefa->tarefa_status_id != 6)
                 <a href="{{ URL::to('tarefa/entregar') }}/{{$tarefa->id}}"><button type="button" class="btn btn-success">Entregar</button></a>
-            </div>
-        @endif
+            @endif
+        </div>
     @endif
 </div>
 <!-- END PAGE TITLE -->                   
@@ -163,18 +160,14 @@
                             <p id="p-upload-files"></p>
                             <p>
                                 <div class="row">
-                                    <div class="col-md-7">
+                                    <div class="col-md-8">
                                         &nbsp;
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <input type="button" id="upload-button" class="btn btn-info btn-lg active" value="Adicionar upload" />
-                                    </div>
-                                    @if(isset($tarefa) && $tarefa->tarefa_status_id != 6)
-                                        <div class="col-md-1">
+                                        @if(isset($tarefa) && $tarefa->tarefa_status_id != 6)
                                             <a href="{{ URL::to('tarefa/entregar') }}/{{$tarefa->id}}"><button type="button" class="btn btn-success btn-lg">Entregar</button></a>
-                                        </div>
-                                    @endif
-                                    <div class="col-md-1">
+                                        @endif
                                         <input type="Submit" id="create-category" class="btn btn-primary btn-lg active" value="@if(isset($tarefa)) Atualizar @else Cadastrar @endif" />
                                     </div>
                                 </div>
@@ -393,6 +386,14 @@
         });
         $('.duplicar-equipe').click(function(){
             var r = confirm("Deseja duplicar esta tarefa?");
+            if (r == true) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        $('.remover-equipe').click(function(){
+            var r = confirm("Deseja deletar esta tarefa?");
             if (r == true) {
                 return true;
             } else {
