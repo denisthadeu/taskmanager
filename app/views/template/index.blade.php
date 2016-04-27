@@ -411,7 +411,7 @@
 				}
 			}
 			$(document).ready(function() {
-				// get_mensagem();
+				get_mensagem();
 			});
 
 		</script>
