@@ -39,13 +39,13 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <input type="text" name="dt_ini" placeholder="Data de Início da tarefa" class="form-control selector" value="{{ date('d/m/Y') }}" id="dp-4" data-date="{{ date('d/m/Y') }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" REQUIRED />
+                                            <input type="text" name="dt_ini" placeholder="Data de Início da tarefa" class="form-control selector" value="" id="dp-4" data-date="{{ date('d/m/Y') }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" REQUIRED />
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group bootstrap-timepicker">
-                                            <input type="text" name="hr_ini" placeholder="Hora de Início da tarefa" class="form-control timepicker24" REQUIRED />
+                                            <input type="text" name="hr_ini" id="timepicker24" placeholder="Hora de Início da tarefa" class="form-control timepicker24" value="" REQUIRED />
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                                         </div>
                                     </div>
@@ -238,6 +238,14 @@
         });
 
         jQuery('select').select2();
+
+        var oldtimepicker24 = $("#timepicker24").val();
+        $("#timepicker24").click(function(){
+            if($("#timepicker24").val() == ""){
+                $("#timepicker24").val(oldtimepicker24);
+            }
+        })
+        $(".timepicker24").val('');
     });
 </script>
 @stop

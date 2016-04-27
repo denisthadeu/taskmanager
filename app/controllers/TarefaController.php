@@ -263,6 +263,13 @@ class TarefaController extends BaseController {
 		$tarefa->clientes_id 			= $cliente_id;
 		$tarefa->clientes_projetos_id 	= $projeto;
 		$tarefa->tarefa_tipo_id 		= $tipo;
+		if($tarefa->tarefa_status_id != 6 && $tarefa_status_id == 6){
+			$comentario = new Tarefacomentario();
+			$comentario->tarefa_id = $id;
+			$comentario->user_id = Auth::id();
+			$comentario->descricao = "Aviso do sistema: Tarefa foi marcada como entregue";
+			$comentario->save();
+		}
 		$tarefa->tarefa_status_id		= $tarefa_status_id;
 		if($tarefa_status_id == 6){
 			$tarefa->order = 999999999;
@@ -452,5 +459,19 @@ class TarefaController extends BaseController {
 			}
 		}
 		return Redirect::to('tarefa/edit/'.$tarefaDuplicada->id);
+	}
+
+
+	public function getEntregar($id){
+		$tarefa = Tarefa::find($id);
+		$tarefa->tarefa_status_id = 6;
+		$tarefa->save();
+
+		$comentario = new Tarefacomentario();
+		$comentario->tarefa_id = $id;
+		$comentario->user_id = Auth::id();
+		$comentario->descricao = "Aviso do sistema: Tarefa foi marcada como entregue";
+		$comentario->save();
+		return Redirect::to('tarefa/edit/'.$id);
 	}
 }
