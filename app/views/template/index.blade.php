@@ -248,7 +248,7 @@
 				$successes = Session::get('success');
 				?>
 				<div class="alert alert-success">
-					<!--<a class="close" data-dismiss="alert">×</a>-->
+					<a class="close" data-dismiss="alert">×</a>
 					<h4 class="alert-heading"> Sucesso! </h4>
 					<ul>
 						@if(is_array($successes))
@@ -261,9 +261,9 @@
 					</ul>
 				</div>
 				@endif
-				@if (isset($info))
+				@if (!empty(Session::get('info')))
 				<?php
-				$infos = $info;
+				$infos = !empty(Session::get('info'));
 				?>
 				<div class="alert alert-info">
 					<a class="close" data-dismiss="alert">×</a>
