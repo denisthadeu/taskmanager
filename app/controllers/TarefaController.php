@@ -521,4 +521,52 @@ class TarefaController extends BaseController {
 		$comentario->save();
 		return Redirect::to('tarefa/edit/'.$id);
 	}
+
+	public function postAjustartempo(){
+		extract(Input::all());
+
+		if(!isset($data) || empty($data) || !isset($hora) || empty($hora)){
+			return Redirect::to('tarefa/edit/'.$id)->with('danger', array(1 => 'Você precisa preencher uma data.',2 => 'Você precisa preencher uma hora.'));
+		}
+
+		$tarefauser = new Tarefausertempo();
+		$tarefauser->tarefa_id = $id;
+		$tarefauser->user_id = Auth::id();
+		$tarefauser->data_ini = Formatter::stringToDate($data). " 09:00:00";
+		$minutes = 0;
+		$time = explode(':',$hora);
+		$minutes = ($time[0]*60) + $time[1];
+		if($action == "adicionar"){
+			$sinal = "+";
+			$dbSinal = "";
+		} elseif($action == "subtrair"){
+			$sinal = "-";
+			$dbSinal = "-";
+			$tot_minutes = 0;
+
+			$tarefausertempo = Tarefausertempo::where('tarefa_id','=',$id)->get();
+			if(!empty($tarefausertempo)){
+				foreach($tarefausertempo AS $tempo){
+					if(!empty($tempo->minutos)){
+						$tot_minutes += $tempo->minutos;
+					} else {
+						if(empty($tempo->data_fim)){
+							$tempo->data_fim = Formatter::dataAtualDB();
+						}
+						$tot_minutes += Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+					}
+				}
+			}
+			if($tot_minutes < $minutes){
+				return Redirect::to('tarefa/edit/'.$id)->with('danger', array(1 => 'Você não tem horas suficiente para subtrair.'));
+			}
+		}
+		
+		
+		$tarefauser->data_fim = date("Y-m-d H:i:s", strtotime($sinal.$minutes." minutes", strtotime($tarefauser->data_ini)));
+		$tarefauser->minutos = $dbSinal.$minutes;
+		$tarefauser->save();
+
+		return Redirect::to('tarefa/edit/'.$id)->with('success', array(1 => 'Ajuste manual feito com sucesso.'));
+	}
 }

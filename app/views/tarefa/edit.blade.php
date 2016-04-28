@@ -10,11 +10,12 @@
         <li class="active">@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</li>
     </ul>
 <div class="page-title">            
-    <div class="col-md-8">
+    <div class="col-md-7">
         <h2><span class="fa fa-list"></span>@if(isset($tarefa)) {{ $tarefa->nome }} @else Nova Tarefa @endif</h2> <br/><br/><br/> Criado por: {{ $tarefa->criadopor->nome }} em {{ Formatter::getDataHoraFormatada($tarefa->created_at) }}
     </div>
     @if(isset($tarefa))
-        <div class="col-md-4">
+        <div class="col-md-5">
+            <button type="button" class="btn btn-info" data-backdrop="static" data-toggle="modal" data-target="#modal_basic">Ajuste Manual</button>
             <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning">Duplicar Tarefa</button></a>
             <a href="{{ URL::to('tarefa/delete') }}/{{$tarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger">Deletar</button></a>
             <a href="{{ URL::to('tarefa/create') }}"><button type="button" class="btn btn-primary">Nova Tarefa</button></a>
@@ -116,7 +117,7 @@
                                                 </span>
                                             </p>
                                             <p>
-                                                Tempo: <span class="tempo-duracao"></span>
+                                                Tempo: <span title="Ajustar Manualmente" class="fa fa-pencil edit-tempo-duracao" style="cursor: pointer;" data-backdrop="static" data-toggle="modal" data-target="#modal_basic"></span> <span class="tempo-duracao"></span> 
                                             </p>
                                             <p>
                                                 Data Início: 
@@ -292,7 +293,7 @@
                                                                 <td>{{ $tempo->user->nome }}</td>
                                                                 <td>{{ Formatter::getDataHoraFormatada($tempo->data_ini) }}</td>
                                                                 <td>{{ Formatter::getDataHoraFormatada($tempo->data_fim) }}</td>
-                                                                <td style="text-align: center;">{{ Formatter::convertToHoursMins(Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim)) }}</td>
+                                                                <td style="text-align: center;">@if($tempo->data_fim < $tempo->data_ini)-@endif{{ Formatter::convertToHoursMins(Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim)) }}</td>
                                                             </tr>
                                                         @endforeach
                                                     @endif
@@ -308,6 +309,50 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALS -->        
+<div class="modal" id="modal_basic" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="defModalHead">Ajustar Manualmente</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input class="form-control" id="hora_modal" value="" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" name="dt_ini" placeholder="Data de Início da tarefa" class="form-control selector" value="" id="data_modal" data-date="{{ date('d/m/Y') }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-4">
+                    &nbsp;
+                </div>
+                <div class="col-md-2">
+                    <form action="{{ URL::to('tarefa/ajustartempo') }}" method="post">
+                        <input name="id" value="{{$tarefa->id}}" type="hidden" />
+                        <input name="data" class="data_modal" value="" type="hidden" />
+                        <input name="hora" class="hora_modal" value="" type="hidden" />
+                        <input name="action" value="adicionar" type="hidden" />
+                        <button type="submit" class="btn btn-success">Adicionar</button>
+                    </form>
+                </div>
+                <div class="col-md-2">
+                    <form action="{{ URL::to('tarefa/ajustartempo') }}" method="post">
+                        <input name="id" value="{{$tarefa->id}}" type="hidden" />
+                        <input name="data" class="data_modal" value="" type="hidden" />
+                        <input name="hora" class="hora_modal" value="" type="hidden" />
+                        <input name="action" value="subtrair" type="hidden" />
+                        <button type="submit" class="btn btn-danger">Subtrair</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -401,6 +446,19 @@
             }
         });
         jQuery('.select2').select2();
+        $("#hora_modal").mask("99:99", {reverse: true});
+
+        $("#hora_modal").change(function(){
+            $(".hora_modal").val($("#hora_modal").val());
+        });
+        $("#data_modal").change(function(){
+            $(".data_modal").val($("#data_modal").val());
+        });
+
+        $( ".selector" ).datepicker({ 
+            dateFormat: 'dd/mm/yy' 
+        });
+
         get_tempo();
     });
 </script>

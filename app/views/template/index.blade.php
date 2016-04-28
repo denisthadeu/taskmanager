@@ -243,9 +243,9 @@
 					<!-- END TASKS -->
 				</ul>
 				<!-- END X-NAVIGATION VERTICAL -->                     
-				@if (isset($success))
+				@if (!empty(Session::get('success')))
 				<?php
-				$successes = $success;
+				$successes = Session::get('success');
 				?>
 				<div class="alert alert-success">
 					<!--<a class="close" data-dismiss="alert">×</a>-->
@@ -266,7 +266,7 @@
 				$infos = $info;
 				?>
 				<div class="alert alert-info">
-					<!--<a class="close" data-dismiss="alert">×</a>-->
+					<a class="close" data-dismiss="alert">×</a>
 					<h4 class="alert-heading"> Informações: </h4>
 					<ul>
 						@if(is_array($infos))
@@ -279,12 +279,12 @@
 					</ul>
 				</div>
 				@endif
-				@if (isset($warning))
+				@if (!empty(Session::get('warning')))
 				<?php
-				$warnings = $warning;
+				$warnings = Session::get('warning');
 				?>
 				<div class="alert alert-warning">
-					<!--<a class="close" data-dismiss="alert">×</a>-->
+					<a class="close" data-dismiss="alert">×</a>
 					<h4 class="alert-heading"> Atenção! </h4>
 					<ul>
 						@if(is_array($warnings))
@@ -297,14 +297,14 @@
 					</ul>
 				</div>
 				@endif
-				@if (isset($danger))
-				<?php debug($danger) ?>
+
+				@if (!empty(Session::get('danger')))
 				
 				<?php
-				$dangers = $danger;
+				$dangers = Session::get('danger');
 				?>
 				<div class="alert alert-danger">
-					<!--<a class="close" data-dismiss="alert">×</a>-->
+					<a class="close" data-dismiss="alert">×</a>
 					<h4 class="alert-heading"> Os seguintes erros foram encontrados: </h4>
 					<ul>
 						@if(is_array($dangers))
