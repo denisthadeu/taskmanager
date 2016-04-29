@@ -87,6 +87,9 @@
                                         		@endif
                                         	</select>
                                         </p>
+                                        <p>
+                                            <input type="checkbox" name="ongoing" class="icheckbox" style="position: absolute; opacity: 0;"  @if($tarefa->ongoing == 1) CHECKED="CHECKED" @endif > <span data-toggle="tooltip" data-placement="right" data-title="Tarefas simples do dia a dia, sem início ou fim determinado, e sem esforço estimado. Use-as para contar tempo em demandas que não precisem de uma data de entrega e são realizadas frequentemente." data-original-title="" title="">Tarefa ongoing</span>
+                                        </p>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="panel-heading ui-draggable-handle">

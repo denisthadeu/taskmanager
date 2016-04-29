@@ -140,6 +140,13 @@
                             <p>
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <input type="checkbox" name="ongoing" class="icheckbox" style="position: absolute; opacity: 0;"> <span data-toggle="tooltip" data-placement="right" data-title="Tarefas simples do dia a dia, sem início ou fim determinado, e sem esforço estimado. Use-as para contar tempo em demandas que não precisem de uma data de entrega e são realizadas frequentemente." data-original-title="" title="">Tarefa ongoing</span>
+                                    </div>
+                                </div>
+                            </p>
+                            <p>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <textarea name="descricao" placeholder="Descrição da tarefa" class="form-control summernote"></textarea>
                                     </div>
                                 </div>

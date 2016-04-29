@@ -138,6 +138,11 @@ class TarefaController extends BaseController {
 	{
 		extract(Input::all());
 
+		if(isset($ongoing)){
+			$ongoing = 1;
+		} else {
+			$ongoing = 0;
+		}
 		$data = Formatter::stringToDate($dt_ini)." ".$hr_ini;
 		$idTarefa = 0;
 		$tarefaProximo = 0;
@@ -165,6 +170,7 @@ class TarefaController extends BaseController {
 			$tarefa->tarefa_anterior		= $tarefaAnterior;
 			$tarefa->tarefa_proximo			= $tarefaProximo;
 			$tarefa->status 				= 0;
+			$tarefa->ongoing 				= $ongoing;
 			$tarefa->data_ini 				= Formatter::stringToDate($dt_ini)." ".$hr_ini;
 			$tarefa->data_fim 				= Formatter::setDatalDBPlusMinutes($tarefa->data_ini,$tarefa->minutos);
 			$tarefa->save();
@@ -215,6 +221,7 @@ class TarefaController extends BaseController {
 					$tarefa->tarefa_tipo_id 		= $tipo;
 					$tarefa->criado_por 			= Auth::id();
 					$tarefa->status 				= 0;
+					$tarefa->ongoing 				= $ongoing;
 					$tarefa->tarefa_anterior		= $tarefaAnterior;
 					$tarefa->tarefa_proximo			= $tarefaProximo;
 					$tarefa->data_ini 				= Formatter::stringToDate($dt_ini)." ".$hr_ini;
@@ -279,6 +286,12 @@ class TarefaController extends BaseController {
 	{
 		extract(Input::all());
 
+		if(isset($ongoing)){
+			$ongoing = 1;
+		} else {
+			$ongoing = 0;
+		}
+		
 		$tarefa = Tarefa::find($id);
 		$cliente_id = 0;
 		if(!empty($projeto)){
@@ -317,6 +330,7 @@ class TarefaController extends BaseController {
 		}
 		$tarefa->minuto_esforco 		= $minuto;
 		$tarefa->hora_esforco 			= $hora;
+		$tarefa->ongoing 				= $ongoing;
 		$tarefa->minutos 				= (($hora * 60) + $minuto);
 		$tarefa->data_ini 				= Formatter::dateStringToTimeStampDB($dt_ini);
 		$tarefa->data_fim 				= Formatter::dateStringToTimeStampDB($dt_fim);
