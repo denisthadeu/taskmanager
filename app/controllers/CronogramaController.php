@@ -32,7 +32,6 @@ class CronogramaController extends BaseController {
 
 	public function postSave(){
 		extract(Input::all());
-		dd($id);
 		if(empty($id)){
 			$cronograma = new Cronograma();
 			$msg = "Cronograma Alterado";
