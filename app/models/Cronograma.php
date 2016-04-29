@@ -6,6 +6,6 @@ class Cronograma extends Eloquent {
 
 	public function descricao()
 	{
-		return $this->hasMany('Cronogramadescricao');
+		return $this->hasMany('Cronogramadescricao')->OrderBy('order');
 	}
 }

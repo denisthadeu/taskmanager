@@ -18,7 +18,8 @@ class CronogramaController extends BaseController {
 
 	public function getEdit($id)
 	{
-		$cronograma = Cronograma::find($id);
+		$cronograma = Cronograma::with('descricao')->first();
+		// $cronograma = Cronograma::find($id);
 		return View::make('tarefa.cronograma.form',compact('cronograma'));
 	}	
 
@@ -52,6 +53,7 @@ class CronogramaController extends BaseController {
 				$cronogramadescricao->hora_esforco = $etapaHora[$key];
 				$cronogramadescricao->minuto_esforco = $etapaMinuto[$key];
 				$cronogramadescricao->cronograma_id = $cronograma->id;
+				$cronogramadescricao->order = $key;
 				$cronogramadescricao->save();
 				$arrIDSCronogramasDescricao[] = $cronogramadescricao->id;
 

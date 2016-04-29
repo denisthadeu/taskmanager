@@ -85,7 +85,7 @@
                                                 <th>Nome das Etapas</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="projetos">
+                                        <tbody id="projetos" class="connectedSortable sortable droptrue">
                                             @if(isset($cronograma) && count($cronograma->descricao) > 0)
                                                 @foreach($cronograma->descricao as $descricao)
                                                 <tr id="projeto-{{ $descricao->id }}">
@@ -186,6 +186,12 @@
             
             $('#alerta-novo-projeto').show();
         });
+        $( ".sortable" ).sortable({
+            connectWith: ".connectedSortable",
+            update: function() {
+                $('#alerta-novo-projeto').show();
+            }
+        }).disableSelection();
     });
 </script>
 @stop
