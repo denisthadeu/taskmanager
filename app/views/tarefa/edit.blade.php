@@ -61,20 +61,28 @@
                                         	</select>
                                         </p>
                                         <p>
+                                            <select class="form-control select2" required name="cliente" id="cliente" >
+                                                <option value="">Projeto</option>
+                                                @if(isset($clientes) && !empty($clientes))
+                                                    @foreach($clientes AS $cliente)
+                                                        <option value="{{ $cliente->id }}" @if(isset($tarefa) && $tarefa->clientes_id == $cliente->id) SELECTED @endif>{{ $cliente->nome }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </p>
+                                        <p>
                                         	<select class="form-control select2" required name="projeto" id="projeto" >
                                         		<option value="">Projeto</option>
-                                        		@if(isset($clientes) && !$clientes->isEmpty())
-                                        			@foreach($clientes AS $cliente)
-                                        				<optgroup label="{{ $cliente->nome }}">
-	                                        				@if($cliente->equipecliente->count() > 0)
-	                                        					@foreach($cliente->equipecliente as $equipecliente)
-                                                                    {{-- */$equipe = $equipecliente->equipe;/* --}}
-                                                                    @if(isset($equipe->nome))
-	                                        						 <option value="{{ $equipecliente->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $equipecliente->id) SELECTED @endif>{{ $equipe->nome }}</option>
-                                                                    @endif
-	                                        					@endforeach
-	                                        				@endif
-                                        				</optgroup>
+                                        		@if(isset($clientesProjeto) && !empty($clientesProjeto))
+                                        			@foreach($clientesProjeto AS $cliente)
+                                        				@if($cliente->equipecliente->count() > 0)
+                                        					@foreach($cliente->equipecliente as $equipecliente)
+                                                                {{-- */$equipe = $equipecliente->equipe;/* --}}
+                                                                @if(isset($equipe->nome))
+                                        						 <option value="{{ $equipecliente->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $equipecliente->id) SELECTED @endif>{{ $equipe->nome }}</option>
+                                                                @endif
+                                        					@endforeach
+                                        				@endif
                                         			@endforeach
                                         		@endif
                                         	</select>
@@ -460,6 +468,19 @@
         });
 
         get_tempo();
+
+        $("#cliente").change(function(){
+            var cliente_select_id = $( this ).val();
+            $.post("{{ URL::to('tarefa/updateprojetos') }}",
+            {
+                cliente_id: cliente_select_id,
+            },
+            function(data){
+                $("#projeto").html(data);
+                $("#projeto").val($("#target option:first").val());
+                $("#select2-projeto-container").html('Projeto');
+            });
+        });
     });
 </script>
 @stop

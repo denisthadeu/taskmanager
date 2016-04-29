@@ -98,8 +98,9 @@ class TarefaController extends BaseController {
 						    $query->OrderBy('nome');
 						}]);
 					}])->OrderBy('nome')->get();
+		$equipes = Equipe::OrderBy('nome')->get();
 		$cronogramas = Cronograma::with('descricao')->OrderBy('nome')->get();
-		return View::make('tarefa.form',compact('users','tarefaTipos','clientes','cronogramas','optionUsers'));
+		return View::make('tarefa.form',compact('users','tarefaTipos','clientes','cronogramas','optionUsers','equipes'));
 	}
 
 	public function getEdit($id)
@@ -117,7 +118,14 @@ class TarefaController extends BaseController {
 		$clientes = Clientes::with('clientesprojetos')->OrderBy('nome')->get();
 		$tarefaStatus = Tarefastatus::OrderBy('nome')->get();
 		$tarefausertempo = Tarefausertempo::where('tarefa_id','=',$tarefa->id)->OrderBy('id','DESC')->first();
-		return View::make('tarefa.edit',compact('tarefa','users','tarefaTipos','clientes','tarefaStatus','tarefausertempo'));
+		$clientesProjeto = Clientes::with(['equipecliente' => function($query)
+					{
+					    $query->with(['equipe' => function($query)
+						{
+						    $query->OrderBy('nome');
+						}]);
+					}])->OrderBy('nome')->where('id','=',$tarefa->clientes_id)->get();
+		return View::make('tarefa.edit',compact('tarefa','users','tarefaTipos','clientes','tarefaStatus','tarefausertempo','clientesProjeto'));
 	}
 
 	public function getDelete($id)
@@ -463,7 +471,24 @@ class TarefaController extends BaseController {
 	}
 
 	public function getTeste(){
-		die(Formatter::dataAtualDBPlusMinutes(-70*60));
+		// die(Formatter::dataAtualDBPlusMinutes(-70*60));
+		$cliente_id = 1;
+		echo "<pre>";
+		$clientes = Clientes::with(['equipecliente' => function($query)
+					{
+					    $query->with(['equipe' => function($query)
+						{
+						    $query->OrderBy('nome');
+						}]);
+					}])->OrderBy('nome')->where('id','=',$cliente_id)->first();
+		if(!empty($clientes)){
+			foreach ($clientes->equipecliente as $equipecliente) {
+				$equipe = $equipecliente->equipe;
+				echo $equipe->nome;
+			}
+		}
+		dd($clientes);
+		die('teste');
 	}
 
 	public function getAngular()
@@ -568,5 +593,61 @@ class TarefaController extends BaseController {
 		$tarefauser->save();
 
 		return Redirect::to('tarefa/edit/'.$id)->with('success', array(1 => 'Ajuste manual feito com sucesso.'));
+	}
+
+	public function postUpdateprojetos(){
+		extract(Input::all());
+		$options = "<option value=\"\">Projeto</option>";
+		$clientes = Clientes::with(['equipecliente' => function($query)
+					{
+					    $query->with(['equipe' => function($query)
+						{
+						    $query->OrderBy('nome');
+						}]);
+					}])->OrderBy('nome')->where('id','=',$cliente_id)->first();
+		if(!empty($clientes)){
+			foreach ($clientes->equipecliente as $equipecliente) {
+				$equipe = $equipecliente->equipe;
+				$options .= "<option value=\"".$equipecliente->id."\">".$equipe->nome."</option>";
+			}
+		}
+		echo $options;
+	}
+	public function postCreatecliente(){
+		extract(Input::all());
+		$cliente = new Clientes();
+		$cliente->nome = $cliente_nome;
+		$cliente->save();
+
+		$clientes = Clientes::OrderBy('nome')->get();
+		$options = '<option value="">Cliente</option>';
+		foreach ($clientes as $cliente) {
+			$options .= '<option value="'.$cliente->id.'">'.$cliente->nome.'</option>';
+		}
+		echo $options;
+	}
+	public function postCreateprojeto(){
+		extract(Input::all());
+
+		$equipeCliente = new Equipecliente();
+		$equipeCliente->cliente_id = $cliente_id;
+		$equipeCliente->equipe_id = $projeto_id;
+		$equipeCliente->save();
+
+		$options = "<option value=\"\">Projeto</option>";
+		$clientes = Clientes::with(['equipecliente' => function($query)
+					{
+					    $query->with(['equipe' => function($query)
+						{
+						    $query->OrderBy('nome');
+						}]);
+					}])->OrderBy('nome')->where('id','=',$cliente_id)->first();
+		if(!empty($clientes)){
+			foreach ($clientes->equipecliente as $equipecliente) {
+				$equipe = $equipecliente->equipe;
+				$options .= "<option value=\"".$equipecliente->id."\">".$equipe->nome."</option>";
+			}
+		}
+		echo $options;
 	}
 }

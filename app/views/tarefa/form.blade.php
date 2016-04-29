@@ -55,23 +55,25 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
-                                            <select class="form-control" required name="projeto" id="projeto" >
-                                                <option value="">Projeto</option>
-                                                @if(isset($clientes) && !$clientes->isEmpty())
-                                                    @foreach($clientes AS $cliente)
-                                                        <optgroup label="{{ $cliente->nome }}">
-                                                            @if($cliente->equipecliente->count() > 0)
-                                                                @foreach($cliente->equipecliente as $equipecliente)
-                                                                    {{-- */$equipe = $equipecliente->equipe;/* --}}
-                                                                    @if(isset($equipe->nome))
-                                                                        <option value="{{ $equipecliente->id }}" @if(isset($tarefa) && $tarefa->clientes_projetos_id == $equipecliente->id) SELECTED @endif>{{ $equipe->nome }}</option>
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        </optgroup>
-                                                    @endforeach
-                                                @endif
-                                            </select>
+                                            <div class="input-group input-group-select2">
+                                                <select class="form-control" required name="cliente" id="cliente" >
+                                                    <option value="">Cliente</option>
+                                                    @if(isset($clientes) && !$clientes->isEmpty())
+                                                        @foreach($clientes AS $cliente)
+                                                            <option value="{{ $cliente->id }}">{{ $cliente->nome }}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                                <span class="input-group-addon" id="span-add-cliente" data-backdrop="static" data-toggle="modal" data-target="#modal_create_cliente"><span class="fa fa-plus"></span></span>
+                                            </div>
+                                        </p>
+                                        <p>
+                                            <div class="input-group input-group-select2">
+                                                <select class="form-control" required name="projeto" id="projeto" >
+                                                    <option value="">Projeto</option>
+                                                </select>
+                                                <span class="input-group-addon" id="span-add-projeto" data-backdrop="static" data-toggle="modal" data-target="#modal_create_projeto"><span class="fa fa-plus"></span></span>
+                                            </div>
                                         </p>
                                         <p style="text-align: center;">
                                             <input name="opcao" id="opcao1" value="tipo" type="radio" class="iradio" /> Tipo de Tarefa &nbsp;&nbsp;&nbsp;
@@ -166,7 +168,53 @@
     <!-- END PAGE CONTENT -->
     <input type="hidden" style="display:none;" name="id" value="{{ $tarefa->id or '0' }}" />
 </form>
-
+<!-- MODALS -->        
+<div class="modal" id="modal_create_cliente" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="defModalHead">Novo Cliente</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input class="form-control" id="novo_cliente_field" value="" placeholder="Nome do novo cliente" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="cadastrar_novo_cliente" >Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modal_create_projeto" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="defModalHead">Novo Projeto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <select class="form-control" id="novo_projeto_field" >
+                            @if(!empty($equipes))
+                                @foreach($equipes as $equipe)
+                                    <option value="{{$equipe->id}}">{{$equipe->nome}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success" id="cadastrar_novo_projeto" >Cadastrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('script')
@@ -196,10 +244,20 @@
 }
 .select2-container{
     width: 100% !important;
+    /*height: 35px;*/
 }
 .select2-dropdown{
     width: 90.% !important;
     position: absolute;
+}
+.input-group-select2{
+    width: 100%;
+    display: flex;
+}
+.select2 + .input-group-addon {
+    height: 35px;
+    display: table;
+    cursor: pointer;
 }
 
 </style>
@@ -256,6 +314,55 @@
             }
         })
         $(".timepicker24").val('');
+
+        $("#cliente").change(function(){
+            var cliente_select_id = $( this ).val();
+            $.post("{{ URL::to('tarefa/updateprojetos') }}",
+            {
+                cliente_id: cliente_select_id,
+            },
+            function(data){
+                $("#projeto").html(data);
+                $("#projeto").val($("#target option:first").val());
+                $("#select2-projeto-container").html('Projeto');
+            });
+        });
+        // span-add-cliente
+        // span-add-projeto
+        $("#cadastrar_novo_cliente").click(function(){
+            var nome_cliente_field = $("#novo_cliente_field").val();
+            if(nome_cliente_field != ""){
+                $.post("{{ URL::to('tarefa/createcliente') }}",
+                {
+                    cliente_nome: nome_cliente_field,
+                },
+                function(data){
+                    $("#cliente").html(data);
+                    $("#cliente").val($("#target option:first").val());
+                    $("#select2-projeto-container").html('Cliente');
+                    $( "#cliente" ).trigger( "change" );
+                    $('#modal_create_cliente').modal('toggle');
+                });
+            }
+        });
+
+        $("#cadastrar_novo_projeto").click(function(){
+            var nome_projeto_field = $("#novo_projeto_field").val();
+            var id_cliente_field = $("#cliente").val();
+            if(id_cliente_field != "" && nome_projeto_field != ""){
+                $.post("{{ URL::to('tarefa/createprojeto') }}",
+                {
+                    projeto_id: nome_projeto_field,
+                    cliente_id: id_cliente_field,
+                },
+                function(data){
+                    $("#projeto").html(data);
+                    $("#projeto").val($("#target option:first").val());
+                    $("#select2-projeto-container").html('Projeto');
+                    $('#modal_create_projeto').modal('toggle');
+                });
+            }
+        });
     });
 </script>
 @stop
