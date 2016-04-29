@@ -72,6 +72,12 @@
                                                 <option value="{{ $count }}">{{ $count }}</option>
                                             @endfor
                                         </select>
+                                        <select name="duracao-novo-projeto" id="duracao-novo-projeto" placeholder="Minuto" class="form-control">
+                                            <option value="0">Duração da etapa(em horas)</option>
+                                            @for ($i = 0; $i <= 120; $i++)
+                                                <option value="{{ Formatter::leadingZero($i) }}">{{ Formatter::leadingZero($i) }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
                                     <div class="col-md-1">
                                         <button type="button" class="btn btn-primary" id="adicionar-projeto-btn">Adicionar Etapa</button>
@@ -111,6 +117,12 @@
                                                             @for ($i = 0; $i <= 4; $i++)
                                                                 {{--*/ $count = Formatter::leadingZero(($i * 15)) /*--}} 
                                                                 <option value="{{ $count }}" @if(isset($descricao) && $descricao->minuto_esforco == ($i * 15)) SELECTED @endif >{{ $count }}</option>
+                                                            @endfor
+                                                        </select>
+                                                        <select name="etapaDuracao[]" id="projeto-duracao-field-{{ $descricao->id }}" placeholder="Duração" class="form-control" style="display:none;">
+                                                            <option value="0">Duração da etapa(em horas)</option>
+                                                            @for ($i = 0; $i <= 120; $i++)
+                                                                <option value="{{ Formatter::leadingZero($i) }}" @if(isset($descricao) && $descricao->duracao == $i) SELECTED @endif >{{ Formatter::leadingZero($i) }}</option>
                                                             @endfor
                                                         </select>
                                                         <span id="span-projeto-nome-field-{{ $descricao->id }}">{{ $descricao->nome }} ({{ Formatter::leadingZero($descricao->hora_esforco) }}:{{ Formatter::leadingZero($descricao->minuto_esforco) }})</span>
@@ -155,6 +167,7 @@
             var nomeEtapa = $('#nome-novo-projeto').val();
             var horaEtapa = $('#hora-novo-projeto').val();
             var minutoEtapa = $('#minuto-novo-projeto').val();
+            var duracao = $('#duracao-novo-projeto').val();
             $('#novo-projeto-div').hide();
             $('#alerta-novo-projeto').show();
             var html = $('#projetos').html();
@@ -171,6 +184,7 @@
             html += '        <input type="text" id="projeto-nome-field-'+number+'" name="etapaNome[]" value="'+nomeEtapa+'" style="display:none;" />';
             html += '        <input type="text" id="projeto-hora-field-'+number+'" name="etapaHora[]" value="'+horaEtapa+'" style="display:none;" />';
             html += '        <input type="text" id="projeto-minuto-field-'+number+'" name="etapaMinuto[]" value="'+minutoEtapa+'" style="display:none;" />';
+            html += '        <input type="text" id="projeto-duracao-field-'+number+'" name="etapaDuracao[]" value="'+duracao+'" style="display:none;" />';
             html += '        <span id="span-projeto-nome-field">'+nomeEtapa+' ('+horaEtapa+':'+minutoEtapa+')</span>';
             html += '    </td>';
             html += '</tr>';

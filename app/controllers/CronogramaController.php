@@ -52,6 +52,7 @@ class CronogramaController extends BaseController {
 				$cronogramadescricao->nome = $etapaNome[$key];
 				$cronogramadescricao->hora_esforco = $etapaHora[$key];
 				$cronogramadescricao->minuto_esforco = $etapaMinuto[$key];
+				$cronogramadescricao->duracao = $etapaDuracao[$key];
 				$cronogramadescricao->cronograma_id = $cronograma->id;
 				$cronogramadescricao->order = $key;
 				$cronogramadescricao->save();
