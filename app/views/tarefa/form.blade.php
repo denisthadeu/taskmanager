@@ -76,8 +76,8 @@
                                             </div>
                                         </p>
                                         <p style="text-align: center;">
-                                            <input name="opcao" id="opcao1" value="tipo" type="radio" class="iradio" /> Tipo de Tarefa &nbsp;&nbsp;&nbsp;
-                                            <input name="opcao" id="opcao2" value="cronograma" type="radio" class="iradio" /> Cronograma
+                                            <input name="opcao" id="opcao1" value="tipo" type="radio" /> Tipo de Tarefa &nbsp;&nbsp;&nbsp;
+                                            <input name="opcao" id="opcao2" value="cronograma" type="radio" /> Cronograma
                                         </p>
                                         <p id="tipo-p" style="display: none;">
                                             <select class="form-control" name="tipo" id="tipo">
@@ -270,7 +270,7 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function() {
-        $("input[name = 'opcao']").click(function(){
+        $("input[name = 'opcao']").change(function(){
             var val = $(this).val();
             var other = 'tipo';
             if(other == val ){
