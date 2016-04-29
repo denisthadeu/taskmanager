@@ -18,7 +18,7 @@ class CronogramaController extends BaseController {
 
 	public function getEdit($id)
 	{
-		$cronograma = Cronograma::with('descricao')->first();
+		$cronograma = Cronograma::with('descricao')->where('id','=',$id)->first();
 		// $cronograma = Cronograma::find($id);
 		return View::make('tarefa.cronograma.form',compact('cronograma'));
 	}	
@@ -32,6 +32,7 @@ class CronogramaController extends BaseController {
 
 	public function postSave(){
 		extract(Input::all());
+		dd($id);
 		if(empty($id)){
 			$cronograma = new Cronograma();
 			$msg = "Cronograma Alterado";

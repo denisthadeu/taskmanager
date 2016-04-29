@@ -225,7 +225,13 @@ class TarefaController extends BaseController {
 					$tarefa->tarefa_anterior		= $tarefaAnterior;
 					$tarefa->tarefa_proximo			= $tarefaProximo;
 					$tarefa->data_ini 				= Formatter::stringToDate($dt_ini)." ".$hr_ini;
-					$acumuladorMinutos 				= $acumuladorMinutos + $tarefa->minutos;
+					
+					if($descricaoCronograma->duracao > 0){
+						$tempoextraMinutos = ($descricaoCronograma->duracao * 60);
+						$acumuladorMinutos = $acumuladorMinutos + $tempoextraMinutos;
+					} else {
+						$acumuladorMinutos 	= $acumuladorMinutos + $tarefa->minutos;
+					}
 					$tarefa->data_fim 				= Formatter::setDatalDBPlusMinutes($tarefa->data_ini,$acumuladorMinutos);
 					$tarefa->save();
 
