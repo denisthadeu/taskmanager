@@ -30,6 +30,7 @@ class CreateTarefaTable extends Migration {
 			$table->integer('tarefa_anterior')->nullable();
 			$table->integer('tarefa_proximo')->nullable();
 			$table->integer('order')->nullable()->default(999999999);
+			$table->boolean('ongoing')->default(0);
 			$table->dateTime('data_ini')->nullable();
 			$table->dateTime('data_fim')->nullable();
 			$table->timestamps();

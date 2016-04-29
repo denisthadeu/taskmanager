@@ -19,6 +19,8 @@ class CreateCronogramaDescricaoTable extends Migration {
 			$table->string('nome', 50)->nullable();
 			$table->integer('hora_esforco')->default(0);
 			$table->integer('minuto_esforco')->default(0);
+			$table->integer('order')->default(999999999);
+			$table->integer('duracao')->default(0);
 			$table->timestamps();
 		});
 	}
