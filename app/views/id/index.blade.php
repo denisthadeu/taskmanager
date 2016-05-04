@@ -70,13 +70,13 @@
                                 	<table class="table table-bordered  table-hover" style="background-color: #fff">
                                         <thead>
                                             <tr>
-                                                <th>id</th>
+                                                <!-- <th>id</th> -->
 			                                    <th>Título</th>
 			                                    <th>Projeto</th>
 			                                    <th>Esforço</th>
 			                                    <th>Data Início</th>
 			                                    <th>Data Entrega</th>
-			                                    <th>Status</th>
+			                                    <!-- <th>Status</th> -->
 			                                    <th>Ações</th>
                                             </tr>
                                         </thead>
@@ -84,13 +84,13 @@
                                     		@if(!empty($minhasTarefas))
 		                                    	@foreach($minhasTarefas AS $minhaTarefa)
 		                                    		<tr>
-		                                                <td>{{ $minhaTarefa->id }}</td>
-		                                                <td>{{ $minhaTarefa->nome }}</td>
+		                                                <!-- <td>{{-- $minhaTarefa->id --}}</td> -->
+		                                                <td><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}">{{ $minhaTarefa->nome }}</a></td>
 		                                                <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->projeto->nome or '' }}</td>
 		                                                <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
 		                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
 		                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
-		                                                <td>{{ $minhaTarefa->statustarefa->nome }}</td>
+		                                                <!-- <td>{{-- $minhaTarefa->statustarefa->nome --}}</td> -->
 		                                                <td>
 		                                                    <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-eye"></span> Ver</button></a>
 		                                                </td>

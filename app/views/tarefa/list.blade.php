@@ -45,13 +45,13 @@
                         <table class="table table-bordered  table-hover" style="background-color: #fff">
                             <thead>
                                 <tr>
-                                    <th>id</th>
+                                    <!-- <th>id</th> -->
                                     <th>Título</th>
                                     <th>Projeto</th>
                                     <th>Esforço</th>
                                     <th>Data Início</th>
                                     <th>Data Entrega</th>
-                                    <th>Status</th>
+                                    <!-- <th>Status</th> -->
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -60,17 +60,18 @@
                                     @foreach($minhasTarefas as $minhaTarefa)
                                         @if($minhaTarefa->tarefa_status_id != 6)
                                             <tr  class="ui-state-default" data-tarefa="{{$minhaTarefa->id}}">
-                                                <td>{{ $minhaTarefa->id }}</td>
-                                                <td>{{ $minhaTarefa->nome }}</td>
+                                                <!-- <td>{{-- $minhaTarefa->id --}}</td> -->
+                                                <td><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}">{{ $minhaTarefa->nome }}</a></td>
                                                 <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->Equipecliente->equipe->nome or '' }}</td>
                                                 <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
-                                                <td>{{ $minhaTarefa->statustarefa->nome }}</td>
+                                                <!-- <td>{{-- $minhaTarefa->statustarefa->nome --}}</td> -->
                                                 <td>
                                                     <a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
-                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove">Deletar</span></button></a>
+                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
+                                                    <a href="{{ URL::to('tarefa/listentregar') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Entregar</button></a>
                                                 </td>
                                             </tr>
                                         @endif
@@ -83,14 +84,14 @@
                         <table class="table table-bordered  table-hover" style="background-color: #fff">
                             <thead>
                                 <tr>
-                                    <th>id</th>
+                                    <!-- <th>id</th> -->
                                     <th>Título</th>
                                     <th>Projeto</th>
                                     <th>Responsável</th>
                                     <th>Esforço</th>
                                     <th>Data Início</th>
                                     <th>Data Entrega</th>
-                                    <th>Status</th>
+                                    <!-- <th>Status</th> -->
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -99,18 +100,19 @@
                                     @foreach($tarefasCriadas as $tarefaCriada)
                                         @if($tarefaCriada->tarefa_status_id != 6)
                                             <tr>
-                                                <td>{{ $tarefaCriada->id }}</td>
-                                                <td>{{ $tarefaCriada->nome }}</td>
+                                                <!-- <td>{{-- $tarefaCriada->id --}}</td> -->
+                                                <td><a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}">{{ $tarefaCriada->nome }}</a></td>
                                                 <td>{{ $tarefaCriada->cliente->nome or ''  }} / {{ $tarefaCriada->Equipecliente->equipe->nome or ''  }}</td>
                                                 <td>{{ $tarefaCriada->responsavel->nome }}</td>
                                                 <td>{{ Formatter::leadingZero($tarefaCriada->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriada->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_ini) }}</td>
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
-                                                <td>{{ $tarefaCriada->statustarefa->nome }}</td>
+                                                <!-- <td>{{-- $tarefaCriada->statustarefa->nome --}}</td> -->
                                                 <td>
                                                     <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil">Editar</span></button></a>
                                                     <a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove">Deletar</span></button></a>
+                                                    <a href="{{ URL::to('tarefa/listentregar') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Entregar</button></a>
                                                 </td>
                                             </tr>
                                         @endif
@@ -123,13 +125,13 @@
                         <table class="table table-bordered  table-hover" style="background-color: #fff">
                             <thead>
                                 <tr>
-                                    <th>id</th>
+                                    <!-- <th>id</th> -->
                                     <th>Título</th>
                                     <th>Projeto</th>
                                     <th>Esforço</th>
                                     <th>Data Início</th>
                                     <th>Data Entrega</th>
-                                    <th>Status</th>
+                                    <!-- <th>Status</th> -->
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -138,17 +140,18 @@
                                     @foreach($minhasTarefas as $minhaTarefa)
                                         @if($minhaTarefa->tarefa_status_id == 6)
                                             <tr>
-                                                <td>{{ $minhaTarefa->id }}</td>
-                                                <td>{{ $minhaTarefa->nome }}</td>
+                                                <!-- <td>{{-- $minhaTarefa->id --}}</td> -->
+                                                <td><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}">{{ $minhaTarefa->nome }}</a></td>
                                                 <td>{{ $minhaTarefa->cliente->nome or ''  }} / {{ $minhaTarefa->Equipecliente->equipe->nome or ''  }}</td>
                                                 <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
-                                                <td>{{ $minhaTarefa->statustarefa->nome }}</td>
+                                                <!-- <td>{{-- $minhaTarefa->statustarefa->nome --}}</td> -->
                                                 <td>
                                                     <a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
                                                     <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
+                                                    <a href="{{ URL::to('tarefa/listentregar') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Entregar</button></a>
                                                 </td>
                                             </tr>
                                         @endif
@@ -161,14 +164,14 @@
                         <table class="table table-bordered  table-hover" style="background-color: #fff">
                             <thead>
                                 <tr>
-                                    <th>id</th>
+                                    <!-- <th>id</th> -->
                                     <th>Título</th>
                                     <th>Projeto</th>
                                     <th>Responsável</th>
                                     <th>Esforço</th>
                                     <th>Data Início</th>
                                     <th>Data Entrega</th>
-                                    <th>Status</th>
+                                    <!-- <th>Status</th> -->
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -177,18 +180,19 @@
                                     @foreach($tarefasCriadas as $tarefaCriada)
                                         @if($tarefaCriada->tarefa_status_id == 6)
                                             <tr>
-                                                <td>{{ $tarefaCriada->id }}</td>
-                                                <td>{{ $tarefaCriada->nome }}</td>
+                                                <!-- <td>{{-- $tarefaCriada->id --}}</td> -->
+                                                <td><a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}">{{ $tarefaCriada->nome }}</a></td>
                                                 <td>{{ $tarefaCriada->cliente->nome or ''  }} / {{ $tarefaCriada->Equipecliente->equipe->nome or ''  }}</td>
                                                 <td>{{ $tarefaCriada->responsavel->nome }}</td>
                                                 <td>{{ Formatter::leadingZero($tarefaCriada->hora_esforco) }}:{{ Formatter::leadingZero($tarefaCriada->minuto_esforco) }}</td>
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_ini) }}</td>
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
-                                                <td>{{ $tarefaCriada->statustarefa->nome }}</td>
+                                                <!-- <td>{{-- $tarefaCriada->statustarefa->nome --}}</td> -->
                                                 <td>
                                                     <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span>Duplicar</button></a>
                                                     <a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
                                                     <a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
+                                                    <a href="{{ URL::to('tarefa/listentregar') }}/{{$tarefaCriada->id}}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Entregar</button></a>
                                                 </td>
                                             </tr>
                                         @endif
