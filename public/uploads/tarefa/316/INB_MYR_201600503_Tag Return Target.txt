@@ -1,0 +1,19 @@
+Tag de Return Target - myrp (site e blog)
+
+-> Inserir em todas as páginas (rodapé)
+
+<script src="//rt.returntarget.com/js/rt_track.min.js"></script>
+<script>
+window.onload=function()
+{
+try
+{
+t = new rt_tracker();
+t.client_id = 80;
+t.ini();
+}
+catch(err)
+{
+}
+};
+</script>
