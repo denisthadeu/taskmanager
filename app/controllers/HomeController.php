@@ -29,8 +29,8 @@ class HomeController extends BaseController {
 		$dbSearchTaskIni = null;
 		$dbSearchTaskFim = null;
 		if(Input::has('dt_ini') || Input::has('dt_fim')){
-			$dt_ini = (!empty(Input::has('dt_ini'))) ? Input::get('dt_ini') : null;
-			$dt_fim = (!empty(Input::has('dt_fim'))) ? Input::get('dt_fim') : null;
+			$dt_ini = (Input::has('dt_ini')) ? Input::get('dt_ini') : null;
+			$dt_fim = (Input::has('dt_fim')) ? Input::get('dt_fim') : null;
 			if(!empty($dt_ini))
 				$dbSearchTaskIni = Formatter::stringToDate($dt_ini).' 00:00:00';
 			if(!empty($dt_fim))
