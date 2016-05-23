@@ -55,7 +55,7 @@
                                     <th>Ações</th>
                                 </tr>
                             </thead>
-                            <tbody class="connectedSortable sortable droptrue" data-user="{{Auth::id()}}">
+                            <tbody class="connectedSortable sortable droptrue" data-user="{{ $user->id }}">
                                 @if(isset($minhasTarefas) && !$minhasTarefas->isEmpty())
                                     @foreach($minhasTarefas as $minhaTarefa)
                                         @if($minhaTarefa->tarefa_status_id != 6)
