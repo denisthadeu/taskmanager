@@ -83,18 +83,31 @@
                                         <tbody>
                                     		@if(!empty($minhasTarefas))
 		                                    	@foreach($minhasTarefas AS $minhaTarefa)
-		                                    		<tr>
+		                                    		<tr class="@if(count($minhaTarefa->usertempoplay) > 0) list-group-item-warning @endif">
 		                                                <!-- <td>{{-- $minhaTarefa->id --}}</td> -->
 		                                                <td><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}">{{ $minhaTarefa->nome }}</a></td>
-		                                                <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->projeto->nome or '' }}</td>
+		                                                <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->Equipecliente->equipe->nome or '' }}</td>
 		                                                <td>{{ Formatter::leadingZero($minhaTarefa->hora_esforco) }}:{{ Formatter::leadingZero($minhaTarefa->minuto_esforco) }}</td>
 		                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_ini) }}</td>
 		                                                <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
 		                                                <!-- <td>{{-- $minhaTarefa->statustarefa->nome --}}</td> -->
 		                                                <td>
-		                                                    <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-eye"></span> Ver</button></a>
-		                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
-                                                    		<a href="{{ URL::to('tarefa/listentregar') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Entregar</button></a>
+                                                    		<div class="btn-group" role="group">
+		                                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		                                                              Opções
+		                                                              <span class="caret"></span>
+		                                                        </button>
+		                                                        <ul class="dropdown-menu">
+		                                                            <li><a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><span class="fa fa-remove"></span>Deletar</a></li>
+		                                                            <li><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><span class="fa fa-pencil"></span>Editar</a></li>
+		                                                            <li><a href="{{ URL::to('tarefa/listentregar') }}/{{$minhaTarefa->id}}"><span class="glyphicon glyphicon-ok"></span> Entregar</a></li>
+		                                                            @if(count($minhaTarefa->usertempoplay) > 0)
+		                                                                <li><a href="{{ URL::to('tarefa/pausetarefa') }}/{{$minhaTarefa->id}}"><span class="fa fa-pause"></span>Pausar tarefa</a></li>
+		                                                            @else
+		                                                                <li><a href="{{ URL::to('tarefa/playtarefa') }}/{{$minhaTarefa->id}}"><span class="fa fa-play"></span>Iniciar tarefa</a></li>
+		                                                            @endif
+		                                                        </ul>
+		                                                    </div>
 		                                                </td>
 		                                            </tr>
 		                                    	@endforeach

@@ -48,6 +48,7 @@ class TarefaController extends BaseController {
 									    $query->OrderBy('nome');
 									}]);
 								}])
+								->with('usertempoplay')
 								->OrderBy('order');
 		$tarefasCriadas = Tarefa::with('cliente')
 								->with('projeto')
@@ -695,6 +696,52 @@ class TarefaController extends BaseController {
 		$comentario->user_id = Auth::id();
 		$comentario->descricao = "Aviso do sistema: Tarefa foi marcada como entregue";
 		$comentario->save();
+		return Redirect::to('tarefa/list');
+	}
+
+	public function getPlaytarefa($id){
+		$meutempo = Tarefausertempo::where('user_id','=',Auth::id())->whereNull('data_fim')->first();
+		if(!empty($meutempo)){
+			$meutempo->data_fim = Formatter::dataAtualDB();
+			$meutempo->minutos = Formatter::minutesBetweenDates($meutempo->data_ini,$meutempo->data_fim);
+			$meutempo->save();
+
+			$comentario2 = new Tarefacomentario();
+			$comentario2->tarefa_id = $meutempo->tarefa_id;
+			$comentario2->user_id = Auth::id();
+			$url = URL::to('tarefa/edit/'.$id);
+			$comentario2->descricao = 'Aviso do sistema: '.Auth::user()->nome.' pausou esta tarefa para iniciar <a href="'.$url.'">esta tarefa</a>';
+			$comentario2->save();
+		}
+
+		$tarefauser = new Tarefausertempo();
+		$tarefauser->tarefa_id = $id;
+		$tarefauser->user_id = Auth::id();
+		$tarefauser->data_ini = Formatter::dataAtualDB();
+		$tarefauser->minutos = 0;
+		$tarefauser->save();
+
+		$comentario = new Tarefacomentario();
+		$comentario->tarefa_id = $id;
+		$comentario->user_id = Auth::id();
+		$comentario->descricao = "Aviso do sistema: ".Auth::user()->nome." iniciou esta tarefa";
+		$comentario->save();
+
+		return Redirect::to('tarefa/list');
+	}
+
+	public function getPausetarefa($id){
+		$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->OrderBy('id','DESC')->first();
+		$tarefauser->data_fim = Formatter::dataAtualDB();
+		$tarefauser->minutos = Formatter::minutesBetweenDates($tarefauser->data_ini,$tarefauser->data_fim);
+		$tarefauser->save();
+
+		$comentario = new Tarefacomentario();
+		$comentario->tarefa_id = $id;
+		$comentario->user_id = Auth::id();
+		$comentario->descricao = "Aviso do sistema: ".Auth::user()->nome." pausou esta tarefa";
+		$comentario->save();
+
 		return Redirect::to('tarefa/list');
 	}
 }

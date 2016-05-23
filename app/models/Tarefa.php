@@ -48,6 +48,11 @@ class Tarefa extends Eloquent {
 		return $this->hasMany('Tarefausertempo','tarefa_id');
 	}
 
+	public function usertempoplay()
+	{
+		return $this->hasMany('Tarefausertempo','tarefa_id')->whereNull('data_fim');
+	}
+
 	public function Equipecliente()
 	{
 		return $this->belongsTo('Equipecliente','clientes_projetos_id');
