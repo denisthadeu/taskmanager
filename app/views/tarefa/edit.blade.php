@@ -394,7 +394,7 @@
             async: false,
             data:{id:id_tarefa}
         }).complete(function(){
-            setTimeout(function(){get_tempo();}, 60000);
+            setTimeout(function(){get_tempo();}, 600000);
         }).responseText;
 
         // $('div.feedback-box').html(feedback);

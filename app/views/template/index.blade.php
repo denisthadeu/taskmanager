@@ -395,7 +395,7 @@
 					url: "{{ URL::to('mensagem/ajaxmensagem') }}",
 					async: false
 				}).complete(function(){
-					setTimeout(function(){get_mensagem();}, 10000);
+					setTimeout(function(){get_mensagem();}, 1000000);
 				}).responseText;
 
 				// $('div.feedback-box').html(feedback);
