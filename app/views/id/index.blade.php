@@ -93,6 +93,8 @@
 		                                                <!-- <td>{{-- $minhaTarefa->statustarefa->nome --}}</td> -->
 		                                                <td>
 		                                                    <a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-info"><span class="fa fa-eye"></span> Ver</button></a>
+		                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span>Deletar</button></a>
+                                                    		<a href="{{ URL::to('tarefa/listentregar') }}/{{$minhaTarefa->id}}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Entregar</button></a>
 		                                                </td>
 		                                            </tr>
 		                                    	@endforeach
@@ -209,6 +211,24 @@
 	  return str.length < max ? pad("0" + str, max) : str;
 	}
     $(document).ready(function() {
+    	$('.remover-equipe').click(function(){
+            var r = confirm("Deseja deletar esta tarefa?");
+            if (r == true) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        $('.duplicar-equipe').click(function(){
+            var r = confirm("Deseja duplicar esta tarefa?");
+            if (r == true) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        
         $( ".sortable" ).sortable({
 	      	connectWith: ".connectedSortable",
 	      	update: function( ) {
