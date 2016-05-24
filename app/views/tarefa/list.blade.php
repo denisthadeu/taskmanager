@@ -61,7 +61,7 @@
                                         @if($minhaTarefa->tarefa_status_id != 6)
                                             
                                             
-                                            <tr  class="ui-state-default @if(count($minhaTarefa->usertempoplay) > 0) list-group-item-warning @endif" data-tarefa="{{$minhaTarefa->id}}">
+                                            <tr  class="ui-state-default @if(count($minhaTarefa->usertempoplay) > 0) list-group-item-success @endif" data-tarefa="{{$minhaTarefa->id}}">
                                                 <!-- <td>{{-- $minhaTarefa->id --}}</td> -->
                                                 <td><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}">{{ $minhaTarefa->nome }}</a></td>
                                                 <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->Equipecliente->equipe->nome or '' }}</td>

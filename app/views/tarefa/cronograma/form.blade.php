@@ -67,8 +67,8 @@
                                         </select>
                                         <select name="minuto-novo-projeto" id="minuto-novo-projeto" placeholder="Minuto" class="form-control">
                                             <option value="00">Minuto</option>
-                                            @for ($i = 0; $i <= 4; $i++)
-                                                {{--*/ $count = Formatter::leadingZero(($i * 15)) /*--}} 
+                                            @for ($i = 0; $i <= 59; $i++)
+                                                {{--*/ $count = Formatter::leadingZero(($i)) /*--}} 
                                                 <option value="{{ $count }}">{{ $count }}</option>
                                             @endfor
                                         </select>
@@ -114,9 +114,9 @@
                                                         </select>
                                                         <select name="etapaMinuto[]" id="projeto-minuto-field-{{ $descricao->id }}" placeholder="Minuto" class="form-control" required style="display:none;">
                                                             <option value="00">Minuto</option>
-                                                            @for ($i = 0; $i <= 4; $i++)
-                                                                {{--*/ $count = Formatter::leadingZero(($i * 15)) /*--}} 
-                                                                <option value="{{ $count }}" @if(isset($descricao) && $descricao->minuto_esforco == ($i * 15)) SELECTED @endif >{{ $count }}</option>
+                                                            @for ($i = 0; $i <= 59; $i++)
+                                                                {{--*/ $count = Formatter::leadingZero(($i)) /*--}} 
+                                                                <option value="{{ $count }}" @if(isset($descricao) && $descricao->minuto_esforco == ($i)) SELECTED @endif >{{ $count }}</option>
                                                             @endfor
                                                         </select>
                                                         <select name="etapaDuracao[]" id="projeto-duracao-field-{{ $descricao->id }}" placeholder="Duração" class="form-control" style="display:none;">

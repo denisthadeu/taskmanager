@@ -83,7 +83,7 @@
                                         <tbody>
                                     		@if(!empty($minhasTarefas))
 		                                    	@foreach($minhasTarefas AS $minhaTarefa)
-		                                    		<tr class="@if(count($minhaTarefa->usertempoplay) > 0) list-group-item-warning @endif">
+		                                    		<tr class="@if(count($minhaTarefa->usertempoplay) > 0) list-group-item-success @endif">
 		                                                <!-- <td>{{-- $minhaTarefa->id --}}</td> -->
 		                                                <td><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}">{{ $minhaTarefa->nome }}</a></td>
 		                                                <td>{{ $minhaTarefa->cliente->nome or '' }} / {{ $minhaTarefa->Equipecliente->equipe->nome or '' }}</td>

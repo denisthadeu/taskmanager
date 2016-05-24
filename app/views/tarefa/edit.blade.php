@@ -119,9 +119,9 @@
                                                             @endfor
                                                         </select>
                                                         <select name="minuto" required>
-                                                            @for ($i = 0; $i <= 4; $i++)
-                                                                {{--*/ $count = Formatter::leadingZero(($i * 15)) /*--}} 
-                                                                <option value="{{ $count }}" @if(isset($tarefa) && $tarefa->minuto_esforco == ($i * 15)) SELECTED @endif >{{ $count }}</option>
+                                                            @for ($i = 0; $i <= 59; $i++)
+                                                                {{--*/ $count = Formatter::leadingZero(($i)) /*--}} 
+                                                                <option value="{{ $count }}" @if(isset($tarefa) && $tarefa->minuto_esforco == ($i)) SELECTED @endif >{{ $count }}</option>
                                                             @endfor
                                                         </select>
                                                     </span>
