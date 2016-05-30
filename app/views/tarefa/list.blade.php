@@ -70,23 +70,16 @@
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
                                                 <!-- <td>{{-- $minhaTarefa->statustarefa->nome --}}</td> -->
                                                 <td>
-                                                    <div class="btn-group" role="group">
-                                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                              Opções
-                                                              <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><span class="fa fa-remove"></span>Deletar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe"><span class="fa fa-copy"></span>Duplicar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><span class="fa fa-pencil"></span>Editar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/listentregar') }}/{{$minhaTarefa->id}}"><span class="glyphicon glyphicon-ok"></span> Entregar</a></li>
-                                                            @if(count($minhaTarefa->usertempoplay) > 0)
-                                                                <li><a href="{{ URL::to('tarefa/pausetarefa') }}/{{$minhaTarefa->id}}"><span class="fa fa-pause"></span>Pausar tarefa</a></li>
-                                                            @else
-                                                                <li><a href="{{ URL::to('tarefa/playtarefa') }}/{{$minhaTarefa->id}}"><span class="fa fa-play"></span>Iniciar tarefa</a></li>
-                                                            @endif
-                                                        </ul>
-                                                    </div>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe" data-toggle="tooltip" data-placement="bottom" title="Duplicar Tarefa"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe" data-toggle="tooltip" data-placement="bottom" title="Deletar Tarefa"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                    @if(isset($minhaTarefa) && $minhaTarefa->tarefa_status_id != 6)
+                                                        <a href="{{ URL::to('tarefa/entregar') }}/{{$minhaTarefa->id}}" data-toggle="tooltip" data-placement="bottom" title="Entregar Tarefa"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button></a>
+                                                    @endif
+                                                    @if(count($minhaTarefa->usertempoplay) > 0)
+                                                        <a href="{{ URL::to('tarefa/pausetarefa') }}/{{$minhaTarefa->id}}" data-toggle="tooltip" data-placement="bottom" title="Pausar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-pause"></span></button></a>
+                                                    @else
+                                                        <a href="{{ URL::to('tarefa/playtarefa') }}/{{$minhaTarefa->id}}" data-toggle="tooltip" data-placement="bottom" title="Iniciar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-play"></span></button></a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endif
@@ -124,18 +117,16 @@
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
                                                 <!-- <td>{{-- $tarefaCriada->statustarefa->nome --}}</td> -->
                                                 <td>
-                                                    <div class="btn-group" role="group">
-                                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                              Opções
-                                                              <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><span class="fa fa-remove"></span>Deletar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe"><span class="fa fa-copy"></span>Duplicar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><span class="fa fa-pencil"></span>Editar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/listentregar') }}/{{$tarefaCriada->id}}"><span class="glyphicon glyphicon-ok"></span> Entregar</a></li>
-                                                        </ul>
-                                                    </div>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe" data-toggle="tooltip" data-placement="bottom" title="Duplicar Tarefa"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe" data-toggle="tooltip" data-placement="bottom" title="Deletar Tarefa"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                    @if(isset($tarefaCriada) && $tarefaCriada->tarefa_status_id != 6)
+                                                        <a href="{{ URL::to('tarefa/entregar') }}/{{$tarefaCriada->id}}" data-toggle="tooltip" data-placement="bottom" title="Entregar Tarefa"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button></a>
+                                                    @endif
+                                                    @if(count($tarefaCriada->usertempoplay) > 0)
+                                                        <a href="{{ URL::to('tarefa/pausetarefa') }}/{{$tarefaCriada->id}}" data-toggle="tooltip" data-placement="bottom" title="Pausar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-pause"></span></button></a>
+                                                    @else
+                                                        <a href="{{ URL::to('tarefa/playtarefa') }}/{{$tarefaCriada->id}}" data-toggle="tooltip" data-placement="bottom" title="Iniciar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-play"></span></button></a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endif
@@ -171,17 +162,16 @@
                                                 <td>{{ Formatter::dateDbToString($minhaTarefa->data_fim) }}</td>
                                                 <!-- <td>{{-- $minhaTarefa->statustarefa->nome --}}</td> -->
                                                 <td>
-                                                    <div class="btn-group" role="group">
-                                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                              Opções
-                                                              <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe"><span class="fa fa-remove"></span>Deletar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe"><span class="fa fa-copy"></span>Duplicar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/edit') }}/{{$minhaTarefa->id}}"><span class="fa fa-pencil"></span>Editar</a></li>
-                                                        </ul>
-                                                    </div>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$minhaTarefa->id}}" class="duplicar-equipe" data-toggle="tooltip" data-placement="bottom" title="Duplicar Tarefa"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$minhaTarefa->id}}" class="remover-equipe" data-toggle="tooltip" data-placement="bottom" title="Deletar Tarefa"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                    @if(isset($minhaTarefa) && $minhaTarefa->tarefa_status_id != 6)
+                                                        <a href="{{ URL::to('tarefa/entregar') }}/{{$minhaTarefa->id}}" data-toggle="tooltip" data-placement="bottom" title="Entregar Tarefa"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button></a>
+                                                    @endif
+                                                    @if(count($minhaTarefa->usertempoplay) > 0)
+                                                        <a href="{{ URL::to('tarefa/pausetarefa') }}/{{$minhaTarefa->id}}" data-toggle="tooltip" data-placement="bottom" title="Pausar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-pause"></span></button></a>
+                                                    @else
+                                                        <a href="{{ URL::to('tarefa/playtarefa') }}/{{$minhaTarefa->id}}" data-toggle="tooltip" data-placement="bottom" title="Iniciar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-play"></span></button></a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endif
@@ -219,17 +209,16 @@
                                                 <td>{{ Formatter::dateDbToString($tarefaCriada->data_fim) }}</td>
                                                 <!-- <td>{{-- $tarefaCriada->statustarefa->nome --}}</td> -->
                                                 <td>
-                                                    <div class="btn-group" role="group">
-                                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                              Opções
-                                                              <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe"><span class="fa fa-remove"></span>Deletar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe"><span class="fa fa-copy"></span>Duplicar</a></li>
-                                                            <li><a href="{{ URL::to('tarefa/edit') }}/{{$tarefaCriada->id}}"><span class="fa fa-pencil"></span>Editar</a></li>
-                                                        </ul>
-                                                    </div>
+                                                    <a href="{{ URL::to('tarefa/duplicar') }}/{{$tarefaCriada->id}}" class="duplicar-equipe" data-toggle="tooltip" data-placement="bottom" title="Duplicar Tarefa"><button type="button" class="btn btn-warning"><span class="fa fa-copy"></span></button></a>
+                                                    <a href="{{ URL::to('tarefa/delete') }}/{{$tarefaCriada->id}}" class="remover-equipe" data-toggle="tooltip" data-placement="bottom" title="Deletar Tarefa"><button type="button" class="btn btn-danger"><span class="fa fa-remove"></span></button></a>
+                                                    @if(isset($tarefaCriada) && $tarefaCriada->tarefa_status_id != 6)
+                                                        <a href="{{ URL::to('tarefa/entregar') }}/{{$tarefaCriada->id}}" data-toggle="tooltip" data-placement="bottom" title="Entregar Tarefa"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button></a>
+                                                    @endif
+                                                    @if(count($tarefaCriada->usertempoplay) > 0)
+                                                        <a href="{{ URL::to('tarefa/pausetarefa') }}/{{$tarefaCriada->id}}" data-toggle="tooltip" data-placement="bottom" title="Pausar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-pause"></span></button></a>
+                                                    @else
+                                                        <a href="{{ URL::to('tarefa/playtarefa') }}/{{$tarefaCriada->id}}" data-toggle="tooltip" data-placement="bottom" title="Iniciar Tarefa"><button type="button" class="btn btn-primary"><span class="fa fa-play"></span></button></a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endif

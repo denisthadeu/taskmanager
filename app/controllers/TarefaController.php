@@ -56,12 +56,8 @@ class TarefaController extends BaseController {
 								->with('responsavel')
 								->with(['Equipecliente' => function($query)
 								{
-								    $query->with(['equipe' => function($query)
-									{
-									    $query->OrderBy('nome');
-									}]);
-								}])
-								->OrderBy('order');
+								    $query->with('equipe');
+								}]);
 
 		if(Input::has('search')){
 			$search = Input::get('search');
@@ -76,7 +72,7 @@ class TarefaController extends BaseController {
 		} else {
 			$search = null;
 			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id);
-			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',$user->id);
+			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',$user->id)->OrderBy('id','desc');
 		}
 		
 		$minhasTarefas = $minhasTarefas->get();
