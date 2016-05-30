@@ -31,13 +31,14 @@ class TarefaController extends BaseController {
 
 	public function getList($id = null)
 	{	
+		extract(Input::all());
+		if(!isset($titulo))
+			$titulo = "Minhas Tarefas";
 		if(isset($id) && !empty($id)){
 			$user = User::find($id);
 		} else {
 			$user = User::find(Auth::id());
 		}
-		
-
 		$minhasTarefas = Tarefa::with('cliente')
 								->with('projeto')
 								->with('statustarefa')
@@ -48,36 +49,34 @@ class TarefaController extends BaseController {
 									    $query->OrderBy('nome');
 									}]);
 								}])
-								->with('usertempoplay')
-								->OrderBy('order');
-		$tarefasCriadas = Tarefa::with('cliente')
-								->with('projeto')
-								->with('statustarefa')
-								->with('responsavel')
-								->with(['Equipecliente' => function($query)
-								{
-								    $query->with('equipe');
-								}]);
-
-		if(Input::has('search')){
-			$search = Input::get('search');
-			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id)
-							->where('id','=',$search)
-							->orWhere('user_id','=',$user->id)
-							->where('nome','like','%'.$search.'%');
-			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',$user->id)
-							->where('id','=',$search)
-							->orWhere('criado_por','=',$user->id)
-							->where('nome','like','%'.$search.'%');
-		} else {
-			$search = null;
-			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id);
-			$tarefasCriadas = $tarefasCriadas->where('criado_por','=',$user->id)->OrderBy('id','desc');
+								->with('usertempoplay');
+		if($titulo == "Minhas Tarefas"){
+			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id)->where('tarefa_status_id','<>','6');
+		} elseif($titulo == "Minhas Tarefas Entregues"){
+			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id)->where('tarefa_status_id','=','6');
+		} elseif($titulo == "Tarefas que eu criei"){
+			$minhasTarefas = $minhasTarefas->where('criado_por','=',$user->id)->where('tarefa_status_id','<>','6');
+		} elseif ($titulo == "Tarefas Entregues que eu criei") {
+			$minhasTarefas = $minhasTarefas->where('criado_por','=',$user->id)->where('tarefa_status_id','=','6');
 		}
-		
+		if(isset($search) && !empty($search)){
+			$minhasTarefas = $minhasTarefas->where('nome','like','%'.$search.'%');
+		} else {
+			$search = '';
+		}
+		if(isset($sort) && !empty($sort)){
+			$output_sort = preg_grep("/(desc)$/", explode("\n", $sort));
+			if(!empty($output_sort) && is_array($output_sort)){
+				$minhasTarefas = $minhasTarefas->OrderBy(str_replace("desc", "", $sort),'desc');
+			} else {
+				$minhasTarefas = $minhasTarefas->OrderBy($sort);
+			}
+		} else {
+			$sort = 'order';
+			$minhasTarefas = $minhasTarefas->OrderBy($sort);
+		}
 		$minhasTarefas = $minhasTarefas->get();
-		$tarefasCriadas = $tarefasCriadas->get();
-		return View::make('tarefa.list',compact('minhasTarefas','tarefasCriadas','search','user'));
+		return View::make('tarefa.list',compact('minhasTarefas','search','user','titulo','sort'));
 	}
 
 	public function getCreate()
