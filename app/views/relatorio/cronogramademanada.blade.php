@@ -17,7 +17,7 @@
         <div class="col-md-1">
             &nbsp;
         </div>
-        <form>
+        <form method="get" action="{{ URL::to('relatorio/cronogramademanda') }}">
             <div class="col-md-2">
                 <select class="form-control" name="filtro-setor">
                     <option value="0">Todos os Setores</option>

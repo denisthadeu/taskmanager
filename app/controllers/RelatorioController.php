@@ -42,7 +42,7 @@ class RelatorioController extends BaseController {
 		if(!empty($dataSetor)){
 			$equipes = $equipes->where('id','=',$dataSetor);
 		}
-		$equipes = $equipes->get();
+		$equipes = $equipes->with('equipeUser')->get();
 		$results = null;
 		//pega as equipes
 		foreach($equipes AS $equipe){
@@ -52,6 +52,10 @@ class RelatorioController extends BaseController {
 			$results[$equipe->id]["horasEstipuladas"] = 0;
 			$results[$equipe->id]["horasFeitas"] = 0;
 			$results[$equipe->id]["clientes"] = array();
+			$arrUsuarios = array();
+			foreach ($equipe->equipeUser as $key => $equipeUser) {
+				$arrUsuarios[] = $equipeUser->user_id;
+			}
 			//pega os clientes que a equipe atende
 			foreach($equipe->equipeCliente AS $key => $equipeCliente){
 				$cliente = $equipeCliente->cliente;
@@ -67,7 +71,7 @@ class RelatorioController extends BaseController {
 				// tarefas da equipe deste cliente
 				$results[$equipe->id]["clientes"][$cliente->id]["tipo"] = array();
 				foreach($tarefas AS $keytarefa => $tarefa){
-					if($equipe->equipeUserId($tarefa->user_id)){
+					if(in_array($tarefa->user_id, $arrUsuarios)){
 						$tipotarefa = $tarefa->tipo;
 						if(empty($tipotarefa)){
 							$tipotarefa = new Tarefatipo();
@@ -110,15 +114,10 @@ class RelatorioController extends BaseController {
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
 					}
 				}
-				if(empty(count($results[$equipe->id]["clientes"][$cliente->id]["tipo"]))){
-					$results[$equipe->id]["colspan"] += 2;
-				} else {
-					$results[$equipe->id]["colspan"] += count($results[$equipe->id]["clientes"][$cliente->id]["tipo"]) + 1;
-				}
 			}
-			$results[$equipe->id]["colspan"]++;
-			if($results[$equipe->id]["colspan"] == 1){
-				$results[$equipe->id]["colspan"] = 2;
+			$results[$equipe->id]["colspan"] = 1;
+			foreach ($results[$equipe->id]["clientes"] as $cliente) {
+				$results[$equipe->id]["colspan"] += $cliente["colspan"] + 1;
 			}
 		}
 

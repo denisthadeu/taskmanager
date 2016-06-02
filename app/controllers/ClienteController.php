@@ -29,6 +29,7 @@ class ClienteController extends BaseController {
 	{
 		$cliente = Clientes::where('id','=',$id)->delete();
 		$deletedProjetos = Clientesprojetos::where('clientes_id','=',$id)->delete();
+		$Equipecliente = Equipecliente::where('cliente_id','=',$id)->delete();
 		return Redirect::to('cliente/list');
 	}	
 

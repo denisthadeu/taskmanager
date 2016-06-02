@@ -8,7 +8,7 @@ class Equipe extends Eloquent {
 	{
 		return $this->hasMany('Equipeuser')->with(['user' => function($query)
 					{
-					    $query->sortByDesc('nome');
+					    $query->OrderBy('nome');
 					}]);
 	}
 

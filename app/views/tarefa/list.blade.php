@@ -33,6 +33,12 @@
                     <option value="data_fimdesc" @if($sort == "data_fimdesc") SELECTED @endif >Data de Entrega da Tarefa (do menor para o maior)</option>
                 </select>
             </div>
+            <!-- <div class="col-md-1">
+                <input name="data_ini" placeholder="Data Inicial" class="form-control selector" id="dp-4" data-date="{{ date('d/m/Y') }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" value="{{ $search }}" />
+            </div>
+            <div class="col-md-1">
+                <input name="data_fim" placeholder="Data Final" class="form-control selector" id="dp-5" data-date="{{ date('d/m/Y') }}" data-date-format="dd/mm/yyyy" data-date-viewmode="months" value="{{ $search }}" />
+            </div> -->
             <div class="col-md-3">
                 <input name="search" placeholder="Pesquisa" class="form-control" value="{{ $search }}" />
             </div>
@@ -110,6 +116,9 @@
 @section('script')
 <script type="text/javascript">
     $(document).ready(function() {
+        $( ". selector" ).datepicker({ 
+            dateFormat: 'dd/mm/yy' 
+        });
         $('.remover-equipe').click(function(){
             var r = confirm("Deseja deletar esta tarefa?");
             if (r == true) {

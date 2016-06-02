@@ -55,9 +55,9 @@ class TarefaController extends BaseController {
 		} elseif($titulo == "Minhas Tarefas Entregues"){
 			$minhasTarefas = $minhasTarefas->where('user_id','=',$user->id)->where('tarefa_status_id','=','6');
 		} elseif($titulo == "Tarefas que eu criei"){
-			$minhasTarefas = $minhasTarefas->where('criado_por','=',$user->id)->where('tarefa_status_id','<>','6');
+			$minhasTarefas = $minhasTarefas->where('criado_por','=',$user->id)->where('tarefa_status_id','<>','6')->where('user_id','<>',$user->id);
 		} elseif ($titulo == "Tarefas Entregues que eu criei") {
-			$minhasTarefas = $minhasTarefas->where('criado_por','=',$user->id)->where('tarefa_status_id','=','6');
+			$minhasTarefas = $minhasTarefas->where('criado_por','=',$user->id)->where('tarefa_status_id','=','6')->where('user_id','<>',$user->id);
 		}
 		if(isset($search) && !empty($search)){
 			$minhasTarefas = $minhasTarefas->where('nome','like','%'.$search.'%');

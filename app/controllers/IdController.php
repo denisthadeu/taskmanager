@@ -119,4 +119,9 @@ class IdController extends \BaseController
 
 		return Redirect::to('/')->with('warning', array('warning' => 'Um e-mail foi enviado para você.'));	
 	}
+
+	public function getServidor()
+	{
+		phpinfo(32);
+	}
 }
