@@ -62,7 +62,7 @@
                                         </p>
                                         <p>
                                             <select class="form-control select2" required name="cliente" id="cliente" >
-                                                <option value="">Projeto</option>
+                                                <option value="">Cliente</option>
                                                 @if(isset($clientes) && !empty($clientes))
                                                     @foreach($clientes AS $cliente)
                                                         <option value="{{ $cliente->id }}" @if(isset($tarefa) && $tarefa->clientes_id == $cliente->id) SELECTED @endif>{{ $cliente->nome }}</option>
