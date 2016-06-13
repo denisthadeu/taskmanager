@@ -139,8 +139,48 @@
                             </p>
                             <p>
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="checkbox" name="ongoing" class="icheckbox" style="position: absolute; opacity: 0;"> <span data-toggle="tooltip" data-placement="right" data-title="Tarefas simples do dia a dia, sem início ou fim determinado, e sem esforço estimado. Use-as para contar tempo em demandas que não precisem de uma data de entrega e são realizadas frequentemente." data-original-title="" title="">Tarefa ongoing</span>
+                                    <div class="col-md-1">
+                                        <input type="checkbox" name="ongoing" id="ongoing" class="icheckbox"> <span data-toggle="tooltip" data-placement="right" data-title="Tarefas simples do dia a dia, sem início ou fim determinado, e sem esforço estimado. Use-as para contar tempo em demandas que não precisem de uma data de entrega e são realizadas frequentemente." data-original-title="" title="">Tarefa ongoing</span>
+                                    </div>
+                                    <div class="col-md-2 daysoftheweekcheckbox">
+                                        <input type="checkbox" name="tarefaagendada" id="tarefaagendada" class="icheckbox"> Tarefa Agendada
+                                    </div>
+                                    <div class="col-md-5 daysoftheweek">
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="inlineCheckbox1" class="icheckbox" name="segunda" value="2"> Segunda-Feira
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="inlineCheckbox2" class="icheckbox" name="terca" value="3"> Terça-Feira
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="inlineCheckbox3" class="icheckbox" name="quarta" value="4"> Quarta-Feira
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="inlineCheckbox4" class="icheckbox" name="quinta" value="5"> Quinta-Feira
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="inlineCheckbox5" class="icheckbox" name="sexta" value="6"> Sexta-Feira
+                                        </label>
+                                    </div>
+                                    <div class="col-md-1 daysoftheweek">
+                                        <label class="checkbox-inline">
+                                            Quantidade
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2 daysoftheweek">
+                                        <div class="input-group">
+                                              <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="qtd">
+                                                      <span class="glyphicon glyphicon-minus"></span>
+                                                  </button>
+                                              </span>
+                                              <input type="text" name="qtd" class="form-control input-number" value="1">
+                                              <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="qtd">
+                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                  </button>
+                                              </span>
+                                        </div>
                                     </div>
                                 </div>
                             </p>
@@ -266,6 +306,13 @@
     display: table;
     cursor: pointer;
 }
+.icheckbox{
+    position: absolute; 
+    opacity: 0;
+}
+.daysoftheweek {
+    display: none;
+}
 
 </style>
 <script type="text/javascript">
@@ -279,10 +326,19 @@
             if(val == "tipo"){
                 $("#responsavel").prop('required',true);
                 $('#p-responsavel').show();
+                $('.daysoftheweekcheckbox').show();
+                var n = $( "#tarefaagendada:checked" ).length;
+                if(n > 0){
+                    $('.daysoftheweek').show();
+                } else {
+                    $('.daysoftheweek').hide();
+                }
             }
             if(val == "cronograma"){
                 $("#responsavel").prop('required',false);
                 $('#p-responsavel').hide();
+                $('.daysoftheweekcheckbox').hide();
+                $('.daysoftheweek').hide();
             }
             $(".all-field-select-user").prop('required',false);
             $('.cronograma-descricao').hide();
@@ -369,6 +425,89 @@
                     $('#modal_create_projeto').modal('toggle');
                 });
             }
+        });
+
+        $('.iCheck-helper').click(function() {
+            if($("#tarefaagendada").is(':checked'))
+                $(".daysoftheweek").show();  // checked
+            else
+                $(".daysoftheweek").hide();  // unchecked
+        });
+
+        $('.btn-number').click(function(e){
+            e.preventDefault();
+            
+            var fieldName = $(this).attr('data-field');
+            var type      = $(this).attr('data-type');
+            var input = $("input[name='"+fieldName+"']");
+            var currentVal = parseInt(input.val());
+            if (!isNaN(currentVal)) {
+                if(type == 'minus') {
+                    var minValue = parseInt(input.attr('min')); 
+                    if(!minValue) minValue = 1;
+                    if(currentVal > minValue) {
+                        input.val(currentVal - 1).change();
+                    } 
+                    if(parseInt(input.val()) == minValue) {
+                        $(this).attr('disabled', true);
+                    }
+        
+                } else if(type == 'plus') {
+                    var maxValue = parseInt(input.attr('max'));
+                    if(!maxValue) maxValue = 9999999999999;
+                    if(currentVal < maxValue) {
+                        input.val(currentVal + 1).change();
+                    }
+                    if(parseInt(input.val()) == maxValue) {
+                        $(this).attr('disabled', true);
+                    }
+        
+                }
+            } else {
+                input.val(0);
+            }
+        });
+        $('.input-number').focusin(function(){
+           $(this).data('oldValue', $(this).val());
+        });
+        $('.input-number').change(function() {
+            
+            var minValue =  parseInt($(this).attr('min'));
+            var maxValue =  parseInt($(this).attr('max'));
+            if(!minValue) minValue = 1;
+            if(!maxValue) maxValue = 9999999999999;
+            var valueCurrent = parseInt($(this).val());
+            
+            var name = $(this).attr('name');
+            if(valueCurrent >= minValue) {
+                $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+            } else {
+                alert('Valor muito baixo');
+                $(this).val($(this).data('oldValue'));
+            }
+            if(valueCurrent <= maxValue) {
+                $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+            } else {
+                alert('Valor muito alto');
+                $(this).val($(this).data('oldValue'));
+            }
+            
+            
+        });
+        $(".input-number").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+                     // Allow: Ctrl+A
+                    (e.keyCode == 65 && e.ctrlKey === true) || 
+                     // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                         // let it happen, don't do anything
+                         return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
         });
     });
 </script>

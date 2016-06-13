@@ -64,4 +64,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Tarefa','user_id')->whereNotIn('tarefa_status_id',array(6))->where('data_ini','<=',$dataFinalDia)->OrderBy('order');
 	}
 
+	public function tarefaTempoIniciado()
+	{
+		return $this->hasMany('Tarefausertempo','user_id')->whereNull('data_fim');
+	}
+
+	public function tarefaTempo()
+	{
+		return $this->hasMany('Tarefausertempo','user_id');
+	}
+
 }

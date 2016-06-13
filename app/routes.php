@@ -25,6 +25,7 @@ Route::get('/', function()
 
 
 Route::controller('cliente', 'ClienteController');
+Route::controller('cron', 'CronController');
 Route::controller('cronograma', 'CronogramaController');
 Route::controller('equipe', 'EquipeController');
 Route::controller('home','HomeController');
