@@ -5,7 +5,6 @@ class CronController extends BaseController {
 	public function getIndex()
 	{
 		$hora = date('H:i');
-		$hora = "13:00";
 		$diadasemana = date('l');
 		//verifica se é durante a semana
 		if($diadasemana == "Monday" || $diadasemana == "Tuesday" || $diadasemana == "Wednesday" || $diadasemana == "Thursday" || $diadasemana == "Friday") {
@@ -64,7 +63,44 @@ class CronController extends BaseController {
 
 			// cria tarefas agendadas
 			if($hora == "05:00"){
+				//pega todas as tarefas agendadas
+				$tarefas = Tarefa::where('tarefaagendada','=','1');
+				if($diadasemana == "Monday"){
+					$tarefas = $tarefas->where('segunda','=','1');
+				} elseif ($diadasemana == "Tuesday") {
+					$tarefas = $tarefas->where('terca','=','1');
+				} elseif ($diadasemana == "Wednesday") {
+					$tarefas = $tarefas->where('quarta','=','1');
+				} elseif ($diadasemana == "Thursday") {
+					$tarefas = $tarefas->where('quinta','=','1');
+				} elseif ($diadasemana == "Friday") {
+					$tarefas = $tarefas->where('sexta','=','1');
+				}
+				$tarefas = $tarefas->get();
+				foreach($tarefas AS $tarefa){
+					//duplica a tarefa
+					$tarefaDuplicada = $tarefa->replicate();
 
+					//novo prazo para a tarefa
+					$tarefaDuplicada->data_ini 	= date('Y-m-d')." 09:00:00";
+					$tarefaDuplicada->data_fim 	= Formatter::setDatalDBPlusMinutes($tarefaDuplicada->data_ini,$tarefaDuplicada->minutos);
+					//se for a ultima tarefa, então remove agendamento
+					if($tarefaDuplicada->qtd_repeticoes <= 1){
+						$tarefaDuplicada->tarefaagendada = 0;
+						$tarefaDuplicada->qtd_repeticoes = 1;
+					} else { // se nao for ultimo agendamento, então subtrai a quantitade de vezes q ainda vai repetir
+						$tarefaDuplicada->qtd_repeticoes = $tarefaDuplicada->qtd_repeticoes - 1;
+					}
+					//salva tarefa agendada
+					$tarefaDuplicada->save();
+					//renomeia com novo id
+					$tarefaDuplicada->nome = preg_replace("/\#(\w)*/", "#".$tarefaDuplicada->id, $tarefaDuplicada->nome);
+					//salva de novo
+					$tarefaDuplicada->save();
+					//remove agendamento da tarefa anterior
+					$tarefa->tarefaagendada = 0;
+					$tarefa->save();
+				}
 			}
 		}
 
