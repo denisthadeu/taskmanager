@@ -51,6 +51,16 @@
                                         	</select>
                                         </p>
                                         <p>
+                                            <select class="form-control select2" required name="setor" id="setor" >
+                                                <option value="">Meu Setor</option>
+                                                @if(isset($setores))
+                                                    @foreach($setores AS $key => $setor)
+                                                        <option value="{{ $setor->id }}" @if($setor->id == $tarefa->meu_setor_id) SELECTED @endif >{{ $setor->nome }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </p>
+                                        <p>
                                         	<select class="form-control select2" name="tipo" id="tipo">
                                         		<option value="">Tipo</option>
                                         		@if(isset($tarefaTipos) && !$tarefaTipos->isEmpty())

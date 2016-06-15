@@ -121,7 +121,8 @@ class TarefaController extends BaseController {
 						    $query->OrderBy('nome');
 						}]);
 					}])->OrderBy('nome')->where('id','=',$tarefa->clientes_id)->get();
-		return View::make('tarefa.edit',compact('tarefa','users','tarefaTipos','clientes','tarefaStatus','tarefausertempo','clientesProjeto'));
+		$setores = Equipe::orderBy('nome')->get();
+		return View::make('tarefa.edit',compact('tarefa','users','tarefaTipos','clientes','tarefaStatus','tarefausertempo','clientesProjeto','setores'));
 	}
 
 	public function getDelete($id)
@@ -163,6 +164,7 @@ class TarefaController extends BaseController {
 			$tarefa->tarefa_status_id 		= 1;
 			$tarefa->tarefa_tipo_id 		= $tipo;
 			$tarefa->criado_por 			= Auth::id();
+			$tarefa->meu_setor_id 			= $setor;
 			$tarefa->tarefa_anterior		= $tarefaAnterior;
 			$tarefa->tarefa_proximo			= $tarefaProximo;
 			$tarefa->status 				= 0;
@@ -223,6 +225,7 @@ class TarefaController extends BaseController {
 					$tarefa->tarefa_status_id 		= 1;
 					$tarefa->tarefa_tipo_id 		= $tipo;
 					$tarefa->criado_por 			= Auth::id();
+					$tarefa->meu_setor_id 			= $setor;
 					$tarefa->status 				= 0;
 					$tarefa->ongoing 				= $ongoing;
 					$tarefa->tarefaagendada 		= 0;
@@ -347,6 +350,9 @@ class TarefaController extends BaseController {
 		$tarefa->minuto_esforco 		= $minuto;
 		$tarefa->hora_esforco 			= $hora;
 		$tarefa->ongoing 				= $ongoing;
+		if(isset($setor)){
+			$tarefa->meu_setor_id 			= $setor;
+		}
 		$tarefa->tarefaagendada 		= (isset($tarefaagendada)) ? 1 : 0;
 		$tarefa->segunda 				= (isset($segunda)) ? 1 : 0;
 		$tarefa->terca 					= (isset($terca)) ? 1 : 0;
@@ -634,7 +640,7 @@ class TarefaController extends BaseController {
 
 	public function postUpdateprojetos(){
 		extract(Input::all());
-		$options = "<option value=\"\">Projeto</option>";
+		$options = "<option value=\"\">Setor que Produzirá</option>";
 		$clientes = Clientes::with(['equipecliente' => function($query)
 					{
 					    $query->with(['equipe' => function($query)
@@ -671,7 +677,7 @@ class TarefaController extends BaseController {
 		$equipeCliente->equipe_id = $projeto_id;
 		$equipeCliente->save();
 
-		$options = "<option value=\"\">Projeto</option>";
+		$options = "<option value=\"\">Setor que Produzirá</option>";
 		$clientes = Clientes::with(['equipecliente' => function($query)
 					{
 					    $query->with(['equipe' => function($query)

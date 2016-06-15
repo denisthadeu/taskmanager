@@ -55,6 +55,16 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
+                                            <select class="form-control" required name="setor" id="setor" >
+                                                <option value="">Meu Setor</option>
+                                                @if(Auth::user()->equipeUser->count())
+                                                    @foreach(Auth::user()->equipeUser AS $key => $equipeuserPerfil)
+                                                        <option value="{{ $equipeuserPerfil->equipe->id }}">{{ $equipeuserPerfil->equipe->nome }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        </p>
+                                        <p>
                                             <div class="input-group input-group-select2">
                                                 <select class="form-control" required name="cliente" id="cliente" >
                                                     <option value="">Cliente</option>
@@ -70,7 +80,7 @@
                                         <p>
                                             <div class="input-group input-group-select2">
                                                 <select class="form-control" required name="projeto" id="projeto" >
-                                                    <option value="">Projeto</option>
+                                                    <option value="">Setor que Produzirá</option>
                                                 </select>
                                                 <span class="input-group-addon" id="span-add-projeto" data-backdrop="static" data-toggle="modal" data-target="#modal_create_projeto"><span class="fa fa-plus"></span></span>
                                             </div>
