@@ -52,7 +52,13 @@ class HomeController extends BaseController {
 			$minhasTarefas = $minhasTarefas->where('data_ini','>=',$dbSearchTaskIni);
 		if(!empty($dbSearchTaskFim))
 			$minhasTarefas = $minhasTarefas->where('data_ini','<=',$dbSearchTaskFim);
-		$minhasEquipes = Equipe::where('user_id','=',Auth::id())->with(['equipeUser' => function($query) use ($dbSearchTaskIni,$dbSearchTaskFim)
+		$arrMinhasequipes = array();
+		if(Auth::user()->equipeUser->count()){
+			foreach (Auth::user()->equipeUser as $key => $equipeUser) {
+				$arrMinhasequipes[] = $equipeUser->equipe_id;
+			}
+		}
+		$minhasEquipes = Equipe::wherein('id',$arrMinhasequipes)->with(['equipeUser' => function($query) use ($dbSearchTaskIni,$dbSearchTaskFim)
 						{
 						    $query->with(['user' => function($query) use ($dbSearchTaskIni,$dbSearchTaskFim)
 							{

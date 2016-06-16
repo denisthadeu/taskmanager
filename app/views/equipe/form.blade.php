@@ -46,20 +46,6 @@
                                 <p>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            Responsavel*
-                                        </div>
-                                        <div class="col-md-9">
-                                            <select name="responsavel" class="form-control">
-                                                @foreach($users as $user)
-                                                    <option value="{{ $user->id }}" @if(isset($equipe) && $user->id==$equipe->user_id) SELECTED @endif >{{ $user->nome }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </p>
-                                <p>
-                                    <div class="row">
-                                        <div class="col-md-3">
                                             Clientes*
                                         </div>
                                         <div class="col-md-9">
@@ -110,8 +96,13 @@
                                                 <tr id="projeto-{{ $membro->user->id }}">
                                                     <td>
                                                         <a href="#" class="remove-projeto text-danger">
-                                                            <span class="glyphicon glyphicon-remove"></span>
+                                                            <button type="button" class="btn btn-danger">Remover</button>
                                                         </a>
+                                                        @if($membro->responsavel == 0)
+                                                            <a href="http://localhost/taskmanager/public/equipe/marcarresponsavel/{{ $membro->id }}"><button type="button" class="btn btn-info">Marcar como Responsável</button></a>
+                                                        @else
+                                                            <a href="http://localhost/taskmanager/public/equipe/removerresponsavel/{{ $membro->id }}"><button type="button" class="btn btn-warning">Remover Responsabilidade</button></a>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <input type="hidden" name="membroID[]" value="{{ $membro->id }}" />
@@ -166,7 +157,7 @@
             html += '<tr id="projeto-'+number+'">';
             html += '    <td>';
             html += '        <a href="#" class="remove-projeto text-danger">';
-            html += '            <span class="glyphicon glyphicon-remove"></span>';
+            html += '            <button type="button" class="btn btn-danger">Remover</button>';
             html += '        </a> ';
             html += '    </td>';
             html += '    <td>';

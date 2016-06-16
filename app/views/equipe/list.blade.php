@@ -27,7 +27,7 @@
                         <th>id</th>
                         <th>Nome</th>
                         <th>Membros</th>
-                        <th>Responsável</th>
+                        <th>Responsáveis</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -48,7 +48,20 @@
                                     @endif
                                 ">{{ $equipe->equipeUser->count()}}
                                 </td>
-                                <td>{{ $equipe->responsavel->nome }}</td>
+                                <td>
+                                    {{--*/ $contador = 0;/*--}}
+                                    @if($equipe->equipeUser->count())
+                                        @foreach($equipe->equipeUser as $key => $equipeUser)
+                                            @if($equipeUser->responsavel == 1)
+                                                @if($contador > 0)
+                                                    , 
+                                                @endif
+                                                {{ $equipeUser->user->nome }}
+                                                {{--*/ $contador++;/*--}}
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </td>
 		                        <td>
 		                        	<a href="{{ URL::to('equipe/edit') }}/{{$equipe->id}}"><button type="button" class="btn btn-info"><span class="fa fa-pencil"></span>Editar</button></a>
                                     <a href="{{ URL::to('equipe/delete') }}/{{$equipe->id}}" class="remover-equipe"><button type="button" class="btn btn-danger"><span class="fa fa-remove">Deletar</span></button></a>

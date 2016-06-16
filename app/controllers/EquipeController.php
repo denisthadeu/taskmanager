@@ -47,7 +47,6 @@ class EquipeController extends BaseController {
 			$msg = "Equipe Cadastrado";
 		}
 		$equipe->nome = $nome;
-		$equipe->user_id = $responsavel;
 		$equipe->save();
 		$arrIDSEquipes = array();
 		if(isset($membroID) && !empty($membroID)){
@@ -88,7 +87,23 @@ class EquipeController extends BaseController {
 		$equipes = Equipe::OrderBy('nome')->with(['equipeUser' => function($query)
 			{
 			    $query->with('user');
-			}])->with('responsavel')->get();
+			}])->get();
 		return View::make('equipe.list',compact('equipes'));
+	}
+
+	public function getMarcarresponsavel($id)
+	{
+		$equipeuser = Equipeuser::find($id);
+		$equipeuser->responsavel = 1;
+		$equipeuser->save();
+		return Redirect::to('equipe/edit/'.$equipeuser->equipe_id)->with('success',$equipeuser->user->nome." marcado(a) como Responsável");
+	}
+
+	public function getRemoverresponsavel($id)
+	{
+		$equipeuser = Equipeuser::find($id);
+		$equipeuser->responsavel = 0;
+		$equipeuser->save();
+		return Redirect::to('equipe/edit/'.$equipeuser->equipe_id)->with('success',$equipeuser->user->nome." removido(a) como Responsável");
 	}
 }
