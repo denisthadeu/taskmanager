@@ -55,7 +55,9 @@ class HomeController extends BaseController {
 		$arrMinhasequipes = array();
 		if(Auth::user()->equipeUser->count()){
 			foreach (Auth::user()->equipeUser as $key => $equipeUser) {
-				$arrMinhasequipes[] = $equipeUser->equipe_id;
+				if($equipeUser->responsavel == 1){
+					$arrMinhasequipes[] = $equipeUser->equipe_id;
+				}
 			}
 		}
 		$minhasEquipes = Equipe::wherein('id',$arrMinhasequipes)->with(['equipeUser' => function($query) use ($dbSearchTaskIni,$dbSearchTaskFim)
