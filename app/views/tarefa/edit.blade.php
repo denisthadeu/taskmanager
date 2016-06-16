@@ -219,7 +219,7 @@
                                 <p>
                                     <h3><span class="fa fa-paperclip"></span> Anexos</h3>
                                     @foreach($tarefa->anexos AS $anexos)
-                                        <p><a href="{{ URL::asset($anexos->caminho_completo) }}" target="_blank">{{ $anexos->nome }}</a></p>
+                                        <p><a href="{{ URL::asset($anexos->caminho_completo) }}" download>{{ $anexos->nome }}</a></p>
                                     @endforeach
                                 </p>
                             @endif
@@ -309,7 +309,7 @@
                                                                     @if($comentario->anexos->count() > 0)
                                                                         <hr>
                                                                         @foreach($comentario->anexos AS $comentarioAnexo)
-                                                                            <p><a href="{{ URL::asset($comentarioAnexo->caminho_completo) }}" target="_blank">{{ $comentarioAnexo->nome }}</a></p>
+                                                                            <p><a href="{{ URL::asset($comentarioAnexo->caminho_completo) }}" download>{{ $comentarioAnexo->nome }}</a></p>
                                                                         @endforeach
                                                                     @endif
                                                                 </div>

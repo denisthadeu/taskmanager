@@ -99,9 +99,9 @@
                                                             <button type="button" class="btn btn-danger">Remover</button>
                                                         </a>
                                                         @if($membro->responsavel == 0)
-                                                            <a href="http://localhost/taskmanager/public/equipe/marcarresponsavel/{{ $membro->id }}"><button type="button" class="btn btn-info">Marcar como Responsável</button></a>
+                                                            <a href="{{ URL::to('equipe/marcarresponsavel') }}/{{ $membro->id }}"><button type="button" class="btn btn-info">Marcar como Responsável</button></a>
                                                         @else
-                                                            <a href="http://localhost/taskmanager/public/equipe/removerresponsavel/{{ $membro->id }}"><button type="button" class="btn btn-warning">Remover Responsabilidade</button></a>
+                                                            <a href="{{ URL::to('equipe/removerresponsavel') }}/{{ $membro->id }}"><button type="button" class="btn btn-warning">Remover Responsabilidade</button></a>
                                                         @endif
                                                     </td>
                                                     <td>
