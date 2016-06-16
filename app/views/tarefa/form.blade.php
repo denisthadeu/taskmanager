@@ -59,7 +59,7 @@
                                                 <option value="">Meu Setor</option>
                                                 @if(Auth::user()->equipeUser->count())
                                                     @foreach(Auth::user()->equipeUser AS $key => $equipeuserPerfil)
-                                                        <option value="{{ $equipeuserPerfil->equipe->id }}">{{ $equipeuserPerfil->equipe->nome }}</option>
+                                                        <option value="{{ $equipeuserPerfil->equipe->id }}" @if($key == 0) selected="SELECTED" @endif>{{ $equipeuserPerfil->equipe->nome }}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
