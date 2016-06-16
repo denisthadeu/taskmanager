@@ -106,4 +106,20 @@ class EquipeController extends BaseController {
 		$equipeuser->save();
 		return Redirect::to('equipe/edit/'.$equipeuser->equipe_id)->with('success',$equipeuser->user->nome." removido(a) como Responsável");
 	}
+
+	public function getExibedashboard($id)
+	{
+		$equipeuser = Equipeuser::find($id);
+		$equipeuser->exibe_dashboard = 1;
+		$equipeuser->save();
+		return Redirect::to('equipe/edit/'.$equipeuser->equipe_id)->with('success',$equipeuser->user->nome." marcado(a) como Responsável");
+	}
+
+	public function getRemovedashboard($id)
+	{
+		$equipeuser = Equipeuser::find($id);
+		$equipeuser->exibe_dashboard = 0;
+		$equipeuser->save();
+		return Redirect::to('equipe/edit/'.$equipeuser->equipe_id)->with('success',$equipeuser->user->nome." removido(a) como Responsável");
+	}
 }

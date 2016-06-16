@@ -146,49 +146,51 @@
 		                                        	@if($equipe->equipeUser->count())
 			                                        	{{-- */$count=0;/* --}}
 				                                        @foreach($equipe->equipeUser AS $equipeUser)
-				                                        	{{-- */$user = $equipeUser->user;/* --}}
-				                                        	{{-- */$count++;/* --}}
-				                                        	@if($count == 1)
-				                                            	<div class="row">
+				                                        	@if($equipeUser->exibe_dashboard)
+					                                        	{{-- */$user = $equipeUser->user;/* --}}
+					                                        	{{-- */$count++;/* --}}
+					                                        	@if($count == 1)
+					                                            	<div class="row">
+					                                            @endif
+					                                                <div class="col-md-3">
+						                                                <div class="panel panel-default">
+											                                <div class="panel-body profile">
+											                                    <div class="profile-image">
+											                                    	@if(!empty($user->foto_caminho_completo))
+														                                <img src="{{ URL::asset($user->foto_caminho_completo) }}" class="image_perfil" alt="{{ $user->nome }}">
+														                            @else    
+														                                <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="{{ $user->nome }}">
+														                            @endif
+											                                    </div>
+											                                    <div class="profile-data">
+											                                        <div class="profile-data-name">{{ $user->nome }}</div>
+											                                    </div>
+											                                </div>                                
+											                                <table class="panel-body table table-bordered table-hover" style="background-color: #fff">
+										                                    	<tbody class=" connectedSortable sortable droptrue table-task-user-{{$user->id}}" data-user="{{$user->id}}">
+										                                    		{{-- */$minutos = 0;/* --}}
+										                                    		@if($user->tarefasresponsavel->count())
+										                                    			@foreach($user->tarefasresponsavel AS $tarefa)
+												                                    		<tr class="ui-state-default" data-tarefa="{{$tarefa->id}}">
+												                                    			<td><a href="{{ URL::to('tarefa/edit') }}/{{$tarefa->id}}">{{ $tarefa->nome }}</a></td>
+												                                    			<td>{{ Formatter::convertToHoursMins($tarefa->minutos) }}</td>
+												                                    			{{-- */$minutos += $tarefa->minutos ;/* --}}
+												                                    		</tr>
+										                                    			@endforeach
+										                                    		@endif
+										                                    		<tr>
+										                                    			<td>Total</td>
+										                                    			<td class="hora-user-{{$user->id}}">{{ Formatter::convertToHoursMins($minutos) }}</td>
+										                                    		</tr>
+										                                    	</tbody>
+										                                    </table>                                
+											                            </div>
+					                                                </div>
+					                                            @if($count == 4)
+				                                                	</div>
+				                                                	{{-- */$count=0;/* --}}
+				                                               	@endif
 				                                            @endif
-				                                                <div class="col-md-3">
-					                                                <div class="panel panel-default">
-										                                <div class="panel-body profile">
-										                                    <div class="profile-image">
-										                                    	@if(!empty($user->foto_caminho_completo))
-													                                <img src="{{ URL::asset($user->foto_caminho_completo) }}" class="image_perfil" alt="{{ $user->nome }}">
-													                            @else    
-													                                <img src="{{ URL::asset('assets/images/users/images.png') }}" class="image_perfil" alt="{{ $user->nome }}">
-													                            @endif
-										                                    </div>
-										                                    <div class="profile-data">
-										                                        <div class="profile-data-name">{{ $user->nome }}</div>
-										                                    </div>
-										                                </div>                                
-										                                <table class="panel-body table table-bordered table-hover" style="background-color: #fff">
-									                                    	<tbody class=" connectedSortable sortable droptrue table-task-user-{{$user->id}}" data-user="{{$user->id}}">
-									                                    		{{-- */$minutos = 0;/* --}}
-									                                    		@if($user->tarefasresponsavel->count())
-									                                    			@foreach($user->tarefasresponsavel AS $tarefa)
-											                                    		<tr class="ui-state-default" data-tarefa="{{$tarefa->id}}">
-											                                    			<td><a href="{{ URL::to('tarefa/edit') }}/{{$tarefa->id}}">{{ $tarefa->nome }}</a></td>
-											                                    			<td>{{ Formatter::convertToHoursMins($tarefa->minutos) }}</td>
-											                                    			{{-- */$minutos += $tarefa->minutos ;/* --}}
-											                                    		</tr>
-									                                    			@endforeach
-									                                    		@endif
-									                                    		<tr>
-									                                    			<td>Total</td>
-									                                    			<td class="hora-user-{{$user->id}}">{{ Formatter::convertToHoursMins($minutos) }}</td>
-									                                    		</tr>
-									                                    	</tbody>
-									                                    </table>                                
-										                            </div>
-				                                                </div>
-				                                            @if($count == 4)
-			                                                	</div>
-			                                                	{{-- */$count=0;/* --}}
-			                                               	@endif
 			                                            @endforeach
 			                                            @if($count != 0)
 		                                                	</div>

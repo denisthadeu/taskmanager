@@ -99,9 +99,14 @@
                                                             <button type="button" class="btn btn-danger">Remover</button>
                                                         </a>
                                                         @if($membro->responsavel == 0)
-                                                            <a href="{{ URL::to('equipe/marcarresponsavel') }}/{{ $membro->id }}"><button type="button" class="btn btn-info">Marcar como Responsável</button></a>
+                                                            <a href="{{ URL::to('equipe/marcarresponsavel') }}/{{ $membro->id }}"><button type="button" class="btn btn-warning">Marcar como Responsável</button></a>
                                                         @else
                                                             <a href="{{ URL::to('equipe/removerresponsavel') }}/{{ $membro->id }}"><button type="button" class="btn btn-warning">Remover Responsabilidade</button></a>
+                                                        @endif
+                                                        @if($membro->exibe_dashboard == 1)
+                                                            <a href="{{ URL::to('equipe/removedashboard') }}/{{ $membro->id }}"><button type="button" class="btn btn-info">Remover do Dashboard</button></a>
+                                                        @else
+                                                            <a href="{{ URL::to('equipe/exibedashboard') }}/{{ $membro->id }}"><button type="button" class="btn btn-info">Exibir no Dashboard</button></a>
                                                         @endif
                                                     </td>
                                                     <td>
