@@ -209,5 +209,186 @@ class RelatorioController extends BaseController {
 		}
 	}
 
+	public function getCronogramademandainline()
+	{
+		if(Input::has('filtro-data')){
+			$dataFiltro = Input::get('filtro-data');
+		} else {
+			$dataFiltro = date('Y-m');
+		}
+		if(Input::has('filtro-setor')){
+			$dataSetor = Input::get('filtro-setor');
+		} else {
+			$dataSetor = 0;
+		}
+		$titulo = Formatter::dataExtenso($dataFiltro);
+		$equipes = Equipe::with(['equipeCliente' => function($query) use($dataFiltro)
+			{
+			    $query->with(['cliente' => function($query) use($dataFiltro)
+				{
+				    $query->with(['tarefas' => function($query) use($dataFiltro)
+					{
+					    $query->where('data_ini','like',$dataFiltro.'%')->orWhere('data_ini','like',$dataFiltro.'%')->with('tipo')->with('usertempo');
+					}])
+				->OrderBy('nome');
+				}]);
+			}])->OrderBy('nome');
+		if(!empty($dataSetor)){
+			$equipes = $equipes->where('id','=',$dataSetor);
+		}
+		$equipes = $equipes->with('equipeUser')->get();
+		$results = null;
+		$countRes = 0;
+		//pega as equipes
+		foreach($equipes AS $equipe){
+			$results[$equipe->id]["id"] = $equipe->id;
+			$results[$equipe->id]["nome"] = $equipe->nome;
+			$results[$equipe->id]["colspan"] = 0;
+			$results[$equipe->id]["horasEstipuladas"] = 0;
+			$results[$equipe->id]["horasFeitas"] = 0;
+			$results[$equipe->id]["clientes"] = array();
+			$arrUsuarios = array();
+			foreach ($equipe->equipeUser as $key => $equipeUser) {
+				$arrUsuarios[] = $equipeUser->user_id;
+			}
+			//pega os clientes que a equipe atende
+			foreach($equipe->equipeCliente AS $key => $equipeCliente){
+				$cliente = $equipeCliente->cliente;
+				$results[$equipe->id]["Arrclientes"]["id"][] = $cliente->id;
+				$results[$equipe->id]["clientes"][$cliente->id]["id"] = $cliente->id;
+				$results[$equipe->id]["clientes"][$cliente->id]["nome"] = $cliente->nome;
+				$results[$equipe->id]["clientes"][$cliente->id]["colspan"] = 1;
+				if(!isset($results[$equipe->id]["clientes"][$cliente->id]["horasEstipuladas"]))
+					$results[$equipe->id]["clientes"][$cliente->id]["horasEstipuladas"] = 0;
+				if(!isset($results[$equipe->id]["clientes"][$cliente->id]["horasFeitas"]))
+					$results[$equipe->id]["clientes"][$cliente->id]["horasFeitas"] = 0;
+				$tarefas = $cliente->tarefas;
+				// tarefas da equipe deste cliente
+				$results[$equipe->id]["clientes"][$cliente->id]["tipo"] = array();
+				foreach($tarefas AS $keytarefa => $tarefa){
+					if(in_array($tarefa->user_id, $arrUsuarios)){
+						$tipotarefa = $tarefa->tipo;
+						if(empty($tipotarefa)){
+							$tipotarefa = new Tarefatipo();
+							$tipotarefa->id = 0;
+							$tipotarefa->nome = "Cronograma";
+						}
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["id"] = $tipotarefa->id;
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["nome"] = $tipotarefa->nome;
+						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"])){
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"] = 1;
+						} else {
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"]++;
+						}
+						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"])){
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] = $tarefa->minutos;
+						} else {
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] += $tarefa->minutos;
+						}
 
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasEstipuladas"] += $tarefa->minutos;
+						$results[$equipe->id]["horasEstipuladas"] += $tarefa->minutos;
+
+						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"])){
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] = 0;
+						}
+						//tempo da equipe neste tipo de tarefa do cliente
+						foreach($tarefa->usertempo AS $tempo){
+							if(!empty($tempo->minutos)){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempo->minutos;
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
+								$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
+							} else {
+								if(empty($tempo->data_fim)){
+									$tempo->data_fim = Formatter::dataAtualDB();
+								}
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+							}
+							// $results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"];
+						}
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
+					}
+				}
+			}
+			$results[$equipe->id]["colspan"] = 1;
+			foreach ($results[$equipe->id]["clientes"] as $cliente) {
+				$results[$equipe->id]["colspan"] += $cliente["colspan"] + 1;
+			}
+		}
+		// echo "<pre>";print_r($results);exit;
+		$html = '
+		<table class="table table-bordered" style="background-color: #fff">
+            <thead>
+                <tr>
+                    <th colspan="6" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE (Inline) {{ $titulo }}</th>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th style="background-color: #31869B;color: white;text-align: center;">SETOR</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">CLIENTE</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">SERVIÇO</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">PRODUÇÃO</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS ESTIPULADAS</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS TRABALHADAS</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">';
+            foreach ($results as $key => $res) {
+            	if(isset($res["clientes"]) && !empty($res["clientes"])){
+            		foreach($res["clientes"] AS $clientes){
+            			if(isset($clientes["tipo"]) && !empty($clientes["tipo"])){
+            				foreach ($clientes["tipo"] as $keyTipo => $tipo) {
+            					$html .= '
+				            	<tr>
+				            		<td>'.$res["nome"].'</td>
+				            		<td>'.$clientes["nome"].'</td>
+				            		<td>'.$tipo["nome"].'</td>
+				            		<td>'.$tipo["projetos"].'</td>
+				            		<td>'.Formatter::convertToHoursMins($tipo["horasEstipuladas"]).'</td>
+				            		<td>'.Formatter::convertToHoursMins($tipo["horasFeitas"]).'</td>
+				            	</tr>
+				            	';
+            				}
+            			} else{
+            				$html .= '
+			            	<tr>
+			            		<td>'.$res["nome"].'</td>
+			            		<td>'.$clientes["nome"].'</td>
+			            		<td>-</td>
+			            		<td>0</td>
+			            		<td>00:00</td>
+			            		<td>00:00</td>
+			            	</tr>
+			            	';
+            			}
+	            	}
+            	} else {
+            		$html .= '
+	            	<tr>
+	            		<td>'.$res["nome"].'</td>
+	            		<td>-</td>
+	            		<td>-</td>
+	            		<td>0</td>
+	            		<td>00:00</td>
+	            		<td>00:00</td>
+	            	</tr>
+	            	';
+            	}
+            }
+		$html .= '
+			</tbody>
+        </table>';
+        if(Input::has('excel')){
+        	header('Content-Disposition: attachment; filename="ServicoPorClienteInline'.$dataFiltro.'.xls"');
+			header("Cache-control: private");
+			header("Content-type: application/force-download");
+			header("Content-transfer-encoding: binary\n");
+			echo $html;	
+        } else  {
+			$equipesFiltro = Equipe::OrderBy('nome')->get();
+			return View::make('relatorio.cronogramademanadainline',compact('results','dataFiltro','titulo','dataSetor','equipesFiltro','html'));
+		}
+	}
 }

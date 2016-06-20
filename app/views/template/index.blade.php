@@ -94,6 +94,7 @@
 						<li class="xn-openable">
 							<a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Relatórios</span></a>
 							<ul>
+								<li><a href="{{ URL::to('relatorio/cronogramademandainline') }}"><span class="fa fa-align-justify"></span> Serviço por Cliente (inline)</a></li>
 								<li><a href="{{ URL::to('relatorio/cronogramademanda') }}"><span class="fa fa-align-justify"></span> Serviço por Cliente</a></li>
 								<li><a href="{{ URL::to('relatorio') }}"><span class="fa fa-align-justify"></span> Relatório em Construção</a></li>
 							</ul>
