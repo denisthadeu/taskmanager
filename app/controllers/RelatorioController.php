@@ -267,6 +267,7 @@ class RelatorioController extends BaseController {
 				$results[$equipe->id]["clientes"][$cliente->id]["tipo"] = array();
 				foreach($tarefas AS $keytarefa => $tarefa){
 					if(in_array($tarefa->user_id, $arrUsuarios)){
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tarefas"][] = $tarefa->id;
 						$tipotarefa = $tarefa->tipo;
 						if(empty($tipotarefa)){
 							$tipotarefa = new Tarefatipo();
