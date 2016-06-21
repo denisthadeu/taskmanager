@@ -9,7 +9,7 @@ class CronController extends BaseController {
 		//verifica se é durante a semana
 		if($diadasemana == "Monday" || $diadasemana == "Tuesday" || $diadasemana == "Wednesday" || $diadasemana == "Thursday" || $diadasemana == "Friday") {
 			// Inicia Tarefas pausadas pelo sistema no dia anterior e no almoço de hoje
-			if($hora == "09:00" || $hora == "13:00"){
+			/*if($hora == "09:00" || $hora == "13:00"){
 				//pega todas as tarefas com status 2(que foi pausado automaticamente)
 				$tarefas = Tarefa::where('status','=','2')->with('usertempoplay')->with(['responsavel' => function($query)
 								{
@@ -37,7 +37,7 @@ class CronController extends BaseController {
 						$comentario->save();
 					}
 				}
-			}
+			}*/
 
 			// pausa Tarefas no horario comercial e para a hora do almoço
 			if($hora == "12:00" || $hora == "18:00"){
