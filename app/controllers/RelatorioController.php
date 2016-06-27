@@ -34,7 +34,7 @@ class RelatorioController extends BaseController {
 				{
 				    $query->with(['tarefas' => function($query) use($dataFiltro)
 					{
-					    $query->where('data_ini','like',$dataFiltro.'%')->orWhere('data_ini','like',$dataFiltro.'%')->with('tipo')->with('usertempo');
+					    $query->where('data_ini','like',$dataFiltro.'%')->orWhere('data_ini','like',$dataFiltro.'%')->with('meusetor')->with('usertempo');
 					}])
 				->OrderBy('nome');
 				}]);
@@ -72,7 +72,7 @@ class RelatorioController extends BaseController {
 				$results[$equipe->id]["clientes"][$cliente->id]["tipo"] = array();
 				foreach($tarefas AS $keytarefa => $tarefa){
 					if(in_array($tarefa->user_id, $arrUsuarios)){
-						$tipotarefa = $tarefa->tipo;
+						$tipotarefa = $tarefa->meusetor;
 						if(empty($tipotarefa)){
 							$tipotarefa = new Tarefatipo();
 							$tipotarefa->id = 0;
@@ -228,7 +228,10 @@ class RelatorioController extends BaseController {
 				{
 				    $query->with(['tarefas' => function($query) use($dataFiltro)
 					{
-					    $query->where('data_ini','like',$dataFiltro.'%')->orWhere('data_ini','like',$dataFiltro.'%')->with('tipo')->with('usertempo');
+					    $query->where('data_ini','like',$dataFiltro.'%')->orWhere('data_ini','like',$dataFiltro.'%')->with('meusetor')->with(['usertempo' => function($query) use($dataFiltro)
+						{
+						    $query->with('user');
+						}]);
 					}])
 				->OrderBy('nome');
 				}]);
@@ -268,7 +271,7 @@ class RelatorioController extends BaseController {
 				foreach($tarefas AS $keytarefa => $tarefa){
 					if(in_array($tarefa->user_id, $arrUsuarios)){
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tarefas"][] = $tarefa->id;
-						$tipotarefa = $tarefa->tipo;
+						$tipotarefa = $tarefa->meusetor;
 						if(empty($tipotarefa)){
 							$tipotarefa = new Tarefatipo();
 							$tipotarefa->id = 0;
@@ -276,6 +279,7 @@ class RelatorioController extends BaseController {
 						}
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["id"] = $tipotarefa->id;
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["nome"] = $tipotarefa->nome;
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][] = '<a href="'.URL::to('tarefa/edit').'/'.$tarefa->id.'">'.$tarefa->id."</a>";
 						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"])){
 							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"] = 1;
 						} else {
@@ -299,12 +303,19 @@ class RelatorioController extends BaseController {
 								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempo->minutos;
 								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
 								$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
+								$tempoTarefaTotal = $tempo->minutos;
 							} else {
 								if(empty($tempo->data_fim)){
 									$tempo->data_fim = Formatter::dataAtualDB();
 								}
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+								$tempoTarefaTotal = Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempoTarefaTotal;
 							}
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
+							}
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
 							// $results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"];
 						}
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
@@ -321,18 +332,20 @@ class RelatorioController extends BaseController {
 		<table class="table table-bordered" style="background-color: #fff">
             <thead>
                 <tr>
-                    <th colspan="6" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE (Inline) {{ $titulo }}</th>
+                    <th colspan="8" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE (Inline) {{ $titulo }}</th>
                 </tr>
                 <tr>
-                    <td colspan="6" style="text-align: center;">&nbsp;</td>
+                    <td colspan="8" style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
                     <th style="background-color: #31869B;color: white;text-align: center;">SETOR</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">CLIENTE</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">SERVIÇO</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">PRODUÇÃO</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">TAREFAS</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS ESTIPULADAS</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS TRABALHADAS</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">FUNCIONÁRIOS</th>
                 </tr>
             </thead>
             <tbody style="text-align: center;">';
@@ -341,14 +354,34 @@ class RelatorioController extends BaseController {
             		foreach($res["clientes"] AS $clientes){
             			if(isset($clientes["tipo"]) && !empty($clientes["tipo"])){
             				foreach ($clientes["tipo"] as $keyTipo => $tipo) {
+            					$tarefas_resumo = '-';
+            					if(isset($tipo["tarefas"])){
+            						$tarefas_resumo = implode(", ", $tipo["tarefas"]);
+            					}
+
+            					$tarefas_tempo_resumo = '-';
+            					if(isset($tipo["horasFeitasDscriminado"]) && !empty($tipo["horasFeitasDscriminado"]) && is_array($tipo["horasFeitasDscriminado"])){
+            						$indiceTempo = 0;
+            						foreach ($tipo["horasFeitasDscriminado"]["usuarios"] as $resumo_tempo) {
+            							if($indiceTempo == 0){
+            								$tarefas_tempo_resumo = $resumo_tempo["nome"].' ('.Formatter::convertToHoursMins($resumo_tempo["tempo"]).")";
+            							} else {
+            								$tarefas_tempo_resumo .= "<br/>".$resumo_tempo["nome"].' ('.Formatter::convertToHoursMins($resumo_tempo["tempo"]).")";
+            							}
+            							$indiceTempo++;
+            						}
+
+            					}
             					$html .= '
 				            	<tr>
 				            		<td>'.$res["nome"].'</td>
 				            		<td>'.$clientes["nome"].'</td>
 				            		<td>'.$tipo["nome"].'</td>
-				            		<td>'.$tipo["projetos"].'</td>
+				            		<td class="col-md-1">'.$tipo["projetos"].'</td>
+				            		<td class="col-md-1">'.$tarefas_resumo.'</td>
 				            		<td>'.Formatter::convertToHoursMins($tipo["horasEstipuladas"]).'</td>
 				            		<td>'.Formatter::convertToHoursMins($tipo["horasFeitas"]).'</td>
+				            		<td class="col-md-1">'.$tarefas_tempo_resumo.'</td>
 				            	</tr>
 				            	';
             				}
@@ -358,9 +391,11 @@ class RelatorioController extends BaseController {
 			            		<td>'.$res["nome"].'</td>
 			            		<td>'.$clientes["nome"].'</td>
 			            		<td>-</td>
-			            		<td>0</td>
+			            		<td>-</td>
+			            		<td>-</td>
 			            		<td>00:00</td>
 			            		<td>00:00</td>
+			            		<td>-</td>
 			            	</tr>
 			            	';
             			}
@@ -371,9 +406,11 @@ class RelatorioController extends BaseController {
 	            		<td>'.$res["nome"].'</td>
 	            		<td>-</td>
 	            		<td>-</td>
-	            		<td>0</td>
+	            		<td>-</td>
+	            		<td>-</td>
 	            		<td>00:00</td>
 	            		<td>00:00</td>
+	            		<td>-</td>
 	            	</tr>
 	            	';
             	}

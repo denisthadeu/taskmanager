@@ -58,4 +58,9 @@ class Tarefa extends Eloquent {
 		return $this->belongsTo('Equipecliente','clientes_projetos_id');
 	}
 
+	public function meusetor()
+	{
+		return $this->belongsTo('Equipe','meu_setor_id');
+	}
+
 }
