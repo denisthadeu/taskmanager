@@ -279,7 +279,8 @@ class RelatorioController extends BaseController {
 						}
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["id"] = $tipotarefa->id;
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["nome"] = $tipotarefa->nome;
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][] = '<a href="'.URL::to('tarefa/edit').'/'.$tarefa->id.'">'.$tarefa->id."</a>";
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["id"] = '<a href="'.URL::to('tarefa/edit').'/'.$tarefa->id.'">'.$tarefa->id."</a>";
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutosOrcado"] = $tarefa->minutos;
 						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"])){
 							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"] = 1;
 						} else {
@@ -311,12 +312,24 @@ class RelatorioController extends BaseController {
 								$tempoTarefaTotal = Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
 								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempoTarefaTotal;
 							}
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] = 0;
+							}
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] += $tempoTarefaTotal;
+
+
 							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
 							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
 								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
 							}
 							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
-							// $results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"];
+
+
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
+							}
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
 						}
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
 					}
@@ -341,8 +354,7 @@ class RelatorioController extends BaseController {
                     <th style="background-color: #31869B;color: white;text-align: center;">SETOR</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">CLIENTE</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">SERVIÇO</th>
-                    <th style="background-color: #31869B;color: white;text-align: center;">PRODUÇÃO</th>
-                    <th style="background-color: #31869B;color: white;text-align: center;">TAREFAS</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">TAREFA</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS ESTIPULADAS</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS TRABALHADAS</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">FUNCIONÁRIOS</th>
@@ -354,65 +366,62 @@ class RelatorioController extends BaseController {
             		foreach($res["clientes"] AS $clientes){
             			if(isset($clientes["tipo"]) && !empty($clientes["tipo"])){
             				foreach ($clientes["tipo"] as $keyTipo => $tipo) {
-            					$tarefas_resumo = '-';
-            					if(isset($tipo["tarefas"])){
-            						$tarefas_resumo = implode(", ", $tipo["tarefas"]);
-            					}
-
-            					$tarefas_tempo_resumo = '-';
-            					if(isset($tipo["horasFeitasDscriminado"]) && !empty($tipo["horasFeitasDscriminado"]) && is_array($tipo["horasFeitasDscriminado"])){
-            						$indiceTempo = 0;
-            						foreach ($tipo["horasFeitasDscriminado"]["usuarios"] as $resumo_tempo) {
-            							if($indiceTempo == 0){
-            								$tarefas_tempo_resumo = $resumo_tempo["nome"].' ('.Formatter::convertToHoursMins($resumo_tempo["tempo"]).")";
-            							} else {
-            								$tarefas_tempo_resumo .= "<br/>".$resumo_tempo["nome"].' ('.Formatter::convertToHoursMins($resumo_tempo["tempo"]).")";
+            					foreach ($tipo["tarefas"] as $indicetarefas => $tarefa) {
+            						$resumo_tempo_real = '-';
+            						if(isset($tarefa["horasFeitasDscriminado"])){
+            							$indiceTempoDiscriminado = 0;
+            							foreach ($tarefa["horasFeitasDscriminado"]["usuarios"] as $tempoDiscriminado) {
+            								if($indiceTempoDiscriminado == 0){
+												$resumo_tempo_real = $tempoDiscriminado["nome"].' ('.Formatter::convertToHoursMins($tempoDiscriminado["tempo"]).")";
+            								} else {
+            									$resumo_tempo_real .= "<br/>".$tempoDiscriminado["nome"].' ('.Formatter::convertToHoursMins($tempoDiscriminado["tempo"]).")";
+            								}
+            								$indiceTempoDiscriminado++;
             							}
-            							$indiceTempo++;
             						}
-
+            						$minutosTrabalhados = 0;
+            						if(isset($tarefa["minutostrabalhado"])){
+            							$minutosTrabalhados = $tarefa["minutostrabalhado"];
+            						}
+            						$html .= '
+					            	<tr>
+					            		<td>'.$res["nome"].'</td>
+					            		<td>'.$clientes["nome"].'</td>
+					            		<td>'.$tipo["nome"].'</td>
+					            		<td class="col-md-1">'.$tarefa["id"].'</td>
+					            		<td>'.Formatter::convertToHoursMins($tarefa["minutosOrcado"]).'</td>
+					            		<td>'.Formatter::convertToHoursMins($minutosTrabalhados).'</td>
+					            		<td class="col-md-1">'.$resumo_tempo_real.'</td>
+					            	</tr>
+					            	';
             					}
-            					$html .= '
-				            	<tr>
-				            		<td>'.$res["nome"].'</td>
-				            		<td>'.$clientes["nome"].'</td>
-				            		<td>'.$tipo["nome"].'</td>
-				            		<td class="col-md-1">'.$tipo["projetos"].'</td>
-				            		<td class="col-md-1">'.$tarefas_resumo.'</td>
-				            		<td>'.Formatter::convertToHoursMins($tipo["horasEstipuladas"]).'</td>
-				            		<td>'.Formatter::convertToHoursMins($tipo["horasFeitas"]).'</td>
-				            		<td class="col-md-1">'.$tarefas_tempo_resumo.'</td>
-				            	</tr>
-				            	';
             				}
             			} else{
-            				$html .= '
-			            	<tr>
-			            		<td>'.$res["nome"].'</td>
-			            		<td>'.$clientes["nome"].'</td>
-			            		<td>-</td>
-			            		<td>-</td>
-			            		<td>-</td>
-			            		<td>00:00</td>
-			            		<td>00:00</td>
-			            		<td>-</td>
-			            	</tr>
-			            	';
+            				// $html .= '
+			            	// <tr>
+			            	// 	<td>'.$res["nome"].'</td>
+			            	// 	<td>'.$clientes["nome"].'</td>
+			            	// 	<td>-</td>
+			            	// 	<td>-</td>
+			            	// 	<td>00:00</td>
+			            	// 	<td>00:00</td>
+			            	// 	<td>-</td>
+			            	// </tr>
+			            	// ';
             			}
 	            	}
             	} else {
-            		$html .= '
-	            	<tr>
-	            		<td>'.$res["nome"].'</td>
-	            		<td>-</td>
-	            		<td>-</td>
-	            		<td>-</td>
-	            		<td>-</td>
-	            		<td>00:00</td>
-	            		<td>00:00</td>
-	            		<td>-</td>
-	            	</tr>
-	            	';
+            		// $html .= '
+	            	// <tr>
+	            	// 	<td>'.$res["nome"].'</td>
+	            	// 	<td>-</td>
+	            	// 	<td>-</td>
+	            	// 	<td>-</td>
+	            	// 	<td>00:00</td>
+	            	// 	<td>00:00</td>
+	            	// 	<td>-</td>
+	            	// </tr>
+	            	// ';
             	}
             }
 		$html .= '
