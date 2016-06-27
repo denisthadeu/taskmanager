@@ -324,7 +324,7 @@ class TarefaController extends BaseController {
 		$tarefa->clientes_projetos_id 	= $projeto;
 		$tarefa->tarefa_tipo_id 		= $tipo;
 		if($tarefa->tarefa_status_id != 6 && $tarefa_status_id == 6){
-			$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->OrderBy('id','DESC')->first();
+			$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->whereNull('data_fim')->OrderBy('id','DESC')->first();
 			if(!empty($tarefauser)){
 				$tarefauser->data_fim = Formatter::dataAtualDB();
 				$tarefauser->minutos = Formatter::minutesBetweenDates($tarefauser->data_ini,$tarefauser->data_fim);
@@ -565,7 +565,7 @@ class TarefaController extends BaseController {
 
 	public function getEntregar($id){
 
-		$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->OrderBy('id','DESC')->first();
+		$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->whereNull('data_fim')->OrderBy('id','DESC')->first();
 		if(!empty($tarefauser)){
 			$tarefauser->data_fim = Formatter::dataAtualDB();
 			$tarefauser->minutos = Formatter::minutesBetweenDates($tarefauser->data_ini,$tarefauser->data_fim);
@@ -696,7 +696,7 @@ class TarefaController extends BaseController {
 
 	public function getListentregar($id){
 
-		$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->OrderBy('id','DESC')->first();
+		$tarefauser = Tarefausertempo::where('tarefa_id','=',$id)->whereNull('data_fim')->OrderBy('id','DESC')->first();
 		if(!empty($tarefauser)){
 			$tarefauser->data_fim = Formatter::dataAtualDB();
 			$tarefauser->minutos = Formatter::minutesBetweenDates($tarefauser->data_ini,$tarefauser->data_fim);
