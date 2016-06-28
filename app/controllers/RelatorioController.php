@@ -345,7 +345,7 @@ class RelatorioController extends BaseController {
 		<table class="table table-bordered" style="background-color: #fff">
             <thead>
                 <tr>
-                    <th colspan="8" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE (Inline) {{ $titulo }}</th>
+                    <th colspan="8" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE (Inline) '.$titulo.'</th>
                 </tr>
                 <tr>
                     <td colspan="8" style="text-align: center;">&nbsp;</td>
@@ -357,7 +357,8 @@ class RelatorioController extends BaseController {
                     <th style="background-color: #31869B;color: white;text-align: center;">TAREFA</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS ESTIPULADAS</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS TRABALHADAS</th>
-                    <th style="background-color: #31869B;color: white;text-align: center;">FUNCIONÁRIOS</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">FUNCIONÁRIO</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">HORAS TRABALHADAS</th>
                 </tr>
             </thead>
             <tbody style="text-align: center;">';
@@ -367,15 +368,13 @@ class RelatorioController extends BaseController {
             			if(isset($clientes["tipo"]) && !empty($clientes["tipo"])){
             				foreach ($clientes["tipo"] as $keyTipo => $tipo) {
             					foreach ($tipo["tarefas"] as $indicetarefas => $tarefa) {
-            						$resumo_tempo_real = '-';
+            						$resumo_tempo_real = '<td class="col-md-1">-</td><td class="col-md-1">-</td>';
             						if(isset($tarefa["horasFeitasDscriminado"])){
+            							$resumo_tempo_real = '';
             							$indiceTempoDiscriminado = 0;
             							foreach ($tarefa["horasFeitasDscriminado"]["usuarios"] as $tempoDiscriminado) {
-            								if($indiceTempoDiscriminado == 0){
-												$resumo_tempo_real = $tempoDiscriminado["nome"].' ('.Formatter::convertToHoursMins($tempoDiscriminado["tempo"]).")";
-            								} else {
-            									$resumo_tempo_real .= "<br/>".$tempoDiscriminado["nome"].' ('.Formatter::convertToHoursMins($tempoDiscriminado["tempo"]).")";
-            								}
+											// $resumo_tempo_real = $tempoDiscriminado["nome"].' ('.Formatter::convertToHoursMins($tempoDiscriminado["tempo"]).")";
+											$resumo_tempo_real .= '<td class="col-md-1">'.$tempoDiscriminado["nome"].'</td><td class="col-md-1">'.Formatter::convertToHoursMins($tempoDiscriminado["tempo"]).'</td>';
             								$indiceTempoDiscriminado++;
             							}
             						}
@@ -391,7 +390,7 @@ class RelatorioController extends BaseController {
 					            		<td class="col-md-1">'.$tarefa["id"].'</td>
 					            		<td>'.Formatter::convertToHoursMins($tarefa["minutosOrcado"]).'</td>
 					            		<td>'.Formatter::convertToHoursMins($minutosTrabalhados).'</td>
-					            		<td class="col-md-1">'.$resumo_tempo_real.'</td>
+					            		'.$resumo_tempo_real.'
 					            	</tr>
 					            	';
             					}
@@ -430,9 +429,10 @@ class RelatorioController extends BaseController {
         if(Input::has('excel')){
         	header('Content-Disposition: attachment; filename="ServicoPorClienteInline'.$dataFiltro.'.xls"');
 			header("Cache-control: private");
-			header("Content-type: application/force-download");
+			// header("Content-type: application/force-download");
 			header("Content-transfer-encoding: binary\n");
-			echo $html;	
+			header("Content-type: application/vnd.ms-excel; charset=UTF-8");
+			echo mb_convert_encoding($html , "HTML-ENTITIES", "UTF-8");	
         } else  {
 			$equipesFiltro = Equipe::OrderBy('nome')->get();
 			return View::make('relatorio.cronogramademanadainline',compact('results','dataFiltro','titulo','dataSetor','equipesFiltro','html'));
