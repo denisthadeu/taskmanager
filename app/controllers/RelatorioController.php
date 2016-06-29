@@ -228,7 +228,7 @@ class RelatorioController extends BaseController {
 				{
 				    $query->with(['tarefas' => function($query) use($dataFiltro)
 					{
-					    $query->where('data_ini','like',$dataFiltro.'%')->orWhere('data_ini','like',$dataFiltro.'%')->with('meusetor')->with(['usertempo' => function($query) use($dataFiltro)
+					    $query->where('data_ini','like',$dataFiltro.'%')->orWhere('data_ini','like',$dataFiltro.'%')->with('meusetor')->with('tipo')->with(['usertempo' => function($query) use($dataFiltro)
 						{
 						    $query->with('user');
 						}]);
@@ -271,37 +271,44 @@ class RelatorioController extends BaseController {
 				foreach($tarefas AS $keytarefa => $tarefa){
 					if(in_array($tarefa->user_id, $arrUsuarios)){
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tarefas"][] = $tarefa->id;
-						$tipotarefa = $tarefa->meusetor;
+						$setortarefa = $tarefa->meusetor;
+						if(empty($setortarefa)){
+							$setortarefa = new Tarefatipo();
+							$setortarefa->id = 0;
+							$setortarefa->nome = "Cronograma";
+						}
+
+						$tipotarefa = $tarefa->tipo;
 						if(empty($tipotarefa)){
 							$tipotarefa = new Tarefatipo();
 							$tipotarefa->id = 0;
 							$tipotarefa->nome = "Cronograma";
 						}
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["id"] = $tipotarefa->id;
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["nome"] = $tipotarefa->nome;
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["id"] = '<a href="'.URL::to('tarefa/edit').'/'.$tarefa->id.'">'.$tarefa->id."</a>";
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutosOrcado"] = $tarefa->minutos;
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"] = 1;
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["id"] = $setortarefa->id;
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["nome"] = $setortarefa->nome;
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["id"] = '<a href="'.URL::to('tarefa/edit').'/'.$tarefa->id.'">'.$tarefa->id."</a>";
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutosOrcado"] = $tarefa->minutos;
+						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"])){
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"] = 1;
 						} else {
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"]++;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"]++;
 						}
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] = $tarefa->minutos;
+						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"])){
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"] = $tarefa->minutos;
 						} else {
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] += $tarefa->minutos;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"] += $tarefa->minutos;
 						}
-
+						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["tipo"] = $tipotarefa->nome;
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasEstipuladas"] += $tarefa->minutos;
 						$results[$equipe->id]["horasEstipuladas"] += $tarefa->minutos;
 
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] = 0;
+						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"])){
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] = 0;
 						}
 						//tempo da equipe neste tipo de tarefa do cliente
 						foreach($tarefa->usertempo AS $tempo){
 							if(!empty($tempo->minutos)){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempo->minutos;
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] += $tempo->minutos;
 								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
 								$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
 								$tempoTarefaTotal = $tempo->minutos;
@@ -310,26 +317,26 @@ class RelatorioController extends BaseController {
 									$tempo->data_fim = Formatter::dataAtualDB();
 								}
 								$tempoTarefaTotal = Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempoTarefaTotal;
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] += $tempoTarefaTotal;
 							}
-							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"])){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] = 0;
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] = 0;
 							}
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] += $tempoTarefaTotal;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] += $tempoTarefaTotal;
 
 
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
-							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
 							}
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
 
 
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
-							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
 							}
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
 						}
 						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
 					}
@@ -345,15 +352,16 @@ class RelatorioController extends BaseController {
 		<table class="table table-bordered" style="background-color: #fff">
             <thead>
                 <tr>
-                    <th colspan="8" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE (Inline) '.$titulo.'</th>
+                    <th colspan="9" style="text-align: center;background-color: #B7DEE8;color: #8B9295">SERVIÇO POR CLIENTE (Inline) '.$titulo.'</th>
                 </tr>
                 <tr>
-                    <td colspan="8" style="text-align: center;">&nbsp;</td>
+                    <td colspan="9" style="text-align: center;">&nbsp;</td>
                 </tr>
                 <tr>
                     <th style="background-color: #31869B;color: white;text-align: center;">SETOR</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">CLIENTE</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">SERVIÇO</th>
+                    <th style="background-color: #31869B;color: white;text-align: center;">TIPO</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TAREFA</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS ESTIPULADAS</th>
                     <th style="background-color: #31869B;color: white;text-align: center;">TOTAL HORAS TRABALHADAS</th>
@@ -387,6 +395,7 @@ class RelatorioController extends BaseController {
 					            		<td>'.$res["nome"].'</td>
 					            		<td>'.$clientes["nome"].'</td>
 					            		<td>'.$tipo["nome"].'</td>
+					            		<td>'.$tarefa["tipo"].'</td>
 					            		<td class="col-md-1">'.$tarefa["id"].'</td>
 					            		<td>'.Formatter::convertToHoursMins($tarefa["minutosOrcado"]).'</td>
 					            		<td>'.Formatter::convertToHoursMins($minutosTrabalhados).'</td>
