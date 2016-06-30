@@ -71,47 +71,49 @@ class RelatorioController extends BaseController {
 				// tarefas da equipe deste cliente
 				$results[$equipe->id]["clientes"][$cliente->id]["tipo"] = array();
 				foreach($tarefas AS $keytarefa => $tarefa){
-					if(in_array($tarefa->user_id, $arrUsuarios)){
-						$tipotarefa = $tarefa->meusetor;
-						if(empty($tipotarefa)){
-							$tipotarefa = new Tarefatipo();
-							$tipotarefa->id = 0;
-							$tipotarefa->nome = "Cronograma";
-						}
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["id"] = $tipotarefa->id;
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["nome"] = $tipotarefa->nome;
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"] = 1;
-						} else {
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"]++;
-						}
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] = $tarefa->minutos;
-						} else {
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] += $tarefa->minutos;
-						}
-
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasEstipuladas"] += $tarefa->minutos;
-						$results[$equipe->id]["horasEstipuladas"] += $tarefa->minutos;
-
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] = 0;
-						}
-						//tempo da equipe neste tipo de tarefa do cliente
-						foreach($tarefa->usertempo AS $tempo){
-							if(!empty($tempo->minutos)){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempo->minutos;
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
-								$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
-							} else {
-								if(empty($tempo->data_fim)){
-									$tempo->data_fim = Formatter::dataAtualDB();
-								}
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+					if($tarefa->meu_setor_id == $equipe->id){
+						if(in_array($tarefa->user_id, $arrUsuarios)){
+							$tipotarefa = $tarefa->meusetor;
+							if(empty($tipotarefa)){
+								$tipotarefa = new Tarefatipo();
+								$tipotarefa->id = 0;
+								$tipotarefa->nome = "Cronograma";
 							}
-							// $results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"];
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["id"] = $tipotarefa->id;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["nome"] = $tipotarefa->nome;
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"] = 1;
+							} else {
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["projetos"]++;
+							}
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] = $tarefa->minutos;
+							} else {
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasEstipuladas"] += $tarefa->minutos;
+							}
+
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasEstipuladas"] += $tarefa->minutos;
+							$results[$equipe->id]["horasEstipuladas"] += $tarefa->minutos;
+
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] = 0;
+							}
+							//tempo da equipe neste tipo de tarefa do cliente
+							foreach($tarefa->usertempo AS $tempo){
+								if(!empty($tempo->minutos)){
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += $tempo->minutos;
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
+									$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
+								} else {
+									if(empty($tempo->data_fim)){
+										$tempo->data_fim = Formatter::dataAtualDB();
+									}
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"] += Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+								}
+								// $results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$tipotarefa->id]["horasFeitas"];
+							}
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
 						}
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
 					}
 				}
 			}
@@ -269,76 +271,78 @@ class RelatorioController extends BaseController {
 				// tarefas da equipe deste cliente
 				$results[$equipe->id]["clientes"][$cliente->id]["tipo"] = array();
 				foreach($tarefas AS $keytarefa => $tarefa){
-					if(in_array($tarefa->user_id, $arrUsuarios)){
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tarefas"][] = $tarefa->id;
-						$setortarefa = $tarefa->meusetor;
-						if(empty($setortarefa)){
-							$setortarefa = new Tarefatipo();
-							$setortarefa->id = 0;
-							$setortarefa->nome = "Cronograma";
-						}
+					if($tarefa->meu_setor_id == $equipe->id){
+						if(in_array($tarefa->user_id, $arrUsuarios)){
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tarefas"][] = $tarefa->id;
+							$setortarefa = $tarefa->meusetor;
+							if(empty($setortarefa)){
+								$setortarefa = new Tarefatipo();
+								$setortarefa->id = 0;
+								$setortarefa->nome = "Cronograma";
+							}
 
-						$tipotarefa = $tarefa->tipo;
-						if(empty($tipotarefa)){
-							$tipotarefa = new Tarefatipo();
-							$tipotarefa->id = 0;
-							$tipotarefa->nome = "Cronograma";
-						}
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["id"] = $setortarefa->id;
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["nome"] = $setortarefa->nome;
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["id"] = '<a href="'.URL::to('tarefa/edit').'/'.$tarefa->id.'">'.$tarefa->id."</a>";
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutosOrcado"] = $tarefa->minutos;
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"] = 1;
-						} else {
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"]++;
-						}
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"] = $tarefa->minutos;
-						} else {
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"] += $tarefa->minutos;
-						}
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["tipo"] = $tipotarefa->nome;
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasEstipuladas"] += $tarefa->minutos;
-						$results[$equipe->id]["horasEstipuladas"] += $tarefa->minutos;
-
-						if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"])){
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] = 0;
-						}
-						//tempo da equipe neste tipo de tarefa do cliente
-						foreach($tarefa->usertempo AS $tempo){
-							if(!empty($tempo->minutos)){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] += $tempo->minutos;
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
-								$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
-								$tempoTarefaTotal = $tempo->minutos;
+							$tipotarefa = $tarefa->tipo;
+							if(empty($tipotarefa)){
+								$tipotarefa = new Tarefatipo();
+								$tipotarefa->id = 0;
+								$tipotarefa->nome = "Cronograma";
+							}
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["id"] = $setortarefa->id;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["nome"] = $setortarefa->nome;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["id"] = '<a href="'.URL::to('tarefa/edit').'/'.$tarefa->id.'">'.$tarefa->id."</a>";
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutosOrcado"] = $tarefa->minutos;
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"] = 1;
 							} else {
-								if(empty($tempo->data_fim)){
-									$tempo->data_fim = Formatter::dataAtualDB();
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["projetos"]++;
+							}
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"] = $tarefa->minutos;
+							} else {
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasEstipuladas"] += $tarefa->minutos;
+							}
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["tipo"] = $tipotarefa->nome;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasEstipuladas"] += $tarefa->minutos;
+							$results[$equipe->id]["horasEstipuladas"] += $tarefa->minutos;
+
+							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"])){
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] = 0;
+							}
+							//tempo da equipe neste tipo de tarefa do cliente
+							foreach($tarefa->usertempo AS $tempo){
+								if(!empty($tempo->minutos)){
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] += $tempo->minutos;
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["horasFeitas"] += $tempo->minutos;
+									$results[$equipe->id]["horasFeitas"] += $tempo->minutos;
+									$tempoTarefaTotal = $tempo->minutos;
+								} else {
+									if(empty($tempo->data_fim)){
+										$tempo->data_fim = Formatter::dataAtualDB();
+									}
+									$tempoTarefaTotal = Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] += $tempoTarefaTotal;
 								}
-								$tempoTarefaTotal = Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitas"] += $tempoTarefaTotal;
-							}
-							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"])){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] = 0;
-							}
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] += $tempoTarefaTotal;
+								if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"])){
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] = 0;
+								}
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["minutostrabalhado"] += $tempoTarefaTotal;
 
 
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
-							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
-							}
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
+								if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
+								}
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
 
 
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
-							if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
-								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["nome"] = $tempo->user->nome;
+								if(!isset($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"])){
+									$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] = 0;
+								}
+								$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
 							}
-							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"][$setortarefa->id]["tarefas"][$tarefa->id]["horasFeitasDscriminado"]["usuarios"][$tempo->user_id]["tempo"] += $tempoTarefaTotal;
+							$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
 						}
-						$results[$equipe->id]["clientes"][$tarefa->clientes_id]["colspan"] = count($results[$equipe->id]["clientes"][$tarefa->clientes_id]["tipo"]);
 					}
 				}
 			}
