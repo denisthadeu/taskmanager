@@ -635,6 +635,21 @@ class TarefaController extends BaseController {
 		$tarefauser->minutos = $dbSinal.$minutes;
 		$tarefauser->save();
 
+		$comentario = new Tarefacomentario();
+		$comentario->tarefa_id = $id;
+		$comentario->user_id = Auth::id();
+		$comentario->descricao = "Aviso do sistema: Ajuste manual do tempo, ".$sinal." ".$hora;
+		$comentario->save();
+
+		$tarefausertempo = Tarefausertempo::where('tarefa_id','=',$id)->whereNull('data_fim')->get();
+		if(!empty($tarefausertempo)){
+			foreach($tarefausertempo AS $tempo){
+				$tempo->data_fim = Formatter::dataAtualDB();
+				$tempo->minutos = Formatter::minutesBetweenDates($tempo->data_ini,$tempo->data_fim);
+				$tempo->save();
+			}
+		}
+
 		return Redirect::to('tarefa/edit/'.$id)->with('success', array(1 => 'Ajuste manual feito com sucesso.'));
 	}
 
